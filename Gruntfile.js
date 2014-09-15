@@ -63,7 +63,7 @@ module.exports = function(grunt) {
     express: {
       dev: {
         options: {
-          options: 'server.js',
+          script: 'server.js',
           background: true
         }
       }
