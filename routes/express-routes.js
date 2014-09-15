@@ -1,18 +1,25 @@
 'use strict';
 
+var EventModel = require('../models/event-model');
+
 var fs = require('fs');
 
 module.exports = function(app) {
   var api = '/api/0_0_1/data';
 
   app.get(api, function(req, res) {
-    var data = fs.readFileSync('data.json', { encoding: 'utf-8' });
-    return res.status(200).json(JSON.parse(data));
+    EventModel.find({}, function(err, dbResponse) {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(dbResponse);
+    });
   });
 
   app.post(api, function(req, res) {
-    fs.appendFileSync('data.json', JSON.stringify(req.body));
-    return res.status(200).end();
+    var newEvent = new EventModel(req.body);
+    newEvent.save(function(err, dbResponse) {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(dbResponse);
+    });
   });
 
   app.get(api + '/reset', function(req, res) {
