@@ -2,9 +2,11 @@
 var http = require('http');
 var express = require('express');
 var bodyparser = require('body-parser');
+var mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URL || 'mongodb://localhost/sextant');
 
 var app = express();
-
 app.use(express.static(__dirname + '/build'));
 app.use(bodyparser.json());
 
