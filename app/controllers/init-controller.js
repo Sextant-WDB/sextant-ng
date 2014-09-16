@@ -1,0 +1,59 @@
+'use strict';
+
+module.exports = function(app) {
+	app.controller('init-controller',
+		[ '$scope', 'httpService', '$http', '$cookies', '$location',
+		function($scope, httpService, $http, $cookies, $location) {
+
+			$scope.newData = {};
+			$scope.newData.dataBody = '';
+
+			$http.defaults.headers.common.jwt = $cookies.jwt;
+			console.log('cookies: ' + $http.defaults.headers.common.jwt);
+
+	    // Create
+	    $scope.saveNewData = function() {
+	    	httpService.post($scope.newData)
+	    	.success(function() {
+	    		$scope.getAllData();
+	    	});
+	    	// Reset the form
+	    	$scope.newData.url = '';
+	    	$scope.newData.eventType = '';
+	    };
+
+			// Read
+			$scope.getAllData = function() {
+	      httpService.get()
+        .success(function(data) {
+           $scope.data = data;
+        });
+	    };
+	    $scope.getAllData(); // Grab the data when the controller loads
+
+	    // Update
+	    $scope.updateData = function(data) {
+	    	data.editing = true;
+	    };
+	    $scope.saveOldData = function(data) {
+	    	httpService.put(data)
+        .success(function() {
+          $scope.getAllData();
+        });
+	    };
+
+	    // Delete
+	    $scope.deleteData = function(data) {
+	    	httpService.delete(data)
+	    	.success(function() {
+	    		$scope.getAllData();
+	    	});
+	    };
+
+	    $scope.signOut = function() {
+	    	delete $cookies.jwt;
+	    	$location.path('/signin');
+	    };
+
+		} ]);
+};
