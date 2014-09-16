@@ -2,18 +2,10 @@
 
 var EventModel = require('../models/event-model');
 
-var fs = require('fs');
-
 module.exports = function(app) {
   var api = '/api/0_0_1/data';
 
-  app.get(api, function(req, res) {
-    EventModel.find({}, function(err, dbResponse) {
-      if (err) return res.status(500).json(err);
-      return res.status(200).json(dbResponse);
-    });
-  });
-
+  // CREATE
   app.post(api, function(req, res) {
     var newEvent = new EventModel(req.body);
     newEvent.save(function(err, dbResponse) {
@@ -22,10 +14,36 @@ module.exports = function(app) {
     });
   });
 
-  app.get(api + '/reset', function(req, res) {
-    fs.writeFileSync('data.json', '');
-    return res.status(200).end();
+  //READ
+  app.get(api, function(req, res) {
+    EventModel.find({}, function(err, dbResponse) {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(dbResponse);
+    });
   });
-};
 
-// curl -H "Content-Type: application/json" -d '{"post":"data"}' http://localhost:3000/api/0_0_1/data
+  // UPDATE
+  app.put(api + '/:id', function(req, res) {
+    var data = req.body;
+    delete data._id;
+    EventModel.findOneAndUpdate({ '_id': req.params.id }, data, function(err, resNote) {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      return res.status(202).json(resNote);
+    });
+  });
+
+  // DELETE
+  app.delete(api + '/:id', function(req, res) {
+    EventModel.remove({ '_id': req.params.id }, function(err) {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      return res.status(200).json({
+        'message': 'deleted'
+      });
+    });
+  });
+
+};
