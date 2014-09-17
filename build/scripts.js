@@ -179,19 +179,16 @@ module.exports = function(app) {
 
 			var promise = $http[method]('/api/0_0_1/data/' + params.id, params.data)
 			.error(function(error, status) {
-
 				console.log('Error in http ' + method + ': ' + error + ' | status ' + status);
 				if (status === 401) {
 					console.log('401 error in httpService!');
 					$location.path('/signin');
 				}
-
 			});
 
 			return promise;
 		},
 
-		// Specific verbs
 		httpVerbs = {
 
 			get: function() {
@@ -199,16 +196,30 @@ module.exports = function(app) {
 			},
 
 			post: function(data) {
-				console.log('data: ' + JSON.stringify(data));
-				return http('post', data);
+				return http('post', {
+					data: {
+						url: data.url,
+						pageViews: data.pageViews,
+						time: data.time
+					}
+				});
 			},
 
 			put: function(data) {
-				return http('put', data);
+				return http('put', {
+					data: {
+						url: data.url,
+						pageViews: data.pageViews,
+						time: data.time
+					},
+					id: data._id
+				});
 			},
 
 			delete: function(data) {
-				return http('delete', data);
+				return http('delete', {
+					id: data._id
+				});
 			}
 
 		};
