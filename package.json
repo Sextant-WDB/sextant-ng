@@ -23,9 +23,14 @@
   },
   "homepage": "https://github.com/Sextant-WDB/sextant-ng",
   "dependencies": {
+    "bcrypt-nodejs": "latest",
     "body-parser": "^1.8.1",
     "express": "^4.9.0",
-    "mongoose": "^3.8.16"
+    "jwt-simple": "latest",
+    "moment": "^2.8.3",
+    "mongoose": "^3.8.16",
+    "passport": "^0.2.1",
+    "passport-http": "^0.2.2"
   },
   "devDependencies": {
     "angular": "^1.2.23",
