@@ -30,7 +30,7 @@ module.exports = function(app) {
 				return http('post', {
 					data: {
 						url: data.url,
-						eventType: data.eventType
+						pageViews: data.pageViews
 					}
 				});
 			},
@@ -39,7 +39,7 @@ module.exports = function(app) {
 				return http('put', {
 					data: {
 						url: data.url,
-						eventType: data.eventType
+						pageViews: data.pageViews
 					},
 					id: data._id
 				});
