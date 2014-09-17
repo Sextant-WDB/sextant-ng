@@ -18,7 +18,8 @@ require('./services/http-service')(sextant);
 // Models
 
 // Controllers
-require('./controllers/init-controller')(sextant);
+require('./controllers/signin-controller')(sextant);
+require('./controllers/data-controller')(sextant);
 
 // Directives
 
@@ -26,28 +27,25 @@ require('./controllers/init-controller')(sextant);
 sextant.config([ '$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {
 		$routeProvider
-		.when('/', {
-			controller: 'init-controller',
-			templateUrl: 'views/init-view.html'
+		.when('/data', {
+			templateUrl: 'views/data-view.html',
+			controller: 'dataController'
 		})
-		// .when('/signin', {
-  //     templateUrl: 'views/signInView.html',
-  //     controller: 'signInController'
-  //   })
-		// .otherwise({
-		// 	redirectTo: '/links'
-		// });
+		.when('/signin', {
+      templateUrl: 'views/signin-view.html',
+      controller: 'signInController'
+    })
 		.otherwise({
-			redirectTo: '/'
+			redirectTo: '/data'
 		});
 
 		$locationProvider.html5Mode(true);
 } ]);
-},{"./../bower_components/angular-base64/angular-base64.js":4,"./../bower_components/angular-cookies/angular-cookies.js":5,"./../bower_components/angular-route/angular-route.js":6,"./../bower_components/angular/angular":7,"./controllers/init-controller":2,"./services/http-service":3}],2:[function(require,module,exports){
+},{"./../bower_components/angular-base64/angular-base64.js":5,"./../bower_components/angular-cookies/angular-cookies.js":6,"./../bower_components/angular-route/angular-route.js":7,"./../bower_components/angular/angular":8,"./controllers/data-controller":2,"./controllers/signin-controller":3,"./services/http-service":4}],2:[function(require,module,exports){
 'use strict';
 
 module.exports = function(app) {
-	app.controller('init-controller',
+	app.controller('dataController',
 		[ '$scope', 'httpService', '$http', '$cookies', '$location',
 		function($scope, httpService, $http, $cookies, $location) {
 
@@ -55,7 +53,6 @@ module.exports = function(app) {
 			$scope.newData.dataBody = '';
 
 			$http.defaults.headers.common.jwt = $cookies.jwt;
-			console.log('cookies: ' + $http.defaults.headers.common.jwt);
 
 	    // Create
 	    $scope.saveNewData = function() {
@@ -65,7 +62,7 @@ module.exports = function(app) {
 	    	});
 	    	// Reset the form
 	    	$scope.newData.url = '';
-	    	$scope.newData.eventType = '';
+	    	$scope.newData.pageViews = '';
 	    };
 
 			// Read
@@ -96,6 +93,7 @@ module.exports = function(app) {
 	    	});
 	    };
 
+	    // Sign out
 	    $scope.signOut = function() {
 	    	delete $cookies.jwt;
 	    	$location.path('/signin');
@@ -104,6 +102,66 @@ module.exports = function(app) {
 		} ]);
 };
 },{}],3:[function(require,module,exports){
+'use strict';
+
+module.exports = function(app) {
+  app.controller('signInController', [
+    '$scope', '$http', '$base64', '$cookies', '$location',
+    function($scope, $http, $base64, $cookies, $location) {
+
+      $scope.signIn = function() {
+        $http.defaults.headers.common.Authentication = 'Basic ' +
+          $base64.encode(
+            $scope.user.email + ':' +
+            $scope.user.password
+          );
+        $http({
+          method: 'GET',
+          url: '/api/0_0_1/users'
+        })
+        .success(function(data) {
+          $cookies.jwt = data.jwt;
+          $location.path('/data');
+        })
+        .error(function(error) {
+          console.log('error in signInController! ' + error);
+        });
+      };
+
+      $scope.createNewUser = function() {
+        $http.post('/api/0_0_1/users', {
+          'email': $scope.user.newEmail,
+          'password': $scope.user.newPassword,
+          'url': $scope.user.newUrl
+        })
+        .success(function(data) {
+          $cookies.jwt = data.jwt;
+          $location.path('/data');
+        })
+        .error(function(error) {
+          console.log('error in signInController! ' + error);
+        });
+      };
+
+      $scope.deleteAllUsers = function() {
+        var confirmed = confirm('Are you sure?');
+        if (!confirmed) {
+          return false;
+        }
+
+        $http.delete('/api/0_0_1/users')
+        .success(function() {
+          console.log('delete successful');
+        })
+        .error(function(error) {
+          console.log('error in delete: ' + JSON.stringify(error));
+        });
+      };
+
+    }
+  ]);
+};
+},{}],4:[function(require,module,exports){
 'use strict';
 
 module.exports = function(app) {
@@ -136,7 +194,7 @@ module.exports = function(app) {
 				return http('post', {
 					data: {
 						url: data.url,
-						eventType: data.eventType
+						pageViews: data.pageViews
 					}
 				});
 			},
@@ -145,7 +203,7 @@ module.exports = function(app) {
 				return http('put', {
 					data: {
 						url: data.url,
-						eventType: data.eventType
+						pageViews: data.pageViews
 					},
 					id: data._id
 				});
@@ -162,7 +220,7 @@ module.exports = function(app) {
 		return httpVerbs;
 	});
 };
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -330,7 +388,7 @@ module.exports = function(app) {
 
 })();
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * @license AngularJS v1.2.24
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -538,7 +596,7 @@ angular.module('ngCookies', ['ng']).
 
 })(window, window.angular);
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * @license AngularJS v1.2.24
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -1465,7 +1523,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * @license AngularJS v1.2.24
  * (c) 2010-2014 Google, Inc. http://angularjs.org
@@ -23478,4 +23536,4 @@ var styleDirective = valueFn({
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>');
-},{}]},{},[1,2,3]);
+},{}]},{},[1,2,3,4]);
