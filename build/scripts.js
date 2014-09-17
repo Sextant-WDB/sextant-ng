@@ -56,6 +56,10 @@ module.exports = function(app) {
 
 	    // Create
 	    $scope.saveNewData = function() {
+	    	var today = new Date();
+	    	$scope.newData.time = today.getHours() + ':' +
+	    		today.getMinutes() + ':' +
+	    		today.getSeconds();
 	    	httpService.post($scope.newData)
 	    	.success(function() {
 	    		$scope.getAllData();
@@ -194,16 +198,19 @@ module.exports = function(app) {
 				return http('post', {
 					data: {
 						url: data.url,
-						pageViews: data.pageViews
+						pageViews: data.pageViews,
+						time: data.time
 					}
 				});
 			},
 
 			put: function(data) {
+				console.log('time: ' + data.time);
 				return http('put', {
 					data: {
 						url: data.url,
-						pageViews: data.pageViews
+						pageViews: data.pageViews,
+						time: data.time
 					},
 					id: data._id
 				});
