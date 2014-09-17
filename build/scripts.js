@@ -99,8 +99,8 @@ module.exports = function(app) {
 
 	    // Sign out
 	    $scope.signOut = function() {
-	    	delete $cookies.jwt;
-	    	$location.path('/signin');
+    		$cookies.jwt = null;
+	    	$location.path('/'); // If redirect to /signin, error!
 	    };
 
 		} ]);
@@ -113,16 +113,17 @@ module.exports = function(app) {
     '$scope', '$http', '$base64', '$cookies', '$location',
     function($scope, $http, $base64, $cookies, $location) {
 
+      var api = '/api/0_0_1/users';
+
+      var oldCookies = $cookies.jwt; // testing
+
       $scope.signIn = function() {
         $http.defaults.headers.common.Authentication = 'Basic ' +
           $base64.encode(
             $scope.user.email + ':' +
             $scope.user.password
           );
-        $http({
-          method: 'GET',
-          url: '/api/0_0_1/users'
-        })
+        $http.get(api)
         .success(function(data) {
           $cookies.jwt = data.jwt;
           $location.path('/data');
@@ -133,7 +134,7 @@ module.exports = function(app) {
       };
 
       $scope.createNewUser = function() {
-        $http.post('/api/0_0_1/users', {
+        $http.post(api, {
           'email': $scope.user.newEmail,
           'password': $scope.user.newPassword,
           'url': $scope.user.newUrl
@@ -153,7 +154,7 @@ module.exports = function(app) {
           return false;
         }
 
-        $http.delete('/api/0_0_1/users')
+        $http.delete(api)
         .success(function() {
           console.log('delete successful');
         })
@@ -205,7 +206,6 @@ module.exports = function(app) {
 			},
 
 			put: function(data) {
-				console.log('time: ' + data.time);
 				return http('put', {
 					data: {
 						url: data.url,
