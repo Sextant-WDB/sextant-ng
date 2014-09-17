@@ -37,7 +37,6 @@ module.exports = function(app) {
 			},
 
 			put: function(data) {
-				console.log('time: ' + data.time);
 				return http('put', {
 					data: {
 						url: data.url,

@@ -55,8 +55,8 @@ module.exports = function(app) {
 
 	    // Sign out
 	    $scope.signOut = function() {
-	    	delete $cookies.jwt;
-	    	$location.path('/signin');
+    		$cookies.jwt = null;
+	    	$location.path('/'); // If redirect to /signin, error!
 	    };
 
 		} ]);

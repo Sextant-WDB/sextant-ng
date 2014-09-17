@@ -17,7 +17,7 @@ module.exports = function(app, jwtAuth) {
 
   //READ
   app.get(api, jwtAuth, function(req, res) {
-    SessionModel.find({ url: req.user.url }, function(err, dbResponse) {
+    SessionModel.find({ url: req.user.basic.url }, function(err, dbResponse) {
       if (err) return res.status(500).json(err);
       return res.status(200).json(dbResponse);
     });
