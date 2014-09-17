@@ -1,3 +1,29 @@
+<h1>
+  Demo of one naive approach to showing user-specific data
+</h1>
+
+<p>
+  Here&rsquo;s one way we could approach this: when you `npm install` the package, you get a totally generic tracking script/plugin that, just like everyone else&rsquo;s, posts data to our server. When you create an account on our dashboard, though, you specify the URL (eventually URLs) you&rsquo;d like to track, and the server only exposes data that corresponds to that site.
+</p>
+
+<p>
+  It mostly works, as you can see: try logging in with email `1@1.com` / password `1`, email `2@2.com` / password `2`, or email `3@3.com` / password `3`. (Free free to add sample data if you want.)
+</p>
+
+<p>
+  On the other hand:
+</p>
+<ul>
+  <li>
+    What about localhost:xxxx, which is pretty much the same for everyone?
+  </li>
+  <li>
+    What&rsquo;s to stop me from registering with <em>your</em> URL when I create my account?
+  </li>
+</ul>
+
+<hr>
+
 <div data-ng-controller="signInController">
   <h3>
   	Sign in
