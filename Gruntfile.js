@@ -10,7 +10,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-browserify');
 
-  var allJavaScriptFilePaths = ['app/js/**/*.js','models/**/*.js','routes/**/*.js','server.js'];
+  var allJavaScriptFilePaths = [
+    'app/js/**/*.js',
+    'models/**/*.js',
+    'routes/**/*.js',
+    'lib/**/*.js',
+    'server.js'
+  ];
 
   grunt.initConfig({
     clean: {
@@ -49,8 +55,8 @@ module.exports = function(grunt) {
           transform: ['debowerify'],
           debug: true
         },
-        src: ['app/js/**/*.js'],
-        dest: 'build/bundle.js'
+        src: ['app/**/*.js'],
+        dest: 'build/scripts.js'
       }
     },
 
@@ -79,7 +85,15 @@ module.exports = function(grunt) {
       },
       express: {
         files: ['app/js/**/*.js', 'app/index.html', 'app/views/**/*.html', 'server.js', 'models/*.js', 'routes/*.js'],
-        tasks: ['buildtest', 'express:dev'],
+        tasks: [
+          'jshint',
+          'jscs',
+          'clean:dev',
+          'browserify:dev',
+          'copy:dev',
+          'express:dev',
+          'watch:express'
+        ],
         options: {
           spawn: false
         }
@@ -88,11 +102,27 @@ module.exports = function(grunt) {
   });
 
   // register tasks
-  grunt.registerTask('default', ['jshint', 'jscs','clean:dev', 'copy:dev']);
+  grunt.registerTask('default', [
+      'jshint',
+      'jscs',
+      'clean:dev',
+      'browserify:dev',
+      'copy:dev',
+      'express:dev',
+      'watch:express'
+    ]);
 
-  grunt.registerTask('build:dev', ['clean:dev', 'browserify:dev','copy:dev']);
+  grunt.registerTask('build:dev', [
+      'clean:dev',
+      'browserify:dev',
+      'copy:dev'
+    ]);
 
-  grunt.registerTask('watch:dev', ['build:dev','express:dev', 'watch:express']);
+  grunt.registerTask('watch:dev', [
+      'build:dev',
+      'express:dev',
+      'watch:express'
+    ]);
 
   // grunt.registerTask('style', ['jshint','jscs']);
   // grunt.registerTask('build:dev', ['clean:dev', 'browserify:dev', 'copy:dev']);
