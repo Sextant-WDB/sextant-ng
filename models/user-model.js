@@ -10,8 +10,8 @@ var moment = require('moment');
  */
 
 var UserSchema = mongoose.Schema({
+	url: String,
 	basic: {
-		url: String,
 		email: String,
 		password: String
 	}

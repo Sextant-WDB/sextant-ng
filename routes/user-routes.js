@@ -33,7 +33,7 @@ module.exports = function(app, passport) {
 			// ...If we've made it this far, fill in the user model...
 			var newUser = new UserModel();
 			newUser.basic.email = req.body.email;
-			newUser.basic.url = req.body.url;
+			newUser.url = req.body.url;
 			newUser.basic.password = newUser.generateHash(req.body.password);
 
 			// ... and save it to the db

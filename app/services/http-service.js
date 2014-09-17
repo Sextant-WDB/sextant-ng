@@ -10,16 +10,18 @@ module.exports = function(app) {
 
 			var promise = $http[method]('/api/0_0_1/data/' + params.id, params.data)
 			.error(function(error, status) {
+
 				console.log('Error in http ' + method + ': ' + error + ' | status ' + status);
 				if (status === 401) {
-					console.log('401 error in httpService!');
 					$location.path('/signin');
 				}
+
 			});
 
 			return promise;
 		},
 
+		// Specific verbs
 		httpVerbs = {
 
 			get: function() {

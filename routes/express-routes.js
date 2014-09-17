@@ -17,7 +17,7 @@ module.exports = function(app, jwtAuth) {
 
   //READ
   app.get(api, jwtAuth, function(req, res) {
-    SessionModel.find({ url: req.user.basic.url }, function(err, dbResponse) {
+    SessionModel.find({ url: req.user.url }, function(err, dbResponse) {
       if (err) return res.status(500).json(err);
       return res.status(200).json(dbResponse);
     });
@@ -38,6 +38,18 @@ module.exports = function(app, jwtAuth) {
   // DELETE
   app.delete(api + '/:id', function(req, res) {
     SessionModel.remove({ '_id': req.params.id }, function(err) {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      return res.status(200).json({
+        'message': 'deleted'
+      });
+    });
+  });
+
+  // DELETE ALL!!!1111
+  app.get(api + '/deleteAll', function(req, res) {
+    SessionModel.remove({}, function(err) {
       if (err) {
         return res.status(500).json(err);
       }
