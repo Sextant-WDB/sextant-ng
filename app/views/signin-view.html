@@ -1,0 +1,50 @@
+<div data-ng-controller="signInController">
+  <h3>
+  	Sign in
+	</h3>
+
+  <label>
+	  Email
+  </label>
+  <input type="text" data-ng-model="user.email">
+
+  <label>
+	  Password
+  </label>
+  <input type="password" data-ng-model="user.password">
+
+  <button ng-click="signIn()">Sign In</button>
+</div>
+
+<hr>
+
+<div data-ng-controller="signInController">
+  <h3>
+  	Or create an account:
+	</h3>
+
+  <label>
+	  Email
+  </label>
+  <input type="text" data-ng-model="user.newEmail">
+
+  <label>
+    URL to track
+  </label>
+  <input type="text" data-ng-model="user.newUrl">
+
+  <label>
+	  Password
+  </label>
+  <input type="password" data-ng-model="user.newPassword">
+
+  <button data-ng-click="createNewUser()">
+  Create account
+  </button>
+
+  <hr>
+
+  <button data-ng-click="deleteAllUsers()">
+    For testing: delete all users(!)
+  </button>
+</div>

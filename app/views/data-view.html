@@ -1,0 +1,91 @@
+<h1>
+	Demo of one naive approach to grabbing user data
+</h1>
+
+<p>
+Here&rsquo;s one way we could approach this: when users npm install the package, they get a totally generic tracking script/plugin that, like everyone else&rsquo;s, posts data to our server. When you create an account on our dashboard, though, you specify the URL (eventually URLs) you&rsquo;d like to track, and the server only shows you data that corresponds to the site in your profile.
+
+It mostly works, as you can see: try logging in with email `1@1.com` / password `1`, email `2@1.com` / password `2`, or email `3@1.com` / password `3`. (Free free to add sample data if you want.)
+
+On the other hand:
+<ul>
+	<li>What about localhost:nnnn, which is pretty much the same for everyone?</li>
+	<li>What&rsquo;s to stop me from registering *your* URL when I create my account?</li>
+</ul>
+
+</p>
+
+<h1>
+	Fake stats:
+</h1>
+
+<ul>
+	<li data-ng-repeat="item in data">
+		<div data-ng-hide="item.editing">
+
+			{{item.url}} | {{item.pageViews}} pageviews
+
+			<button data-ng-click="updateData(item)">
+				Edit data
+			</button>
+
+			<button data-ng-click="deleteData(item)">
+				Delete data
+			</button>
+
+		</div>
+
+		<div data-ng-show="item.editing">
+
+			<h3>Update your fake data:</h3>
+
+			<form>
+
+				<label>
+					New URL:
+				</label>
+				<input data-ng-model="item.url">
+
+				<label>
+					New number of pageviews:
+				</label>
+				<input data-ng-model="item.pageViews">
+
+				<button data-ng-click="saveOldData(item)">
+					Update
+				</button>
+
+			</form>
+		</div>
+
+	</li>
+</ul>
+
+<h3>
+	Generate more fake data
+</h3>
+<form>
+
+	<label>
+		URL
+	</label>
+	<input data-ng-model="newData.url">
+
+	<br>
+
+	<label>
+		Numbers of pageviews (router changes)
+	</label>
+	<input data-ng-model="newData.pageViews">
+
+	<button data-ng-click="saveNewData()">
+		Add new data!
+	</button>
+
+</form>
+
+<hr>
+
+<button data-ng-click="signOut()">
+	Sign out
+</button>
