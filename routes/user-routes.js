@@ -22,7 +22,7 @@ module.exports = function(app, passport) {
 
 	 		// Errors, duplicates, etc...
 			if (err) {
-				console.log('error in user model\'s search for user!');
+				console.log('error in search for user!');
 				return res.status(500).json(err);
 			}
 			if (user) {
@@ -34,6 +34,7 @@ module.exports = function(app, passport) {
 			var newUser = new UserModel();
 			newUser.basic.email = req.body.email;
 			newUser.url = req.body.url;
+			newUser.time = req.body.time;
 			newUser.basic.password = newUser.generateHash(req.body.password);
 
 			// ... and save it to the db
