@@ -30,10 +30,5 @@ node_modules/
 # Bower
 app/bower_components/
 
-# Dist
-dist/
-
-# Build
-build/
-
 .DS_Store
+bower_components
