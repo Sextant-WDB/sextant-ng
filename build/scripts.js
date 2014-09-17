@@ -196,30 +196,16 @@ module.exports = function(app) {
 			},
 
 			post: function(data) {
-				return http('post', {
-					data: {
-						url: data.url,
-						pageViews: data.pageViews,
-						time: data.time
-					}
-				});
+				console.log('logging ' + data.email);
+				return http('post', data);
 			},
 
 			put: function(data) {
-				return http('put', {
-					data: {
-						url: data.url,
-						pageViews: data.pageViews,
-						time: data.time
-					},
-					id: data._id
-				});
+				return http('put', data);
 			},
 
 			delete: function(data) {
-				return http('delete', {
-					id: data._id
-				});
+				return http('delete', data);
 			}
 
 		};
