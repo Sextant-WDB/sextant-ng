@@ -12,6 +12,10 @@ module.exports = function(app) {
 
 	    // Create
 	    $scope.saveNewData = function() {
+	    	var today = new Date();
+	    	$scope.newData.time = today.getHours() + ':' +
+	    		today.getMinutes() + ':' +
+	    		today.getSeconds();
 	    	httpService.post($scope.newData)
 	    	.success(function() {
 	    		$scope.getAllData();
