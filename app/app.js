@@ -17,7 +17,8 @@ require('./services/http-service')(sextant);
 // Models
 
 // Controllers
-require('./controllers/init-controller')(sextant);
+require('./controllers/signin-controller')(sextant);
+require('./controllers/data-controller')(sextant);
 
 // Directives
 
@@ -25,19 +26,16 @@ require('./controllers/init-controller')(sextant);
 sextant.config([ '$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {
 		$routeProvider
-		.when('/', {
-			controller: 'init-controller',
-			templateUrl: 'views/init-view.html'
+		.when('/data', {
+			templateUrl: 'views/data-view.html',
+			controller: 'dataController'
 		})
-		// .when('/signin', {
-  //     templateUrl: 'views/signInView.html',
-  //     controller: 'signInController'
-  //   })
-		// .otherwise({
-		// 	redirectTo: '/links'
-		// });
+		.when('/signin', {
+      templateUrl: 'views/signin-view.html',
+      controller: 'signInController'
+    })
 		.otherwise({
-			redirectTo: '/'
+			redirectTo: '/data'
 		});
 
 		$locationProvider.html5Mode(true);
