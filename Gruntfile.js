@@ -11,7 +11,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
 
   var allJavaScriptFilePaths = [
-    'app/js/**/*.js',
+    'app/**/*.js',
     'models/**/*.js',
     'routes/**/*.js',
     'lib/**/*.js',
