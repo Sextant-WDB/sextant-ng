@@ -220,7 +220,6 @@ module.exports = function(app) {
 			},
 
 			post: function(data) {
-				console.log('data: ' + JSON.stringify(data));
 				return http('post', {
 					data: data
 				});
