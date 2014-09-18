@@ -44,16 +44,23 @@ sextant.config([ '$routeProvider', '$locationProvider',
 },{"./../bower_components/angular-base64/angular-base64.js":5,"./../bower_components/angular-cookies/angular-cookies.js":6,"./../bower_components/angular-route/angular-route.js":7,"./../bower_components/angular/angular":8,"./controllers/data-controller":2,"./controllers/signin-controller":3,"./services/http-service":4}],2:[function(require,module,exports){
 'use strict';
 
+/**
+ * Allow CRUD interaction with the data API
+ */
+
 module.exports = function(app) {
 	app.controller('dataController',
 		[ '$scope', 'httpService', '$http', '$cookies', '$location',
 		function($scope, httpService, $http, $cookies, $location) {
 
-			$scope.newData = {};
-
 			$http.defaults.headers.common.jwt = $cookies.jwt;
 
-	    // Create new test data
+	    /**
+	     * Save new piece of (fake) data, for testing
+	     */
+
+			$scope.newData = {}; // Holds form data
+
 	    $scope.saveNewData = function() {
 
 	    	var today = new Date();
@@ -74,16 +81,22 @@ module.exports = function(app) {
 
 	    };
 
-			// Grab current data from the db
+			/**
+			 * Grab all data from the db
+			 */
+
 			$scope.getAllData = function() {
 	      httpService.get()
         .success(function(data) {
            $scope.data = data;
         });
 	    };
-	    $scope.getAllData(); // Grab the data when the controller loads
+	    $scope.getAllData(); // Invoke as soon as the controller loads
 
-	    // Update
+	    /**
+	     * Update a piece of data
+	     */
+
 	    $scope.updateData = function(data) {
 	    	data.editing = true;
 	    };
@@ -94,7 +107,10 @@ module.exports = function(app) {
         });
 	    };
 
-	    // Delete
+	    /**
+	     * Delete a piece of data
+	     */
+
 	    $scope.deleteData = function(data) {
 	    	httpService.delete(data)
 	    	.success(function() {
@@ -102,7 +118,32 @@ module.exports = function(app) {
 	    	});
 	    };
 
-	    // Sign out
+      /**
+       * For dev only: delete all data
+       */
+
+      $scope.deleteAllData = function() {
+        var confirmed = confirm('Are you sure?');
+        if (!confirmed) {
+          return false;
+        }
+
+        httpService.deleteAll()
+        .success(function() {
+          console.log('delete successful');
+          $scope.getAllData();
+        })
+        .error(function(error) {
+          console.log('error in delete: ' + JSON.stringify(error));
+        });
+      };
+
+      /**
+	     * Sign current user out
+	     *
+	     * (Note: this should live in a different controller)
+	     */
+
 	    $scope.signOut = function() {
     		$cookies.jwt = null;
 	    	$location.path('/'); // If redirect to /signin, error!
@@ -113,6 +154,10 @@ module.exports = function(app) {
 },{}],3:[function(require,module,exports){
 'use strict';
 
+/**
+ * Handle sign-in and the creation of new accounts
+ */
+
 module.exports = function(app) {
   app.controller('signInController', [
     '$scope', '$http', '$base64', '$cookies', '$location',
@@ -120,14 +165,18 @@ module.exports = function(app) {
 
       var api = '/api/0_0_1/users';
 
+      /**
+       * Sign in existing users
+       */
+
       $scope.signIn = function() {
 
-        // Get the base-64 encoding ready for passport
+        // Passport requires base-64 encoding
         $http.defaults.headers.common.Authentication = 'Basic ' +
-          $base64.encode(
-            $scope.user.email + ':' +
-            $scope.user.password
-          );
+        $base64.encode(
+          $scope.user.email + ':' +
+          $scope.user.password
+        );
 
         $http.get(api)
         .success(function(data) {
@@ -135,10 +184,14 @@ module.exports = function(app) {
           $location.path('/data');
         })
         .error(function(error) {
-          console.log('error in signInController! ' + error);
+          console.log('error in signInController! ' + JSON.stringify(error));
         });
 
       };
+
+      /**
+       * Create new accounts
+       */
 
       $scope.createNewUser = function() {
         $http.post(api, {
@@ -148,12 +201,16 @@ module.exports = function(app) {
         .success(function(data) {
           $cookies.jwt = data.jwt;
           $location.path('/data');
-          alert('Your ID is ' + data.id);
+          alert('Your ID is ' + data.id); // For dev only: find a better way
         })
         .error(function(error) {
-          console.log('error in signInController! ' + error);
+          console.log('error in signInController! ' + JSON.stringify(error));
         });
       };
+
+      /**
+       * For dev only: delete all users
+       */
 
       $scope.deleteAllUsers = function() {
         var confirmed = confirm('Are you sure?');
@@ -170,26 +227,15 @@ module.exports = function(app) {
         });
       };
 
-      $scope.deleteAllData = function() {
-        var confirmed = confirm('Are you sure?');
-        if (!confirmed) {
-          return false;
-        }
-
-        $http.get('/api/0_0_1/data/deleteAll')
-        .success(function() {
-          console.log('delete successful');
-        })
-        .error(function(error) {
-          console.log('error in delete: ' + JSON.stringify(error));
-        });
-      };
-
     }
   ]);
 };
 },{}],4:[function(require,module,exports){
 'use strict';
+
+/**
+ * DRY out REST requests to the data API
+ */
 
 module.exports = function(app) {
 	app.factory('httpService', function($http, $location) {
@@ -234,7 +280,14 @@ module.exports = function(app) {
 
 			delete: function(data) {
 				return http('delete', {
-					id: data._id
+					id: 'delete/' + data._id
+				});
+			},
+
+			// Dev only
+			deleteAll: function() {
+				return http('delete', {
+					id: 'deleteAll'
 				});
 			}
 
