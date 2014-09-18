@@ -24,7 +24,7 @@ require('./lib/auth/passport')(passport);
 var jwtAuth = require('./lib/auth/jwt-auth')(app);
 
 require('./routes/user-routes')(app, passport);
-require('./routes/express-routes')(app, jwtAuth.auth);
+require('./routes/data-routes')(app, jwtAuth.auth);
 
 // Init
 var server = http.createServer(app);
