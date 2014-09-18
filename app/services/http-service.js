@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * DRY out REST requests to the data API
+ */
+
 module.exports = function(app) {
 	app.factory('httpService', function($http, $location) {
 
@@ -43,7 +47,14 @@ module.exports = function(app) {
 
 			delete: function(data) {
 				return http('delete', {
-					id: data._id
+					id: 'delete/' + data._id
+				});
+			},
+
+			// Dev only
+			deleteAll: function() {
+				return http('delete', {
+					id: 'deleteAll'
 				});
 			}
 
