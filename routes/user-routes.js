@@ -18,15 +18,18 @@ module.exports = function(app, passport) {
 	 */
 
 	app.post(api, function(req, res) {
-	 	UserModel.findOne({ 'basic.email': req.body.email }, function(err, user) {
+	 	UserModel.findOne({
+	 		'basic.email': req.body.email
+	 	}, function(err, user) {
 
 			if (err) {
 				console.log('error in search for user!');
 				return res.status(500).json(err);
 			}
 			if (user) {
-				console.log('duplicate user');
-				return res.status(401).json({ 'msg': 'cannot create user' });
+				return res.status(401).json({
+					'message': 'cannot create user'
+				});
 			}
 
 			var newUser = new UserModel();
@@ -38,10 +41,9 @@ module.exports = function(app, passport) {
 				if (err) {
 					return res.status(500).json(err);
 				}
-				return res.status(200).json({
-					'jwt': dbResponse.createToken(app),
-					'id': newUser.id
-				});
+				dbResponse.jwt = dbResponse.createToken(app);
+				dbResponse.id = newUser.id;
+				return res.status(200).json(dbResponse);
 			});
 
 	 	});
@@ -54,9 +56,46 @@ module.exports = function(app, passport) {
 	app.get(api,
 		passport.authenticate('basic', { session: false }),
 		function(req, res) {
-			res.json({ 'jwt': req.user.createToken(app) });
+			res.json({
+				'jwt': req.user.createToken(app)
+			});
 		}
 	);
+
+	/**
+	 * Update a user
+	 */
+
+	app.put(api + '/:id', function(req, res) {
+		var data = req.body;
+		console.log(JSON.stringify(data));
+    delete data._id;
+    UserModel.findOneAndUpdate({
+    	'_id': req.params.id
+    }, data, function(err, dbResponse) {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      return res.status(202).json(dbResponse);
+    });
+	});
+
+	/**
+	 * Delete a single user
+	 */
+
+	app.delete(api + '/:id', function(req, res) {
+		UserModel.remove({
+			'_id': req.params.id
+		}, function(err) {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      return res.status(200).json({
+        'message': 'deleted'
+      });
+    });
+	});
 
 	/**
 	 * DELETE ALL USERS!!1111 For testing only...
