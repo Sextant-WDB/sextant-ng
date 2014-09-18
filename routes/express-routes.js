@@ -8,6 +8,7 @@ module.exports = function(app, jwtAuth) {
 
   // CREATE
   app.post(api, function(req, res) {
+    console.log('POST: ' + JSON.stringify(req.body));
     var newEvent = new SessionModel(req.body);
     newEvent.save(function(err, dbResponse) {
       if (err) return res.status(500).json(err);
@@ -17,7 +18,7 @@ module.exports = function(app, jwtAuth) {
 
   //READ
   app.get(api, jwtAuth, function(req, res) {
-    SessionModel.find({ url: req.user.url }, function(err, dbResponse) {
+    SessionModel.find({ sourceID: req.user.id }, function(err, dbResponse) {
       if (err) return res.status(500).json(err);
       return res.status(200).json(dbResponse);
     });

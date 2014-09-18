@@ -6,26 +6,31 @@ module.exports = function(app) {
 		function($scope, httpService, $http, $cookies, $location) {
 
 			$scope.newData = {};
-			$scope.newData.dataBody = '';
 
 			$http.defaults.headers.common.jwt = $cookies.jwt;
 
-	    // Create
+	    // Create new test data
 	    $scope.saveNewData = function() {
+
 	    	var today = new Date();
 	    	$scope.newData.time = today.getHours() + ':' +
 	    		today.getMinutes() + ':' +
 	    		today.getSeconds();
+
 	    	httpService.post($scope.newData)
 	    	.success(function() {
+	    		// Clear the form
+		    	$scope.newData.url = '';
+		    	$scope.newData.pageViews = '';
+		    	$scope.newData.sourceID = '';
+		    	document.activeElement.blur();
+		    	// Grab the up-to-date data
 	    		$scope.getAllData();
 	    	});
-	    	// Reset the form
-	    	$scope.newData.url = '';
-	    	$scope.newData.pageViews = '';
+
 	    };
 
-			// Read
+			// Grab current data from the db
 			$scope.getAllData = function() {
 	      httpService.get()
         .success(function(data) {

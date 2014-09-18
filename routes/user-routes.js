@@ -32,8 +32,8 @@ module.exports = function(app, passport) {
 
 			// ...If we've made it this far, fill in the user model...
 			var newUser = new UserModel();
+			newUser.id = Math.floor(Math.random() * 10);
 			newUser.basic.email = req.body.email;
-			newUser.url = req.body.url;
 			newUser.basic.password = newUser.generateHash(req.body.password);
 
 			// ... and save it to the db
@@ -41,7 +41,10 @@ module.exports = function(app, passport) {
 				if (err) {
 					return res.status(500).json(err);
 				}
-				return res.status(200).json({ 'jwt': dbResponse.createToken(app) });
+				return res.status(200).json({
+					'jwt': dbResponse.createToken(app),
+					'id': newUser.id
+				});
 			});
 
 	 	});
