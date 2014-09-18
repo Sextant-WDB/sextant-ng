@@ -5,9 +5,11 @@ var chaihttp = require('chai-http');
 chai.use(chaihttp);
 var expect = chai.expect;
 
-var firstID, secondID;
+var firstID,
+	secondID,
+	jwt;
 
-describe('The users REST API', function() {
+describe('The REST API for users', function() {
 
 	it('Can create a new user', function(done) {
 
@@ -40,13 +42,32 @@ describe('The users REST API', function() {
 		.res(function(res) {
 			expect(res).to.have.status(200);
 			expect(res.body).to.have.property('jwt');
+			jwt = res.body.jwt;
 			secondID = res.body._id;
 			done();
 		});
 
 	});
 
+	it('Can use that JWT to access the authenticated data API', function(done) {
+
+		chai.request('http://localhost:' + port)
+		.get('/api/0_0_1/data')
+		.req(function(req) {
+			var testCredentials = {};
+			testCredentials.jwt = jwt;
+			req.send(testCredentials);
+		})
+		.res(function(res) {
+			expect(res).to.have.status(200);
+			expect(Array.isArray(res.body)).to.eql(true);
+			done();
+		});
+
+	});
+
 	it('Can update a user', function(done) {
+
 		chai.request('http://localhost:' + port)
 		.put('/api/0_0_1/users/' + secondID)
 		.req(function(req) {
