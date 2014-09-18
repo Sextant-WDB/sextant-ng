@@ -141,7 +141,7 @@ module.exports = function(app) {
       /**
 	     * Sign current user out
 	     *
-	     * (Note: this should live in a different controller)
+	     * (Note: this should eventually live in a different controller)
 	     */
 
 	    $scope.signOut = function() {
