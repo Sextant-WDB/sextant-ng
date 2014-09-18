@@ -48,7 +48,7 @@ describe('The data REST API', function() {
 
 	it('Lets me delete data', function(done) {
 		chai.request('http://localhost:' + port)
-		.del('/api/0_0_1/data/' + id)
+		.del('/api/0_0_1/data/delete/' + id)
 		.res(function(res) {
 			expect(res).to.have.status(200);
 			expect(res.body.message).to.eql('deleted');
