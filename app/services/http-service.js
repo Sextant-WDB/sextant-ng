@@ -19,32 +19,25 @@ module.exports = function(app) {
 			});
 
 			return promise;
-		},
+		};
 
 		// Specific verbs
-		httpVerbs = {
+		var httpVerbs = {
 
 			get: function() {
 				return http('get', {});
 			},
 
 			post: function(data) {
+				console.log('data: ' + JSON.stringify(data));
 				return http('post', {
-					data: {
-						url: data.url,
-						pageViews: data.pageViews,
-						time: data.time
-					}
+					data: data
 				});
 			},
 
 			put: function(data) {
 				return http('put', {
-					data: {
-						url: data.url,
-						pageViews: data.pageViews,
-						time: data.time
-					},
+					data: data,
 					id: data._id
 				});
 			},
