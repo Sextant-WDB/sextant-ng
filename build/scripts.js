@@ -50,26 +50,31 @@ module.exports = function(app) {
 		function($scope, httpService, $http, $cookies, $location) {
 
 			$scope.newData = {};
-			$scope.newData.dataBody = '';
 
 			$http.defaults.headers.common.jwt = $cookies.jwt;
 
-	    // Create
+	    // Create new test data
 	    $scope.saveNewData = function() {
+
 	    	var today = new Date();
 	    	$scope.newData.time = today.getHours() + ':' +
 	    		today.getMinutes() + ':' +
 	    		today.getSeconds();
+
 	    	httpService.post($scope.newData)
 	    	.success(function() {
+	    		// Clear the form
+		    	$scope.newData.url = '';
+		    	$scope.newData.pageViews = '';
+		    	$scope.newData.sourceID = '';
+		    	document.activeElement.blur();
+		    	// Grab the up-to-date data
 	    		$scope.getAllData();
 	    	});
-	    	// Reset the form
-	    	$scope.newData.url = '';
-	    	$scope.newData.pageViews = '';
+
 	    };
 
-			// Read
+			// Grab current data from the db
 			$scope.getAllData = function() {
 	      httpService.get()
         .success(function(data) {
@@ -115,14 +120,15 @@ module.exports = function(app) {
 
       var api = '/api/0_0_1/users';
 
-      var oldCookies = $cookies.jwt; // testing
-
       $scope.signIn = function() {
+
+        // Get the base-64 encoding ready for passport
         $http.defaults.headers.common.Authentication = 'Basic ' +
           $base64.encode(
             $scope.user.email + ':' +
             $scope.user.password
           );
+
         $http.get(api)
         .success(function(data) {
           $cookies.jwt = data.jwt;
@@ -131,17 +137,18 @@ module.exports = function(app) {
         .error(function(error) {
           console.log('error in signInController! ' + error);
         });
+
       };
 
       $scope.createNewUser = function() {
         $http.post(api, {
           'email': $scope.user.newEmail,
-          'password': $scope.user.newPassword,
-          'url': $scope.user.newUrl
+          'password': $scope.user.newPassword
         })
         .success(function(data) {
           $cookies.jwt = data.jwt;
           $location.path('/data');
+          alert('Your ID is ' + data.id);
         })
         .error(function(error) {
           console.log('error in signInController! ' + error);
@@ -155,6 +162,21 @@ module.exports = function(app) {
         }
 
         $http.delete(api)
+        .success(function() {
+          console.log('delete successful');
+        })
+        .error(function(error) {
+          console.log('error in delete: ' + JSON.stringify(error));
+        });
+      };
+
+      $scope.deleteAllData = function() {
+        var confirmed = confirm('Are you sure?');
+        if (!confirmed) {
+          return false;
+        }
+
+        $http.get('/api/0_0_1/data/deleteAll')
         .success(function() {
           console.log('delete successful');
         })
@@ -188,32 +210,25 @@ module.exports = function(app) {
 			});
 
 			return promise;
-		},
+		};
 
 		// Specific verbs
-		httpVerbs = {
+		var httpVerbs = {
 
 			get: function() {
 				return http('get', {});
 			},
 
 			post: function(data) {
+				console.log('data: ' + JSON.stringify(data));
 				return http('post', {
-					data: {
-						url: data.url,
-						pageViews: data.pageViews,
-						time: data.time
-					}
+					data: data
 				});
 			},
 
 			put: function(data) {
 				return http('put', {
-					data: {
-						url: data.url,
-						pageViews: data.pageViews,
-						time: data.time
-					},
+					data: data,
 					id: data._id
 				});
 			},

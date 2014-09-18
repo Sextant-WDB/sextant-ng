@@ -6,7 +6,7 @@
 	<li data-ng-repeat="item in data">
 		<div data-ng-hide="item.editing">
 
-			{{item.url}} | {{item.pageViews}} pageviews | {{item.time}}
+			{{item.url}} | (source ID: {{item.sourceID}}) | {{item.pageViews}} pageviews | {{item.time}}
 
 			<button data-ng-click="updateData(item)">
 				Edit data
@@ -28,11 +28,18 @@
 					New URL:
 				</label>
 				<input data-ng-model="item.url">
+				<br>
 
 				<label>
 					New number of pageviews:
 				</label>
 				<input data-ng-model="item.pageViews">
+				<br>
+
+				<label>
+					New ID:
+				</label>
+				<input data-ng-model="item.sourceID">
 
 				<button data-ng-click="saveOldData(item)">
 					Update
@@ -50,14 +57,19 @@
 <form>
 
 	<label>
-		URL
+		ID (which user&rsquo;s site is it from?)
 	</label>
-	<input data-ng-model="newData.url">
-
+	<input data-ng-model="newData.sourceID">
 	<br>
 
 	<label>
-		Numbers of pageviews (router changes)
+		URL
+	</label>
+	<input data-ng-model="newData.url">
+	<br>
+
+	<label>
+		Numbers of pageviews
 	</label>
 	<input data-ng-model="newData.pageViews">
 

@@ -1,30 +1,19 @@
 <h1>
-  Demo of one naive approach to showing user-specific data
+  Demo of ID-based data authorization
 </h1>
 
 <p>
-  Here&rsquo;s one way we could approach this: when you `npm install` the package, you get a totally generic tracking script/plugin that, just like everyone else&rsquo;s, posts data to our server. When you create an account on our dashboard, though, you specify the URL (eventually URLs) you&rsquo;d like to track, and the server only exposes data that corresponds to that site.
+  Here&rsquo;s a (still crappy) dashboard that uses ID, not URL, to determine what data to show to whom. When users create an account, they&rsquo;re assigned an ID; we could upgrade that to a public key that matches a private key in our user model. (Right now, ID is random; we&rsquo;ll obviously have to improve that. :)
 </p>
 
 <p>
-  It mostly works, as you can see: try logging in with email `1@1.com` / password `1`, email `2@2.com` / password `2`, or email `3@3.com` / password `3`. (Free free to add sample data if you want.)
+  Make an account and try it:
 </p>
-
-<p>
-  On the other hand:
-</p>
-<ul>
-  <li>
-    What about localhost:xxxx, which is pretty much the same for everyone?
-  </li>
-  <li>
-    What&rsquo;s to stop me from registering with <em>your</em> URL when I create my account?
-  </li>
-</ul>
 
 <hr>
 
 <div data-ng-controller="signInController">
+
   <h3>
   	Sign in
 	</h3>
@@ -33,6 +22,7 @@
 	  Email
   </label>
   <input type="text" data-ng-model="user.email">
+  <br>
 
   <label>
 	  Password
@@ -53,16 +43,13 @@
 	  Email
   </label>
   <input type="text" data-ng-model="user.newEmail">
-
-  <label>
-    URL to track
-  </label>
-  <input type="text" data-ng-model="user.newUrl">
+  <br>
 
   <label>
 	  Password
   </label>
   <input type="password" data-ng-model="user.newPassword">
+  <br>
 
   <button data-ng-click="createNewUser()">
     Create account
@@ -70,7 +57,16 @@
 
   <hr>
 
+  <h3>
+    Clear test data:
+  </h3>
+
   <button data-ng-click="deleteAllUsers()">
-    For testing: delete all users(!)
+    Delete all users (!)
   </button>
+
+  <button data-ng-click="deleteAllData()">
+    Delete all tracking data (!)
+  </button>
+
 </div>
