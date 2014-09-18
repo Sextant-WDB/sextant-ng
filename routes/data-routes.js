@@ -2,11 +2,18 @@
 
 var SessionModel = require('../models/session-model');
 
+/**
+ * API endpoints to read from the database and inject new data
+ */
+
 module.exports = function(app, jwtAuth) {
 
   var api = '/api/0_0_1/data';
 
-  // CREATE
+  /**
+   * Create single new data event
+   */
+
   app.post(api, function(req, res) {
     var newEvent = new SessionModel(req.body);
     newEvent.save(function(err, dbResponse) {
@@ -15,7 +22,10 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
-  //READ
+  /**
+   * Read all data (authenticated)
+   */
+
   app.get(api, jwtAuth, function(req, res) {
     SessionModel.find({ sourceID: req.user.id }, function(err, dbResponse) {
       if (err) return res.status(500).json(err);
@@ -23,7 +33,10 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
-  // UPDATE
+  /**
+   * Update single piece of data
+   */
+
   app.put(api + '/:id', function(req, res) {
     var data = req.body;
     delete data._id;
@@ -35,8 +48,11 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
-  // DELETE
-  app.delete(api + '/:id', function(req, res) {
+  /**
+   * Delete single piece of data
+   */
+
+  app.delete(api + '/delete/:id', function(req, res) {
     SessionModel.remove({ '_id': req.params.id }, function(err) {
       if (err) {
         return res.status(500).json(err);
@@ -47,8 +63,11 @@ module.exports = function(app, jwtAuth) {
     });
   });
 
-  // DELETE ALL!!!1111
-  app.get(api + '/deleteAll', function(req, res) {
+  /**
+   * For development only: delete all data!!1111
+   */
+
+  app.delete(api + '/deleteAll', function(req, res) {
     SessionModel.remove({}, function(err) {
       if (err) {
         return res.status(500).json(err);

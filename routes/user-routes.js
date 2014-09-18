@@ -20,7 +20,6 @@ module.exports = function(app, passport) {
 	app.post(api, function(req, res) {
 	 	UserModel.findOne({ 'basic.email': req.body.email }, function(err, user) {
 
-	 		// Errors, duplicates, etc...
 			if (err) {
 				console.log('error in search for user!');
 				return res.status(500).json(err);
@@ -30,13 +29,11 @@ module.exports = function(app, passport) {
 				return res.status(401).json({ 'msg': 'cannot create user' });
 			}
 
-			// ...If we've made it this far, fill in the user model...
 			var newUser = new UserModel();
-			newUser.id = Math.floor(Math.random() * 10);
+			newUser.id = Math.floor(Math.random() * 10); // For testing only
 			newUser.basic.email = req.body.email;
 			newUser.basic.password = newUser.generateHash(req.body.password);
 
-			// ... and save it to the db
 			newUser.save(function(err, dbResponse) {
 				if (err) {
 					return res.status(500).json(err);

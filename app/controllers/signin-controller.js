@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Handle sign-in and the creation of new accounts
+ */
+
 module.exports = function(app) {
   app.controller('signInController', [
     '$scope', '$http', '$base64', '$cookies', '$location',
@@ -7,14 +11,18 @@ module.exports = function(app) {
 
       var api = '/api/0_0_1/users';
 
+      /**
+       * Sign in existing users
+       */
+
       $scope.signIn = function() {
 
-        // Get the base-64 encoding ready for passport
+        // Passport requires base-64 encoding
         $http.defaults.headers.common.Authentication = 'Basic ' +
-          $base64.encode(
-            $scope.user.email + ':' +
-            $scope.user.password
-          );
+        $base64.encode(
+          $scope.user.email + ':' +
+          $scope.user.password
+        );
 
         $http.get(api)
         .success(function(data) {
@@ -22,10 +30,14 @@ module.exports = function(app) {
           $location.path('/data');
         })
         .error(function(error) {
-          console.log('error in signInController! ' + error);
+          console.log('error in signInController! ' + JSON.stringify(error));
         });
 
       };
+
+      /**
+       * Create new accounts
+       */
 
       $scope.createNewUser = function() {
         $http.post(api, {
@@ -35,12 +47,16 @@ module.exports = function(app) {
         .success(function(data) {
           $cookies.jwt = data.jwt;
           $location.path('/data');
-          alert('Your ID is ' + data.id);
+          alert('Your ID is ' + data.id); // For dev only: find a better way
         })
         .error(function(error) {
-          console.log('error in signInController! ' + error);
+          console.log('error in signInController! ' + JSON.stringify(error));
         });
       };
+
+      /**
+       * For dev only: delete all users
+       */
 
       $scope.deleteAllUsers = function() {
         var confirmed = confirm('Are you sure?');
@@ -49,21 +65,6 @@ module.exports = function(app) {
         }
 
         $http.delete(api)
-        .success(function() {
-          console.log('delete successful');
-        })
-        .error(function(error) {
-          console.log('error in delete: ' + JSON.stringify(error));
-        });
-      };
-
-      $scope.deleteAllData = function() {
-        var confirmed = confirm('Are you sure?');
-        if (!confirmed) {
-          return false;
-        }
-
-        $http.get('/api/0_0_1/data/deleteAll')
         .success(function() {
           console.log('delete successful');
         })
