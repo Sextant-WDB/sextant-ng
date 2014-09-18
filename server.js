@@ -29,6 +29,7 @@ require('./routes/data-routes')(app, jwtAuth.auth);
 // Init
 var server = http.createServer(app);
 app.set('port', process.env.PORT || 3000);
+exports.port = app.get('port');
 
 server.listen(app.get('port'),function(){
   console.log('Server has started on port %d', app.get('port'));
