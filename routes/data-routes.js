@@ -8,7 +8,6 @@ module.exports = function(app, jwtAuth) {
 
   // CREATE
   app.post(api, function(req, res) {
-    console.log('POST: ' + JSON.stringify(req.body));
     var newEvent = new SessionModel(req.body);
     newEvent.save(function(err, dbResponse) {
       if (err) return res.status(500).json(err);
