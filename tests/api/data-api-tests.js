@@ -7,7 +7,7 @@ var expect = chai.expect;
 
 var id;
 
-describe('The data REST API', function() {
+describe('The REST API for data', function() {
 
 	it('Doesn\'t let me get data without signing on', function(done) {
 		chai.request('http://localhost:' + port)
