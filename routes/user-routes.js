@@ -68,7 +68,6 @@ module.exports = function(app, passport) {
 
 	app.put(api + '/:id', function(req, res) {
 		var data = req.body;
-		console.log(JSON.stringify(data));
     delete data._id;
     UserModel.findOneAndUpdate({
     	'_id': req.params.id
