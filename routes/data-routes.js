@@ -23,6 +23,7 @@ module.exports = function(app, jwtAuth) {
     console.log('POST recorded: ' + JSON.stringify(req.body));
     var newEvent = new SessionModel(req.body);
     newEvent.save(function(err, dbResponse) {
+      console.log(dbResponse);
       if (err) return res.status(500).json(err);
       return res.status(200).json(dbResponse);
     });
