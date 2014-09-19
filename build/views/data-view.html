@@ -2,11 +2,23 @@
 	Fake stats:
 </h1>
 
+<form>
+
+	<div data-ng-repeat="site in allSites">
+		<input type="checkbox" data-ng-checked="show(site)">
+		{{site.url}}
+	</div>
+
+</form>
+
 <ul>
 	<li data-ng-repeat="item in data">
 		<div data-ng-hide="item.editing">
 
-			{{item.url}} | (source ID: {{item.sourceID}}) | {{item.pageViews}} pageviews | {{item.time}}
+			{{item.url}} |
+			(source ID: {{item.sourceID}}) |
+			{{item.pageViews}} pageviews |
+			{{item.time}}
 
 			<button data-ng-click="updateData(item)">
 				Edit data

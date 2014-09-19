@@ -14,7 +14,8 @@ var sessionScheme = mongoose.Schema({
 		url: String,
 		pageViews: Number,
 		time: String,
-		sourceID: String
+		sourceID: String,
+		event: Object
 	});
 
 module.exports = mongoose.model('SessionModel', sessionScheme);

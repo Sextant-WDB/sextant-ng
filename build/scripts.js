@@ -88,10 +88,50 @@ module.exports = function(app) {
 			$scope.getAllData = function() {
 	      httpService.get()
         .success(function(data) {
-           $scope.data = data;
+        	$scope.data = data;
+					$scope.filterSites();
         });
 	    };
 	    $scope.getAllData(); // Invoke as soon as the controller loads
+
+	    /**
+	     * Prepare a list of all the URLs present in a given user's dashboard
+	     * No duplicates!
+	     */
+
+			$scope.allSites = [];
+			$scope.sitesHash = {};
+
+			$scope.filterSites = function() {
+				$scope.sitesHash = {};
+				$scope.allSites = [];
+
+				for (var i = 0; i < $scope.data.length; i++) {
+      		if (!$scope.sitesHash[$scope.data[i].url]) {
+      			$scope.sitesHash[$scope.data[i].url] = true;
+      			$scope.allSites.push($scope.data[i]);
+      		}
+      	}
+			};
+
+			$scope.show = function(site) {
+				$scope.console.log(site);
+			};
+
+			/**
+			 * Check if a given piece of data fits the user's sites to display
+			 */
+
+			$scope.isSelected = function(item) {
+				$scope.allSites.forEach(function(site) {
+					if (!site.use) {
+						return false;
+					}
+					if (item.url === site.url) {
+						return true;
+					}
+				});
+			};
 
 	    /**
 	     * Update a piece of data
@@ -137,6 +177,27 @@ module.exports = function(app) {
           console.log('error in delete: ' + JSON.stringify(error));
         });
       };
+
+      // $scope.$watch('data', function() {
+      // 	// if (typeof data !== 'undefined')
+	     //  	var sitesHash = {};
+	     //  	$scope.allSites = [];
+
+	     //  	for (var i = 0; i < $scope.data.length; i++) {
+	     //  		if (!sitesHash[$scope.data[i].url]) {
+	     //  			sitesHash[$scope.data[i].url] = true;
+	     //  			$scope.allSites.push($scope.data[i]);
+	     //  			console.log('site: ' + JSON.stringify($scope.data[i]));
+	     //  		}
+	     //  	}
+	     //  // }
+      // });
+
+      // $scope.sites = [
+	     //  'test.com',
+	     //  'url.com',
+	     //  'someUrl.com'
+      // ];
 
       /**
 	     * Sign current user out
