@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -124,11 +125,4 @@ module.exports = function(grunt) {
       'watch:express'
     ]);
 
-  // grunt.registerTask('style', ['jshint','jscs']);
-  // grunt.registerTask('build:dev', ['clean:dev', 'browserify:dev', 'copy:dev']);
-  // grunt.registerTask('angulartest', ['browserify:angulartest', 'karma:unit']);
-  // grunt.registerTask('angulartestwatch', ['angulartest', 'watch:angulartest']);
-  // grunt.registerTask('test', ['style', 'angulartest', 'simplemocha']);
-  // grunt.registerTask('buildtest', ['test', 'build:dev']);
-  // grunt.registerTask('default', ['buildtest', 'watch:express']);
 };
