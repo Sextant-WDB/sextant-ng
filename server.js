@@ -5,9 +5,12 @@ var express = require('express');
 var bodyparser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
-
+var cors = require('cors');
 // Config
 var app = express();
+
+app.use(cors());
+
 app.use(express.static(__dirname + '/build'));
 app.use(bodyparser.json());
 
