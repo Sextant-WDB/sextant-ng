@@ -36,7 +36,7 @@ var processEvent = function(e) {
 
 var PostRequest = function() {
   var xhr = new XMLHttpRequest();
-  var url = 'http://sextant-ng-b.herokuapp.com/api/0_0_1/cors';
+  var url = 'http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
 
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
