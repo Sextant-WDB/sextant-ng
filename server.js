@@ -11,6 +11,8 @@ var app = express();
 
 
 app.use(express.static(__dirname + '/build'));
+app.use(express.static(__dirname + '/build/public'));
+
 app.use(bodyparser.json());
 
 mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URL || 'mongodb://localhost/sextant');
