@@ -52,4 +52,4 @@ UserSchema.methods.createToken = function(app) {
 	return token;
 };
 
-module.exports = mongoose.model('UserModel', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

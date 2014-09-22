@@ -15,20 +15,15 @@ module.exports = function(app, jwtAuth) {
    */
 
   app.post(api, function(req, res) {
-    
-    // res.header('Access-Control-Allow-Origin', '*');
-    // res.header('Access-Control-Allow-Credentials', true);
-    // res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
-    // res.header('Access-Control-Allow-Headers', 'Content-Type');
 
     console.log('POST recorded: ' + JSON.stringify(req.body));
 
-    // var newEvent = new SessionModel(req.body);
-    // newEvent.save(function(err, dbResponse) {
-    //   console.log(dbResponse);
-    //   if (err) return res.status(500).json(err);
-    //   return res.status(200).json(dbResponse);
-    // });
+    var newEvent = new SessionModel(req.body);
+    newEvent.save(function(err, dbResponse) {
+      console.log(dbResponse);
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(dbResponse);
+    });
   });
 
   /**

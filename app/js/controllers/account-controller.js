@@ -1,43 +1,15 @@
 'use strict';
 
 /**
- * Handle sign-in and the creation of new accounts
+ * Handle account operations: register, close account, update account...
  */
 
 module.exports = function(app) {
-  app.controller('signInController', [
+  app.controller('accountController', [
     '$scope', '$http', '$base64', '$cookies', '$location',
     function($scope, $http, $base64, $cookies, $location) {
 
       var api = '/api/0_0_1/users';
-
-      /**
-       * Sign in existing users
-       */
-
-      $scope.signIn = function() {
-
-        // Passport requires base-64 encoding
-        $http.defaults.headers.common.Authentication = 'Basic ' +
-        $base64.encode(
-          $scope.user.email + ':' +
-          $scope.user.password
-        );
-
-        $http.get(api)
-        .success(function(data) {
-          $cookies.jwt = data.jwt;
-          $location.path('/data');
-        })
-        .error(function(error) {
-          console.log('error in signInController! ' + JSON.stringify(error));
-        });
-
-      };
-
-      /**
-       * Create new accounts
-       */
 
       $scope.createNewUser = function() {
         $http.post(api, {

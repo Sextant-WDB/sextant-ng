@@ -1,10 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-require("./../bower_components/angular/angular");
-require("./../bower_components/angular-route/angular-route.js");
-require("./../bower_components/angular-cookies/angular-cookies.js");
-require("./../bower_components/angular-base64/angular-base64.js");
+require("./bower_components/angular/angular");
+require("./bower_components/angular-route/angular-route.js");
+require("./bower_components/angular-cookies/angular-cookies.js");
+require("./bower_components/angular-base64/angular-base64.js");
 
 var sextant = angular.module('sextant', [
 		'ngRoute',
@@ -13,13 +13,14 @@ var sextant = angular.module('sextant', [
 	]);
 
 // Services
-require('./services/http-service')(sextant);
+require('./js/services/http-service')(sextant);
 
 // Models
 
 // Controllers
-require('./controllers/signin-controller')(sextant);
-require('./controllers/data-controller')(sextant);
+require('./js/controllers/session-controller')(sextant);
+require('./js/controllers/data-controller')(sextant);
+require('./js/controllers/account-controller')(sextant);
 
 // Directives
 
@@ -27,337 +28,22 @@ require('./controllers/data-controller')(sextant);
 sextant.config([ '$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {
 		$routeProvider
-		.when('/data', {
-			templateUrl: 'views/data-view.html',
-			controller: 'dataController'
-		})
-		.when('/signin', {
-      templateUrl: 'views/signin-view.html',
-      controller: 'signInController'
-    })
-		.otherwise({
-			redirectTo: '/data'
-		});
-
-		$locationProvider.html5Mode(true);
-} ]);
-},{"./../bower_components/angular-base64/angular-base64.js":5,"./../bower_components/angular-cookies/angular-cookies.js":6,"./../bower_components/angular-route/angular-route.js":7,"./../bower_components/angular/angular":8,"./controllers/data-controller":2,"./controllers/signin-controller":3,"./services/http-service":4}],2:[function(require,module,exports){
-'use strict';
-
-/**
- * Allow CRUD interaction with the data API
- */
-
-module.exports = function(app) {
-	app.controller('dataController',
-		[ '$scope', 'httpService', '$http', '$cookies', '$location',
-		function($scope, httpService, $http, $cookies, $location) {
-
-			$http.defaults.headers.common.jwt = $cookies.jwt;
-
-	    /**
-	     * Save new piece of (fake) data, for testing
-	     */
-
-			$scope.newData = {}; // Holds form data
-
-	    $scope.saveNewData = function() {
-
-	    	var today = new Date();
-	    	$scope.newData.time = today.getHours() + ':' +
-	    		today.getMinutes() + ':' +
-	    		today.getSeconds();
-
-	    	httpService.post($scope.newData)
-	    	.success(function() {
-	    		// Clear the form
-		    	$scope.newData.url = '';
-		    	$scope.newData.pageViews = '';
-		    	$scope.newData.sourceID = '';
-		    	document.activeElement.blur();
-		    	// Grab the up-to-date data
-	    		$scope.getAllData();
-	    	});
-
-	    };
-
-			/**
-			 * Grab all data from the db
-			 */
-
-			$scope.getAllData = function() {
-	      httpService.get()
-        .success(function(data) {
-        	$scope.data = data;
-					$scope.filterSites();
-        });
-	    };
-	    $scope.getAllData(); // Invoke as soon as the controller loads
-
-	    /**
-	     * Prepare a list of all the URLs present in a given user's dashboard
-	     * No duplicates!
-	     */
-
-			$scope.allSites = [];
-			$scope.sitesHash = {};
-
-			$scope.filterSites = function() {
-				$scope.sitesHash = {};
-				$scope.allSites = [];
-
-				for (var i = 0; i < $scope.data.length; i++) {
-      		if (!$scope.sitesHash[$scope.data[i].url]) {
-      			$scope.sitesHash[$scope.data[i].url] = true;
-      			$scope.allSites.push($scope.data[i]);
-      		}
-      	}
-			};
-
-			$scope.show = function(site) {
-				$scope.console.log(site);
-			};
-
-			/**
-			 * Check if a given piece of data fits the user's sites to display
-			 */
-
-			$scope.isSelected = function(item) {
-				$scope.allSites.forEach(function(site) {
-					if (!site.use) {
-						return false;
-					}
-					if (item.url === site.url) {
-						return true;
-					}
-				});
-			};
-
-	    /**
-	     * Update a piece of data
-	     */
-
-	    $scope.updateData = function(data) {
-	    	data.editing = true;
-	    };
-	    $scope.saveOldData = function(data) {
-	    	httpService.put(data)
-        .success(function() {
-          $scope.getAllData();
-        });
-	    };
-
-	    /**
-	     * Delete a piece of data
-	     */
-
-	    $scope.deleteData = function(data) {
-	    	httpService.delete(data)
-	    	.success(function() {
-	    		$scope.getAllData();
-	    	});
-	    };
-
-      /**
-       * For dev only: delete all data
-       */
-
-      $scope.deleteAllData = function() {
-        var confirmed = confirm('Are you sure?');
-        if (!confirmed) {
-          return false;
-        }
-
-        httpService.deleteAll()
-        .success(function() {
-          console.log('delete successful');
-          $scope.getAllData();
-        })
-        .error(function(error) {
-          console.log('error in delete: ' + JSON.stringify(error));
-        });
-      };
-
-      // $scope.$watch('data', function() {
-      // 	// if (typeof data !== 'undefined')
-	     //  	var sitesHash = {};
-	     //  	$scope.allSites = [];
-
-	     //  	for (var i = 0; i < $scope.data.length; i++) {
-	     //  		if (!sitesHash[$scope.data[i].url]) {
-	     //  			sitesHash[$scope.data[i].url] = true;
-	     //  			$scope.allSites.push($scope.data[i]);
-	     //  			console.log('site: ' + JSON.stringify($scope.data[i]));
-	     //  		}
-	     //  	}
-	     //  // }
-      // });
-
-      // $scope.sites = [
-	     //  'test.com',
-	     //  'url.com',
-	     //  'someUrl.com'
-      // ];
-
-      /**
-	     * Sign current user out
-	     *
-	     * (Note: this should eventually live in a different controller)
-	     */
-
-	    $scope.signOut = function() {
-    		$cookies.jwt = null;
-	    	$location.path('/'); // If redirect to /signin, error!
-	    };
-
-		} ]);
-};
-},{}],3:[function(require,module,exports){
-'use strict';
-
-/**
- * Handle sign-in and the creation of new accounts
- */
-
-module.exports = function(app) {
-  app.controller('signInController', [
-    '$scope', '$http', '$base64', '$cookies', '$location',
-    function($scope, $http, $base64, $cookies, $location) {
-
-      var api = '/api/0_0_1/users';
-
-      /**
-       * Sign in existing users
-       */
-
-      $scope.signIn = function() {
-
-        // Passport requires base-64 encoding
-        $http.defaults.headers.common.Authentication = 'Basic ' +
-        $base64.encode(
-          $scope.user.email + ':' +
-          $scope.user.password
-        );
-
-        $http.get(api)
-        .success(function(data) {
-          $cookies.jwt = data.jwt;
-          $location.path('/data');
-        })
-        .error(function(error) {
-          console.log('error in signInController! ' + JSON.stringify(error));
-        });
-
-      };
-
-      /**
-       * Create new accounts
-       */
-
-      $scope.createNewUser = function() {
-        $http.post(api, {
-          'email': $scope.user.newEmail,
-          'password': $scope.user.newPassword
-        })
-        .success(function(data) {
-          $cookies.jwt = data.jwt;
-          $location.path('/data');
-          alert('Your ID is ' + data.id); // For dev only: find a better way
-        })
-        .error(function(error) {
-          console.log('error in signInController! ' + JSON.stringify(error));
-        });
-      };
-
-      /**
-       * For dev only: delete all users
-       */
-
-      $scope.deleteAllUsers = function() {
-        var confirmed = confirm('Are you sure?');
-        if (!confirmed) {
-          return false;
-        }
-
-        $http.delete(api)
-        .success(function() {
-          console.log('delete successful');
-        })
-        .error(function(error) {
-          console.log('error in delete: ' + JSON.stringify(error));
-        });
-      };
-
-    }
-  ]);
-};
-},{}],4:[function(require,module,exports){
-'use strict';
-
-/**
- * DRY out REST requests to the data API
- */
-
-module.exports = function(app) {
-	app.factory('httpService', function($http, $location) {
-
-		// Generic helper function
-		var http = function(method, params) {
-
-			params.id = params.id || '';
-
-			var promise = $http[method]('/api/0_0_1/data/' + params.id, params.data)
-			.error(function(error, status) {
-
-				console.log('Error in http ' + method + ': ' + error + ' | status ' + status);
-				if (status === 401) {
-					$location.path('/signin');
-				}
-
+			.when('/login', {
+				templateUrl: 'views/gateway-view.html',
+				controller: 'sessionController'
+			})
+			.when('/dashboard', {
+				templateUrl: 'views/dashboard-view.html',
+				controller: 'dataController'
+			})
+			.otherwise({
+				redirectTo: '/login'
 			});
 
-			return promise;
-		};
 
-		// Specific verbs
-		var httpVerbs = {
-
-			get: function() {
-				return http('get', {});
-			},
-
-			post: function(data) {
-				return http('post', {
-					data: data
-				});
-			},
-
-			put: function(data) {
-				return http('put', {
-					data: data,
-					id: data._id
-				});
-			},
-
-			delete: function(data) {
-				return http('delete', {
-					id: 'delete/' + data._id
-				});
-			},
-
-			// Dev only
-			deleteAll: function() {
-				return http('delete', {
-					id: 'deleteAll'
-				});
-			}
-
-		};
-
-		return httpVerbs;
-	});
-};
-},{}],5:[function(require,module,exports){
+		// $locationProvider.html5Mode(true);
+} ]);
+},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/services/http-service":9}],2:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -525,9 +211,9 @@ module.exports = function(app) {
 
 })();
 
-},{}],6:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /**
- * @license AngularJS v1.2.24
+ * @license AngularJS v1.2.25
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -733,9 +419,9 @@ angular.module('ngCookies', ['ng']).
 
 })(window, window.angular);
 
-},{}],7:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /**
- * @license AngularJS v1.2.24
+ * @license AngularJS v1.2.25
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -1507,7 +1193,6 @@ ngRouteModule.directive('ngView', ngViewFillContentFactory);
                   controllerAs: 'chapter'
                 });
 
-              // configure html5 to get links working on jsfiddle
               $locationProvider.html5Mode(true);
           }])
           .controller('MainCtrl', ['$route', '$routeParams', '$location',
@@ -1660,9 +1345,9 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],8:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /**
- * @license AngularJS v1.2.24
+ * @license AngularJS v1.2.25
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -1731,7 +1416,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.24/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.25/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -3650,11 +3335,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.24',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.25',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
-  dot: 24,
-  codeName: 'static-levitation'
+  dot: 25,
+  codeName: 'hypnotic-gesticulation'
 };
 
 
@@ -20784,14 +20469,13 @@ var forceAsyncEvents = {
 };
 forEach(
   'click dblclick mousedown mouseup mouseover mouseout mousemove mouseenter mouseleave keydown keyup keypress submit focus blur copy cut paste'.split(' '),
-  function(name) {
-    var directiveName = directiveNormalize('ng-' + name);
+  function(eventName) {
+    var directiveName = directiveNormalize('ng-' + eventName);
     ngEventDirectives[directiveName] = ['$parse', '$rootScope', function($parse, $rootScope) {
       return {
         compile: function($element, attr) {
           var fn = $parse(attr[directiveName]);
           return function ngEventHandler(scope, element) {
-            var eventName = lowercase(name);
             element.on(eventName, function(event) {
               var callback = function() {
                 fn(scope, {$event:event});
@@ -22318,8 +22002,8 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  *
  * @description
  * The `ngShow` directive shows or hides the given HTML element based on the expression
- * provided to the ngShow attribute. The element is shown or hidden by removing or adding
- * the `ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
+ * provided to the `ngShow` attribute. The element is shown or hidden by removing or adding
+ * the `.ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
  * in AngularJS and sets the display style to none (using an !important flag).
  * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
  *
@@ -22331,8 +22015,8 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  * <div ng-show="myValue" class="ng-hide"></div>
  * ```
  *
- * When the ngShow expression evaluates to false then the ng-hide CSS class is added to the class attribute
- * on the element causing it to become hidden. When true, the ng-hide CSS class is removed
+ * When the `ngShow` expression evaluates to false then the `.ng-hide` CSS class is added to the class attribute
+ * on the element causing it to become hidden. When true, the `.ng-hide` CSS class is removed
  * from the element causing the element not to appear hidden.
  *
  * <div class="alert alert-warning">
@@ -22342,7 +22026,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  *
  * ## Why is !important used?
  *
- * You may be wondering why !important is used for the .ng-hide CSS class. This is because the `.ng-hide` selector
+ * You may be wondering why !important is used for the `.ng-hide` CSS class. This is because the `.ng-hide` selector
  * can be easily overridden by heavier selectors. For example, something as simple
  * as changing the display style on a HTML list item would make hidden elements appear visible.
  * This also becomes a bigger issue when dealing with CSS frameworks.
@@ -22351,7 +22035,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  * specificity (when !important isn't used with any conflicting styles). If a developer chooses to override the
  * styling to change how to hide an element then it is just a matter of using !important in their own CSS code.
  *
- * ### Overriding .ng-hide
+ * ### Overriding `.ng-hide`
  *
  * By default, the `.ng-hide` class will style the element with `display:none!important`. If you wish to change
  * the hide behavior with ngShow/ngHide then this can be achieved by restating the styles for the `.ng-hide`
@@ -22369,7 +22053,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  *
  * By default you don't need to override in CSS anything and the animations will work around the display style.
  *
- * ## A note about animations with ngShow
+ * ## A note about animations with `ngShow`
  *
  * Animations in ngShow/ngHide work with the show and hide events that are triggered when the directive expression
  * is true and false. This system works like the animation system present with ngClass except that
@@ -22394,8 +22078,8 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
  * property to block during animation states--ngAnimate will handle the style toggling automatically for you.
  *
  * @animations
- * addClass: .ng-hide - happens after the ngShow expression evaluates to a truthy value and the just before contents are set to visible
- * removeClass: .ng-hide - happens after the ngShow expression evaluates to a non truthy value and just before the contents are set to hidden
+ * addClass: `.ng-hide` - happens after the `ngShow` expression evaluates to a truthy value and the just before contents are set to visible
+ * removeClass: `.ng-hide` - happens after the `ngShow` expression evaluates to a non truthy value and just before the contents are set to hidden
  *
  * @element ANY
  * @param {expression} ngShow If the {@link guide/expression expression} is truthy
@@ -22475,7 +22159,7 @@ var ngShowDirective = ['$animate', function($animate) {
  *
  * @description
  * The `ngHide` directive shows or hides the given HTML element based on the expression
- * provided to the ngHide attribute. The element is shown or hidden by removing or adding
+ * provided to the `ngHide` attribute. The element is shown or hidden by removing or adding
  * the `ng-hide` CSS class onto the element. The `.ng-hide` CSS class is predefined
  * in AngularJS and sets the display style to none (using an !important flag).
  * For CSP mode please add `angular-csp.css` to your html file (see {@link ng.directive:ngCsp ngCsp}).
@@ -22488,8 +22172,8 @@ var ngShowDirective = ['$animate', function($animate) {
  * <div ng-hide="myValue"></div>
  * ```
  *
- * When the ngHide expression evaluates to true then the .ng-hide CSS class is added to the class attribute
- * on the element causing it to become hidden. When false, the ng-hide CSS class is removed
+ * When the `.ngHide` expression evaluates to true then the `.ng-hide` CSS class is added to the class attribute
+ * on the element causing it to become hidden. When false, the `.ng-hide` CSS class is removed
  * from the element causing the element not to appear hidden.
  *
  * <div class="alert alert-warning">
@@ -22499,7 +22183,7 @@ var ngShowDirective = ['$animate', function($animate) {
  *
  * ## Why is !important used?
  *
- * You may be wondering why !important is used for the .ng-hide CSS class. This is because the `.ng-hide` selector
+ * You may be wondering why !important is used for the `.ng-hide` CSS class. This is because the `.ng-hide` selector
  * can be easily overridden by heavier selectors. For example, something as simple
  * as changing the display style on a HTML list item would make hidden elements appear visible.
  * This also becomes a bigger issue when dealing with CSS frameworks.
@@ -22508,7 +22192,7 @@ var ngShowDirective = ['$animate', function($animate) {
  * specificity (when !important isn't used with any conflicting styles). If a developer chooses to override the
  * styling to change how to hide an element then it is just a matter of using !important in their own CSS code.
  *
- * ### Overriding .ng-hide
+ * ### Overriding `.ng-hide`
  *
  * By default, the `.ng-hide` class will style the element with `display:none!important`. If you wish to change
  * the hide behavior with ngShow/ngHide then this can be achieved by restating the styles for the `.ng-hide`
@@ -22526,7 +22210,7 @@ var ngShowDirective = ['$animate', function($animate) {
  *
  * By default you don't need to override in CSS anything and the animations will work around the display style.
  *
- * ## A note about animations with ngHide
+ * ## A note about animations with `ngHide`
  *
  * Animations in ngShow/ngHide work with the show and hide events that are triggered when the directive expression
  * is true and false. This system works like the animation system present with ngClass, except that the `.ng-hide`
@@ -22550,8 +22234,8 @@ var ngShowDirective = ['$animate', function($animate) {
  * property to block during animation states--ngAnimate will handle the style toggling automatically for you.
  *
  * @animations
- * removeClass: .ng-hide - happens after the ngHide expression evaluates to a truthy value and just before the contents are set to hidden
- * addClass: .ng-hide - happens after the ngHide expression evaluates to a non truthy value and just before the contents are set to visible
+ * removeClass: `.ng-hide` - happens after the `ngHide` expression evaluates to a truthy value and just before the contents are set to hidden
+ * addClass: `.ng-hide` - happens after the `ngHide` expression evaluates to a non truthy value and just before the contents are set to visible
  *
  * @element ANY
  * @param {expression} ngHide If the {@link guide/expression expression} is truthy then
@@ -23404,6 +23088,19 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
         ctrl.$render = render;
 
         scope.$watchCollection(valuesFn, render);
+        scope.$watchCollection(function () {
+          var locals = {},
+              values = valuesFn(scope);
+          if (values) {
+            var toDisplay = new Array(values.length);
+            for (var i = 0, ii = values.length; i < ii; i++) {
+              locals[valueName] = values[i];
+              toDisplay[i] = displayFn(scope, locals);
+            }
+            return toDisplay;
+          }
+        }, render);
+
         if ( multiple ) {
           scope.$watchCollection(function() { return ctrl.$modelValue; }, render);
         }
@@ -23673,4 +23370,307 @@ var styleDirective = valueFn({
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>');
-},{}]},{},[1,2,3,4]);
+},{}],6:[function(require,module,exports){
+'use strict';
+
+/**
+ * Handle account operations: register, close account, update account...
+ */
+
+module.exports = function(app) {
+  app.controller('accountController', [
+    '$scope', '$http', '$base64', '$cookies', '$location',
+    function($scope, $http, $base64, $cookies, $location) {
+
+      var api = '/api/0_0_1/users';
+
+      $scope.createNewUser = function() {
+        $http.post(api, {
+          'email': $scope.user.newEmail,
+          'password': $scope.user.newPassword
+        })
+        .success(function(data) {
+          $cookies.jwt = data.jwt;
+          $location.path('/data');
+          alert('Your ID is ' + data.id); // For dev only: find a better way
+        })
+        .error(function(error) {
+          console.log('error in signInController! ' + JSON.stringify(error));
+        });
+      };
+
+      /**
+       * For dev only: delete all users
+       */
+
+      $scope.deleteAllUsers = function() {
+        var confirmed = confirm('Are you sure?');
+        if (!confirmed) {
+          return false;
+        }
+
+        $http.delete(api)
+        .success(function() {
+          console.log('delete successful');
+        })
+        .error(function(error) {
+          console.log('error in delete: ' + JSON.stringify(error));
+        });
+      };
+
+    }
+  ]);
+};
+},{}],7:[function(require,module,exports){
+'use strict';
+
+/**
+ * Allow CRUD interaction with the data API
+ */
+
+module.exports = function(app) {
+	app.controller('dataController',
+		[ '$scope', 'httpService', '$http', '$cookies',
+		function($scope, httpService, $http, $cookies) {
+
+			$http.defaults.headers.common.jwt = $cookies.jwt;
+
+			/**
+			 * Grab all data from the db
+			 */
+
+			$scope.getAllData = function() {
+	      httpService.get()
+        .success(function(data) {
+        	$scope.data = data;
+					$scope.filterSites();
+        });
+	    };
+	    $scope.getAllData(); // Invoke as soon as the controller loads
+
+	    /**
+	     * Prepare a list of all the URLs present in a given user's dashboard
+	     * No duplicates!
+	     */
+
+			// $scope.allSites = [];
+			// $scope.sitesHash = {};
+
+			// $scope.filterSites = function() {
+			// 	$scope.sitesHash = {};
+			// 	$scope.allSites = [];
+
+			// 	for (var i = 0; i < $scope.data.length; i++) {
+   //    		if (!$scope.sitesHash[$scope.data[i].url]) {
+   //    			$scope.sitesHash[$scope.data[i].url] = true;
+   //    			$scope.allSites.push($scope.data[i]);
+   //    		}
+   //    	}
+			// };
+
+			// $scope.show = function(site) {
+			// 	$scope.console.log(site);
+			// };
+
+			/**
+			 * Check if a given piece of data fits the user's sites to display
+			 */
+
+			$scope.isSelected = function(item) {
+				$scope.allSites.forEach(function(site) {
+					if (!site.use) {
+						return false;
+					}
+					if (item.url === site.url) {
+						return true;
+					}
+				});
+			};
+
+	    /**
+	     * Update a piece of data
+	     */
+
+	    // $scope.updateData = function(data) {
+	    // 	data.editing = true;
+	    // };
+
+	    // $scope.saveOldData = function(data) {
+	    // 	httpService.put(data)
+     //    .success(function() {
+     //      $scope.getAllData();
+     //    });
+	    // };
+
+	    /**
+	     * Delete a piece of data
+	     */
+
+	    $scope.deleteData = function(data) {
+	    	httpService.delete(data)
+	    	.success(function() {
+	    		$scope.getAllData();
+	    	});
+	    };
+
+      /**
+       * For dev only: delete all data
+       */
+
+      $scope.deleteAllData = function() {
+        var confirmed = confirm('Are you sure?');
+        if (!confirmed) {
+          return false;
+        }
+
+        httpService.deleteAll()
+        .success(function() {
+          console.log('delete successful');
+          $scope.getAllData();
+        })
+        .error(function(error) {
+          console.log('error in delete: ' + JSON.stringify(error));
+        });
+      };
+
+      // $scope.$watch('data', function() {
+      // 	// if (typeof data !== 'undefined')
+	     //  	var sitesHash = {};
+	     //  	$scope.allSites = [];
+
+	     //  	for (var i = 0; i < $scope.data.length; i++) {
+	     //  		if (!sitesHash[$scope.data[i].url]) {
+	     //  			sitesHash[$scope.data[i].url] = true;
+	     //  			$scope.allSites.push($scope.data[i]);
+	     //  			console.log('site: ' + JSON.stringify($scope.data[i]));
+	     //  		}
+	     //  	}
+	     //  // }
+      // });
+
+      // $scope.sites = [
+	     //  'test.com',
+	     //  'url.com',
+	     //  'someUrl.com'
+      // ];
+
+		} ]);
+};
+},{}],8:[function(require,module,exports){
+'use strict';
+
+/**
+ * Handle sign-in and the creation of new accounts
+ */
+
+module.exports = function(app) {
+  app.controller('sessionController', [
+    '$scope', '$http', '$base64', '$cookies', '$location',
+    function($scope, $http, $base64, $cookies, $location) {
+
+      var api = '/api/0_0_1/users';
+
+      /**
+       * Sign in existing users
+       */
+
+      $scope.signIn = function() {
+
+        // Passport requires base-64 encoding
+        $http.defaults.headers.common.Authentication = 'Basic ' +
+        $base64.encode(
+          $scope.user.email + ':' +
+          $scope.user.password
+        );
+
+        $http.get(api)
+        .success(function(data) {
+          $cookies.jwt = data.jwt;
+          $location.path('/data');
+        })
+        .error(function(error) {
+          console.log('error in signInController! ' + JSON.stringify(error));
+        });
+
+      };
+
+      /**
+       * Sign out current user
+       *
+       */
+
+      $scope.signOut = function() {
+        $cookies.jwt = null;
+        $location.path('/'); // If redirect to /signin, error!
+      };
+
+    }
+  ]);
+};
+},{}],9:[function(require,module,exports){
+'use strict';
+
+/**
+ * DRY out REST requests to the data API
+ */
+
+module.exports = function(app) {
+	app.factory('httpService', function($http, $location) {
+
+		// Generic helper function
+		var http = function(method, params) {
+
+			params.id = params.id || '';
+
+			var promise = $http[method]('/api/0_0_1/data/' + params.id, params.data)
+			.error(function(error, status) {
+
+				console.log('Error in http ' + method + ': ' + error + ' | status ' + status);
+				if (status === 401) {
+					$location.path('/signin');
+				}
+
+			});
+
+			return promise;
+		};
+
+		// Specific verbs
+		var httpVerbs = {
+
+			get: function() {
+				return http('get', {});
+			},
+
+			post: function(data) {
+				return http('post', {
+					data: data
+				});
+			},
+
+			put: function(data) {
+				return http('put', {
+					data: data,
+					id: data._id
+				});
+			},
+
+			delete: function(data) {
+				return http('delete', {
+					id: 'delete/' + data._id
+				});
+			},
+
+			// Dev only
+			deleteAll: function() {
+				return http('delete', {
+					id: 'deleteAll'
+				});
+			}
+
+		};
+
+		return httpVerbs;
+	});
+};
+},{}]},{},[6,7,8,9,1]);

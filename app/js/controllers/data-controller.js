@@ -6,36 +6,10 @@
 
 module.exports = function(app) {
 	app.controller('dataController',
-		[ '$scope', 'httpService', '$http', '$cookies', '$location',
-		function($scope, httpService, $http, $cookies, $location) {
+		[ '$scope', 'httpService', '$http', '$cookies',
+		function($scope, httpService, $http, $cookies) {
 
 			$http.defaults.headers.common.jwt = $cookies.jwt;
-
-	    /**
-	     * Save new piece of (fake) data, for testing
-	     */
-
-			$scope.newData = {}; // Holds form data
-
-	    $scope.saveNewData = function() {
-
-	    	var today = new Date();
-	    	$scope.newData.time = today.getHours() + ':' +
-	    		today.getMinutes() + ':' +
-	    		today.getSeconds();
-
-	    	httpService.post($scope.newData)
-	    	.success(function() {
-	    		// Clear the form
-		    	$scope.newData.url = '';
-		    	$scope.newData.pageViews = '';
-		    	$scope.newData.sourceID = '';
-		    	document.activeElement.blur();
-		    	// Grab the up-to-date data
-	    		$scope.getAllData();
-	    	});
-
-	    };
 
 			/**
 			 * Grab all data from the db
@@ -55,24 +29,24 @@ module.exports = function(app) {
 	     * No duplicates!
 	     */
 
-			$scope.allSites = [];
-			$scope.sitesHash = {};
+			// $scope.allSites = [];
+			// $scope.sitesHash = {};
 
-			$scope.filterSites = function() {
-				$scope.sitesHash = {};
-				$scope.allSites = [];
+			// $scope.filterSites = function() {
+			// 	$scope.sitesHash = {};
+			// 	$scope.allSites = [];
 
-				for (var i = 0; i < $scope.data.length; i++) {
-      		if (!$scope.sitesHash[$scope.data[i].url]) {
-      			$scope.sitesHash[$scope.data[i].url] = true;
-      			$scope.allSites.push($scope.data[i]);
-      		}
-      	}
-			};
+			// 	for (var i = 0; i < $scope.data.length; i++) {
+   //    		if (!$scope.sitesHash[$scope.data[i].url]) {
+   //    			$scope.sitesHash[$scope.data[i].url] = true;
+   //    			$scope.allSites.push($scope.data[i]);
+   //    		}
+   //    	}
+			// };
 
-			$scope.show = function(site) {
-				$scope.console.log(site);
-			};
+			// $scope.show = function(site) {
+			// 	$scope.console.log(site);
+			// };
 
 			/**
 			 * Check if a given piece of data fits the user's sites to display
@@ -93,15 +67,16 @@ module.exports = function(app) {
 	     * Update a piece of data
 	     */
 
-	    $scope.updateData = function(data) {
-	    	data.editing = true;
-	    };
-	    $scope.saveOldData = function(data) {
-	    	httpService.put(data)
-        .success(function() {
-          $scope.getAllData();
-        });
-	    };
+	    // $scope.updateData = function(data) {
+	    // 	data.editing = true;
+	    // };
+
+	    // $scope.saveOldData = function(data) {
+	    // 	httpService.put(data)
+     //    .success(function() {
+     //      $scope.getAllData();
+     //    });
+	    // };
 
 	    /**
 	     * Delete a piece of data
@@ -154,17 +129,6 @@ module.exports = function(app) {
 	     //  'url.com',
 	     //  'someUrl.com'
       // ];
-
-      /**
-	     * Sign current user out
-	     *
-	     * (Note: this should eventually live in a different controller)
-	     */
-
-	    $scope.signOut = function() {
-    		$cookies.jwt = null;
-	    	$location.path('/'); // If redirect to /signin, error!
-	    };
 
 		} ]);
 };

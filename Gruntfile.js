@@ -12,7 +12,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
 
   var allJavaScriptFilePaths = [
-    'app/**/*.js',
+    'app/js/**/*.js',
+    'app/controllers/**/*.js',
+    'app/services/**/*.js',
     'models/**/*.js',
     'routes/**/*.js',
     'lib/**/*.js',
@@ -56,7 +58,7 @@ module.exports = function(grunt) {
           transform: ['debowerify'],
           debug: true
         },
-        src: ['app/**/*.js'],
+        src: ['app/js/**/*.js', 'app/app.js'],
         dest: 'build/scripts.js'
       }
     },

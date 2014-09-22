@@ -1,0 +1,59 @@
+<style>
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: .95em;
+    background-color: #FFFFFF;
+  } 
+  a, a:visited{
+    color:#778898;
+    cursor:pointer;
+  }
+  a:hover, a:active{
+    color: #BBCCAA;
+  }
+  div.ng-scope div{
+    padding:10px 0;
+  }
+  div.ng-scope{
+    width:900px;
+    margin:0 auto;
+  }
+</style>
+
+<div ng-init="newUser = false">
+
+  <div data-ng-controller="sessionController" data-ng-show="!newUser">
+    <h1>Login</h1>
+
+    <div>
+      <label>Email</label>
+      <input type="text" data-ng-model="user.email">
+    </div>
+
+    <div>
+      <label>Password</label>
+      <input type="password" data-ng-model="user.password">
+    </div>
+    
+    <button ng-click="signIn()">Log In</button>
+  </div>
+
+  <div data-ng-controller="accountController" data-ng-show="newUser">
+    <h3>Create an account</h3>
+
+    <label>Email</label>
+    <input type="text" data-ng-model="user.newEmail">
+
+    <label>Password</label>
+    <input type="password" data-ng-model="user.newPassword">
+
+    <button data-ng-click="createNewUser()">Create account</button>
+  </div>
+
+  <a data-ng-click="newUser = !newUser">{{!newUser ? 'Create new User' : 'Sign in to existing account'}}</a>
+
+</div>
+
+<!-- <div class="danger">
+  <button data-ng-click="deleteAllUsers()">Delete all users (!)</button>
+</div> -->

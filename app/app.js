@@ -12,13 +12,14 @@ var sextant = angular.module('sextant', [
 	]);
 
 // Services
-require('./services/http-service')(sextant);
+require('./js/services/http-service')(sextant);
 
 // Models
 
 // Controllers
-require('./controllers/signin-controller')(sextant);
-require('./controllers/data-controller')(sextant);
+require('./js/controllers/session-controller')(sextant);
+require('./js/controllers/data-controller')(sextant);
+require('./js/controllers/account-controller')(sextant);
 
 // Directives
 
@@ -26,17 +27,18 @@ require('./controllers/data-controller')(sextant);
 sextant.config([ '$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {
 		$routeProvider
-		.when('/data', {
-			templateUrl: 'views/data-view.html',
-			controller: 'dataController'
-		})
-		.when('/signin', {
-      templateUrl: 'views/signin-view.html',
-      controller: 'signInController'
-    })
-		.otherwise({
-			redirectTo: '/data'
-		});
+			.when('/login', {
+				templateUrl: 'views/gateway-view.html',
+				controller: 'sessionController'
+			})
+			.when('/dashboard', {
+				templateUrl: 'views/dashboard-view.html',
+				controller: 'dataController'
+			})
+			.otherwise({
+				redirectTo: '/login'
+			});
 
-		$locationProvider.html5Mode(true);
+
+		// $locationProvider.html5Mode(true);
 } ]);
