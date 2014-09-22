@@ -33,7 +33,6 @@ module.exports = function(app, passport) {
 			}
 
 			var newUser = new UserModel();
-			newUser.id = Math.floor(Math.random() * 10); // For testing only
 			newUser.basic.email = req.body.email;
 			newUser.basic.password = newUser.generateHash(req.body.password);
 
