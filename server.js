@@ -5,6 +5,7 @@ var express = require('express');
 var bodyparser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var cors = require('cors');
 
 // Config
 var app = express();
@@ -28,7 +29,7 @@ require('./lib/auth/passport')(passport);
 var jwtAuth = require('./lib/auth/jwt-auth')(app);
 
 require('./routes/user-routes')(app, passport);
-require('./routes/data-routes')(app, jwtAuth.auth);
+require('./routes/data-routes')(app, jwtAuth.auth, cors);
 
 // Init
 var server = http.createServer(app);
