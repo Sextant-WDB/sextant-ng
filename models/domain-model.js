@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 
 var DomainSchema = mongoose.Schema({
   host : String,
-  writeKey: String
+  write_key: String
 });
 
 module.exports = mongoose.model('Domain', DomainSchema);
