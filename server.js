@@ -6,6 +6,9 @@ var bodyparser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var cors = require('cors');
+// var bcrypt = require('bcrypt-nodejs');
+// var crypto = require('crypto');
+// var domainModel = require('./models/domain-model.js');
 
 // Config
 var app = express();
@@ -35,6 +38,15 @@ require('./routes/data-routes')(app, jwtAuth.auth, cors);
 var server = http.createServer(app);
 app.set('port', process.env.PORT || 3000);
 exports.port = app.get('port');
+
+// var generateHash = function() {
+//   return bcrypt.hashSync(crypto.randomBytes(16).toString('base64'));
+// };
+// var Domain = mongoose.model('Domain', domainModel );
+// var newDomain = new Domain({'host':'somedomain'});
+// newDomain.writeKey = generateHash();
+// newDomain.save();
+
 
 server.listen(app.get('port'),function(){
   console.log('Server has started on port %d', app.get('port'));
