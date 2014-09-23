@@ -9,8 +9,6 @@ var Domain = require('../models/domain-model');
 module.exports = function(app, jwtAuth) {
 
   app.get('/api/0_0_1/domains', jwtAuth, function(req, res) {
-    console.log(req.user._id);
-
     Domain.find({ 
       authorizedUsers: { $all: [ req.user._id ] } 
     }, function(err, domains) {

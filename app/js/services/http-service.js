@@ -15,8 +15,6 @@ module.exports = function(app) {
 
 			var url = '/api/0_0_1/' + route + getParameter;
 
-			console.log('service url:' + url);
-
 			var promise = $http[verb]( url , postData )
 				.error(function(error, status) {
 					if (status === 401) $location.path('/signin');
@@ -26,7 +24,6 @@ module.exports = function(app) {
 
 		var HttpService = function(url){
 			this.url = url;
-			console.log('service constructor called');
 		};
 
 		HttpService.prototype.get = function(id){

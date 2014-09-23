@@ -23,7 +23,9 @@ module.exports = function(app) {
       var visitService = new HttpService('visits');
 
       $scope.getVisits = function(domain_id){
+        
         $scope.selectedDomain = domain_id;
+
         visitService.get(domain_id.toString())
           .success(function(visits){
             $scope.visits = visits;
