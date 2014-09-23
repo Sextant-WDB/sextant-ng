@@ -11,7 +11,7 @@ var moment = require('moment');
 
 var UserSchema = mongoose.Schema({
 	domains: [{
-		id: Number
+		id: Number,
 		host: String
 	}],
 	jwt: String,

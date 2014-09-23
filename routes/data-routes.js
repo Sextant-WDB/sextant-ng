@@ -1,6 +1,6 @@
 'use strict';
 
-var SessionModel = require('../models/session-model');
+var VisitModel = require('../models/visit-model');
 
 /**
  * API endpoints to read from the database and inject new data
@@ -25,7 +25,7 @@ module.exports = function(app, jwtAuth, cors) {
 
     // console.log('POST recorded: ' + JSON.stringify(req.body));
 
-    var newEvent = new SessionModel(req.body);
+    var newEvent = new VisitModel(req.body);
     newEvent.save(function(err, dbResponse) {
       if (err) return res.status(500).json(err);
       return res.status(200).json(dbResponse);
@@ -37,7 +37,7 @@ module.exports = function(app, jwtAuth, cors) {
    */
 
   app.get(api, jwtAuth, function(req, res) {
-    SessionModel.find({}, function(err, dbResponse) {
+    VisitModel.find({}, function(err, dbResponse) {
       if (err) return res.status(500).json(err);
       console.log(req.user);
       return res.status(200).json(dbResponse);
@@ -51,7 +51,7 @@ module.exports = function(app, jwtAuth, cors) {
   app.put(api + '/:id', function(req, res) {
     var data = req.body;
     delete data._id;
-    SessionModel.findOneAndUpdate({ '_id': req.params.id }, data, function(err, dbResponse) {
+    VisitModel.findOneAndUpdate({ '_id': req.params.id }, data, function(err, dbResponse) {
       if (err) {
         return res.status(500).json(err);
       }
@@ -64,7 +64,7 @@ module.exports = function(app, jwtAuth, cors) {
    */
 
   app.delete(api + '/delete/:id', function(req, res) {
-    SessionModel.remove({ '_id': req.params.id }, function(err) {
+    VisitModel.remove({ '_id': req.params.id }, function(err) {
       if (err) {
         return res.status(500).json(err);
       }
@@ -79,7 +79,7 @@ module.exports = function(app, jwtAuth, cors) {
    */
 
   app.delete(api + '/deleteAll', function(req, res) {
-    SessionModel.remove({}, function(err) {
+    VisitModel.remove({}, function(err) {
       if (err) {
         return res.status(500).json(err);
       }

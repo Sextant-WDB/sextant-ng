@@ -7,8 +7,10 @@ var mongoose = require('mongoose');
  *	- 
  */
 
-var visitScheme = mongoose.Schema({
-		domain_id: String,
+var VisitSchema = mongoose.Schema({
+    visitor_id: String,
+    session_id: String,
+	domain_id: String,
     host: String,
     ip_address: String,
     user_agent: String,
@@ -23,4 +25,4 @@ var visitScheme = mongoose.Schema({
     ]
 	});
 
-module.exports = mongoose.model('Visit', visitScheme);
+module.exports = mongoose.model('Visit', VisitSchema);
