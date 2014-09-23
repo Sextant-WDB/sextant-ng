@@ -1,7 +1,7 @@
 'use strict';
 
 var VisitModel = require('../models/visit-model');
-var DomainModel = require('../models/domain-model');
+var Domains = require('../models/domain-model');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 
@@ -23,7 +23,7 @@ module.exports = function(app, cors) {
     app.post(api, function(req, res) {
         var origin = req.get('Origin');
 
-        DomainSchema.find({ host: origin }, function(err, dbResponse) {
+        Domains.find({ host: origin }, function(err, dbResponse) {
             var attributes = {};
             var response = {};
 
