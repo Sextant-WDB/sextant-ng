@@ -1,12 +1,13 @@
 'use strict';
 
-var VisitModel = require('../models/visit-model');
+var Visit = require('../models/visit-model');
+// var Domain = require('../models/domain-model');
 
 /**
  * API endpoints to read from the database and inject new data
  */
 
-module.exports = function(app, jwtAuth, cors) {
+module.exports = function(app, cors) {
 
   var api = '/api/0_0_1/data';
 
@@ -23,34 +24,9 @@ module.exports = function(app, jwtAuth, cors) {
 
   app.post(api, cors(corsOptions), function(req, res) {
 
-    // console.log('POST recorded: ' + JSON.stringify(req.body));
-
-    var newEvent = new VisitModel(req.body);
+    var newEvent = new Visit(req.body);
     newEvent.save(function(err, dbResponse) {
       if (err) return res.status(500).json(err);
-      return res.status(200).json(dbResponse);
-    });
-  });
-
-  /**
-   * Read all data (authenticated)
-   */
-
-  /**
-   * Goal: return only that data that matches the logged-in user
-   *
-   * To do:
-   *  -
-   *  -
-   *  -
-   *  -
-   *  -
-   */
-
-  app.get(api, jwtAuth, function(req, res) {
-    VisitModel.find({}, function(err, dbResponse) {
-      if (err) return res.status(500).json(err);
-      console.log(req.user.basic.email);
       return res.status(200).json(dbResponse);
     });
   });
@@ -62,7 +38,7 @@ module.exports = function(app, jwtAuth, cors) {
   app.put(api + '/:id', function(req, res) {
     var data = req.body;
     delete data._id;
-    VisitModel.findOneAndUpdate({ '_id': req.params.id }, data, function(err, dbResponse) {
+    Visit.findOneAndUpdate({ '_id': req.params.id }, data, function(err, dbResponse) {
       if (err) {
         return res.status(500).json(err);
       }
@@ -75,7 +51,7 @@ module.exports = function(app, jwtAuth, cors) {
    */
 
   app.delete(api + '/delete/:id', function(req, res) {
-    VisitModel.remove({ '_id': req.params.id }, function(err) {
+    Visit.remove({ '_id': req.params.id }, function(err) {
       if (err) {
         return res.status(500).json(err);
       }
@@ -90,7 +66,7 @@ module.exports = function(app, jwtAuth, cors) {
    */
 
   app.delete(api + '/deleteAll', function(req, res) {
-    VisitModel.remove({}, function(err) {
+    Visit.remove({}, function(err) {
       if (err) {
         return res.status(500).json(err);
       }
