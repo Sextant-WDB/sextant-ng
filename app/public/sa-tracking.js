@@ -34,29 +34,31 @@ var processEvent = function(e) {
   return result;
 };
 
-var PostRequest = function() {
-  var xhr;
+var ajax = {};
 
+ajax.postUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
+
+ajax.createXHR = function() {
   try {
-    xhr = new XMLHttpRequest();
+    return new XMLHttpRequest();
   } catch(e) {
-    throw new Error('No XHR object');
+    throw new Error('No XHR object.');
   }
 
-  var url = 'http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
-
-  xhr.open('POST', url, true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-
-  return xhr;
 };
 
+ajax.post = function(data) {
+  var xhr = this.createXHR();
+
+  xhr.open('POST', this.postUrl, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(data);
+};
 
 var sendEvents = setInterval(function() {
   if (!events.length) return;
 
-  var request = new PostRequest();
-  request.send(JSON.stringify(events));
+  ajax.post(JSON.stringify(events));
 
   events = [];
 }, requestInterval);
