@@ -9,7 +9,9 @@ var mongoose = require('mongoose');
 var DomainSchema = mongoose.Schema({
   host : String,
   write_key: String,
-  authorizedUsers: Array // Of db-generated IDs
+  authorizedUsers: [
+    {type:String}
+  ]
 });
 
 module.exports = mongoose.model('Domain', DomainSchema);

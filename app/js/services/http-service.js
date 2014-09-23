@@ -5,61 +5,45 @@
  */
 
 module.exports = function(app) {
-	app.factory('httpService', function($http, $location) {
+	app.factory('HttpService', function($http, $location) {
 
 		// Generic helper function
-		var http = function(method, params) {
+		var http = function(route, verb, id, data) {
 
-			params.id = params.id || '';
+			var getParameter = id ? '/' + id : '';
+			var postData = data ? data : {};
 
-			var promise = $http[method]('/api/0_0_1/data/' + params.id, params.data)
-			.error(function(error, status) {
+			var url = '/api/0_0_1/' + route + getParameter;
 
-				console.log('Error in http ' + method + ': ' + error + ' | status ' + status);
-				if (status === 401) {
-					$location.path('/signin');
-				}
+			console.log('service url:' + url);
 
+			var promise = $http[verb]( url , postData )
+				.error(function(error, status) {
+					if (status === 401) $location.path('/signin');
 			});
-
 			return promise;
 		};
 
-		// Specific verbs
-		var httpVerbs = {
-
-			get: function() {
-				return http('get', {});
-			},
-
-			post: function(data) {
-				return http('post', {
-					data: data
-				});
-			},
-
-			put: function(data) {
-				return http('put', {
-					data: data,
-					id: data._id
-				});
-			},
-
-			delete: function(data) {
-				return http('delete', {
-					id: 'delete/' + data._id
-				});
-			},
-
-			// Dev only
-			deleteAll: function() {
-				return http('delete', {
-					id: 'deleteAll'
-				});
-			}
-
+		var HttpService = function(url){
+			this.url = url;
+			console.log('service constructor called');
 		};
 
-		return httpVerbs;
+		HttpService.prototype.get = function(id){
+			return http( this.url, 'get', id);
+		};
+
+		HttpService.prototype.post = function(id, data){
+			return http( this.url, 'post', id, data );
+		};
+
+		HttpService.prototype.put = function(id, data){
+			return http( this.url, 'put', id, data );
+		};
+		HttpService.prototype.delete = function(id){
+			return http( this.url, 'delete', id);
+		};
+
+		return HttpService;
 	});
 };

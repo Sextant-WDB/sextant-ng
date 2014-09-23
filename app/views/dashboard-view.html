@@ -2,12 +2,19 @@
 	<h1>Dashboard</h1>
 		
 	<div>
-		<h3>Raw</h3>
+		<h3>Authorized Domains</h3>
 		<ul>
-			<li data-ng-repeat="site in data">
-				<p>{{site}}</p>
+			<li data-ng-repeat="domain in domains">
+				<a data-ng-click="getVisits(domain._id)">{{domain.host}}</a>
 			</li>
 		</ul>
+	</div>
+
+	<div data-ng-show="selectedDomain">
+		<h3>Visit Data</h3>
+		<div data-ng-repeat="visit in visits">
+			<p>{{ visit }}</p>
+		</div>
 	</div>
 	
 </div>
