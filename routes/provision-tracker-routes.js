@@ -20,14 +20,12 @@ module.exports = function(app, cors) {
         maxAge: 300
     };
 
-    app.post(api, function(req, res) {
+    app.post(api, cors(corsOptions), function(req, res) {
         var origin = req.get('Origin');
 
         Domains.find({ host: origin }, function(err, dbResponse) {
             var attributes = {};
             var response = {};
-
-            var writeKey = dbResponse.writeKey;
 
             attributes.host = req.get('Host');
             attributes.referer = req.get('Referer');
@@ -45,7 +43,7 @@ module.exports = function(app, cors) {
             visit.save();
 
             response.usid = attributes.session_id;
-            response.writeKey = attributes.writeKey;
+            response.writeKey = dbResponse.writeKey;
 
             return res.status(200).json(response);
         });
