@@ -35,7 +35,14 @@ var processEvent = function(e) {
 };
 
 var PostRequest = function() {
-  var xhr = new XMLHttpRequest();
+  var xhr;
+
+  try {
+    xhr = new XMLHttpRequest();
+  } catch(e) {
+    throw new Error('No XHR object');
+  }
+
   var url = 'http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
 
   xhr.open('POST', url, true);
