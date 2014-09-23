@@ -10,13 +10,16 @@ var moment = require('moment');
  */
 
 var UserSchema = mongoose.Schema({
-	id: String,
-	sites: Array,
+	domains: [{
+		id: Number
+		host: String
+	}],
 	jwt: String,
 	basic: {
 		email: String,
 		password: String
-	}
+	},
+	created_at: {type: Date, default: Date.now }
 });
 
 /**
