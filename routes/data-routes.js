@@ -6,15 +6,22 @@ var SessionModel = require('../models/session-model');
  * API endpoints to read from the database and inject new data
  */
 
-module.exports = function(app, jwtAuth) {
+module.exports = function(app, jwtAuth, cors) {
 
   var api = '/api/0_0_1/data';
+
+  app.options(api, cors());
+
+  var corsOptions = {
+    methods: 'POST',
+    maxAge: 300
+  };
 
   /**
    * Create single new data event
    */
 
-  app.post(api, function(req, res) {
+  app.post(api, cors(corsOptions), function(req, res) {
 
     // console.log('POST recorded: ' + JSON.stringify(req.body));
 
