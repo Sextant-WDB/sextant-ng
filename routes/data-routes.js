@@ -36,10 +36,21 @@ module.exports = function(app, jwtAuth, cors) {
    * Read all data (authenticated)
    */
 
+  /**
+   * Goal: return only that data that matches the logged-in user
+   *
+   * To do:
+   *  -
+   *  -
+   *  -
+   *  -
+   *  -
+   */
+
   app.get(api, jwtAuth, function(req, res) {
     VisitModel.find({}, function(err, dbResponse) {
       if (err) return res.status(500).json(err);
-      console.log(req.user);
+      console.log(req.user.basic.email);
       return res.status(200).json(dbResponse);
     });
   });
