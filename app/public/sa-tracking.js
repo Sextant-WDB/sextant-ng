@@ -44,11 +44,11 @@ var PostRequest = function() {
   return xhr;
 };
 
-var request = new PostRequest();
 
 var sendEvents = setInterval(function() {
   if (!events.length) return;
 
+  var request = new PostRequest();
   request.send(JSON.stringify(events));
 
   events = [];
