@@ -19,7 +19,6 @@ module.exports = function(app) {
 	      httpService.get()
         .success(function(data) {
         	$scope.data = data;
-					$scope.filterSites();
         });
 	    };
 	    $scope.getAllData(); // Invoke as soon as the controller loads

@@ -23443,7 +23443,6 @@ module.exports = function(app) {
 	      httpService.get()
         .success(function(data) {
         	$scope.data = data;
-					$scope.filterSites();
         });
 	    };
 	    $scope.getAllData(); // Invoke as soon as the controller loads
@@ -23560,7 +23559,7 @@ module.exports = function(app) {
 'use strict';
 
 /**
- * Handle sign-in and the creation of new accounts
+ * Handle log-in and the creation of new accounts
  */
 
 module.exports = function(app) {
@@ -23571,13 +23570,13 @@ module.exports = function(app) {
       var api = '/api/0_0_1/users';
 
       /**
-       * Sign in existing users
+       * Log in existing users
        */
 
-      $scope.signIn = function() {
+      $scope.logIn = function() {
 
         // Passport requires base-64 encoding
-        $http.defaults.headers.common.Authentication = 'Basic ' +
+        $http.defaults.headers.common.Authorization = 'Basic ' +
         $base64.encode(
           $scope.user.email + ':' +
           $scope.user.password
@@ -23586,20 +23585,20 @@ module.exports = function(app) {
         $http.get(api)
         .success(function(data) {
           $cookies.jwt = data.jwt;
-          $location.path('/data');
+          $location.path('/dashboard');
         })
         .error(function(error) {
-          console.log('error in signInController! ' + JSON.stringify(error));
+          console.log('error in session controller! ' + JSON.stringify(error));
         });
 
       };
 
       /**
-       * Sign out current user
+       * Log out current user
        *
        */
 
-      $scope.signOut = function() {
+      $scope.logOut = function() {
         $cookies.jwt = null;
         $location.path('/'); // If redirect to /signin, error!
       };

@@ -1,0 +1,19 @@
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: .95em;
+    background-color: #FFFFFF;
+  } 
+  a, a:visited{
+    color:#778898;
+    cursor:pointer;
+  }
+  a:hover, a:active{
+    color: #BBCCAA;
+  }
+  div.ng-scope div{
+    padding:10px 0;
+  }
+  div.ng-scope{
+    width:900px;
+    margin:0 auto;
+  }
