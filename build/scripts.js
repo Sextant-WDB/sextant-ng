@@ -23391,8 +23391,7 @@ module.exports = function(app) {
         })
         .success(function(data) {
           $cookies.jwt = data.jwt;
-          $location.path('/data');
-          alert('Your ID is ' + data.id); // For dev only: find a better way
+          $location.path('/dashboard');
         })
         .error(function(error) {
           console.log('error in signInController! ' + JSON.stringify(error));
