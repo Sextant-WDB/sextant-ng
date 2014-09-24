@@ -101,13 +101,13 @@ window.addEventListener('load', function() {
 
           pageLoad.timeStamp = new Date().getTime();
           pageLoad.page = window.parent.location;
-          pageLoad.uuid = localStorage.getItem('uuid');
 
+          // Set the UUID if one exists
           var uuid = localStorage.getItem('uuid');
           if (uuid) { pageLoad.uuid = uuid; }
 
           // Get a UUID (if needed), session id, and write key
-          ajax.post(ajax.keysUrl, JSON.stringify(pageLoad), function(responseText) {
+          ajax.post(ajax.keysUrl, pageLoad, function(responseText) {
             var response = JSON.parse(responseText);
 
             if (response.uniqueID) {
