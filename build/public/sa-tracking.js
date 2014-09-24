@@ -25,7 +25,7 @@ _sa.post = function(url, data, callback) {
   xhr.setRequestHeader('Content-Type', 'application/json');
 
   xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
+    if (xhr.readyState === 4 && xhr.status === 200 && callback) {
       callback(xhr.responseText);
     }
   };
