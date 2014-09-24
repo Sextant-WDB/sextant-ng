@@ -5,6 +5,7 @@ require('angular-route');
 require('angular-cookies');
 require('angular-base64');
 
+
 var sextant = angular.module('sextant', [
 		'ngRoute',
 		'base64',

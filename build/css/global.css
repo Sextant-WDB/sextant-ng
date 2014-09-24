@@ -1,19 +1,64 @@
-  body {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: .95em;
-    background-color: #FFFFFF;
-  } 
-  a, a:visited{
-    color:#778898;
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: .95em;
+  background-color: #FFFFFF;
+} 
+
+a, a:visited{
+  color: #bbccaa;
+  cursor:pointer;
+}
+a:hover, a:active{
+  color:#778898;
+}
+
+ul{
+  list-style: none;
+  margin:0; padding:0; border:0;
+}
+li{
+  padding-left:10px;
+}
+
+div.viewWrapper{
+  width:900px;
+  margin:50px auto;
+  min-height:400px;
+}
+
+div.viewWrapper div.section > div{
+  padding:10px 0;
+}
+
+div.section input[type="text"],
+div.section input[type="password"]{
+  width:200px;
+  border: 1px solid #ddd;
+  line-height:25px;
+  text-indent:5px;
+}
+
+div.section button{
+  width:80px;
+  border: 1px solid #bbccaa;
+  background:white;
+  color:#bbccaa;
+  line-height:20px;
+  margin-right:20px;
+  /*-webkit-box-shadow: -6px 6px 0 0 #bbccaa;
+  box-shadow: -6px 6px 0 0 #bbccaa;*/
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+  div.section button:hover,
+  div.section button:active{
+    border-color:#778898;
+    color: #778898;
     cursor:pointer;
+   /* -webkit-box-shadow: -6px 6px 0 0 #778898;
+    box-shadow: -6px 6px 0 0 #778898;*/
   }
-  a:hover, a:active{
-    color: #BBCCAA;
-  }
-  div.ng-scope div{
-    padding:10px 0;
-  }
-  div.ng-scope{
-    width:900px;
-    margin:0 auto;
-  }
+

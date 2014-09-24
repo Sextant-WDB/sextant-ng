@@ -1,38 +1,49 @@
-<div ng-init="newUser = false">
+<div class="viewWrapper">
 
-  <div data-ng-controller="sessionController" data-ng-show="!newUser">
-    <h1>Login</h1>
+  <div ng-init="newUser = false" >
 
-    <div>
-      <label>Email</label>
-      <input type="text" data-ng-model="user.email">
+    <h1>Gateway</h1>
+
+    <div data-ng-controller="sessionController" data-ng-show="!newUser" class="section">
+
+      <h3>Login</h3>
+
+      <div>
+        <input type="text" data-ng-model="user.email" placeholder="email">
+      </div>
+
+      <div>
+        <input type="password" data-ng-model="user.password" placeholder="password">
+      </div>
+      
+      <div>
+        <button ng-click="logIn()">Log In</button>
+        <button ng-click="logOut()">Log Out</button>
+      </div>
+      
     </div>
 
-    <div>
-      <label>Password</label>
-      <input type="password" data-ng-model="user.password">
+    <div data-ng-controller="accountController" data-ng-show="newUser" class="section">
+
+      <h3>Create an account</h3>
+
+      <div>
+        <input type="text" data-ng-model="user.newEmail" placeholder="email">
+      </div>
+      
+      <div>
+        <input type="password" data-ng-model="user.newPassword" placeholder="password">
+      </div>
+      
+      <div>
+        <button data-ng-click="createNewUser()">Register</button>
+      </div>
+      
     </div>
-    
-    <button ng-click="logIn()">Log In</button>
-    <button ng-click="logOut()">Log Out</button>
+
+    <a data-ng-click="newUser = !newUser">
+      {{!newUser ? 'Create new User' : 'Sign in to existing account'}}
+    </a>
+
   </div>
-
-  <div data-ng-controller="accountController" data-ng-show="newUser">
-    <h3>Create an account</h3>
-
-    <label>Email</label>
-    <input type="text" data-ng-model="user.newEmail">
-
-    <label>Password</label>
-    <input type="password" data-ng-model="user.newPassword">
-
-    <button data-ng-click="createNewUser()">Create account</button>
-  </div>
-
-  <a data-ng-click="newUser = !newUser">{{!newUser ? 'Create new User' : 'Sign in to existing account'}}</a>
-
 </div>
-
-<!-- <div class="danger">
-  <button data-ng-click="deleteAllUsers()">Delete all users (!)</button>
-</div> -->

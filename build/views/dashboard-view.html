@@ -1,7 +1,8 @@
-<div>
+<div class="viewWrapper">
+
 	<h1>Dashboard</h1>
 		
-	<div>
+	<div class="section">
 		<h3>Authorized Domains</h3>
 		<ul>
 			<li data-ng-repeat="domain in domains">
@@ -10,11 +11,40 @@
 		</ul>
 	</div>
 
-	<div data-ng-show="selectedDomain">
+	<div data-ng-show="selectedDomain" class="section">
+
 		<h3>Visit Data</h3>
-		<div data-ng-repeat="visit in visits">
-			<p>{{ visit }}</p>
+		<h4>Summary</h4>
+		<p>Visits: {{ totalVisits }}</p>
+
+		<div>
+			<style>
+				rect {
+				  fill: steelblue;
+				}
+				text {
+				  fill: black;
+				  font: 10px sans-serif;
+				  text-anchor: end;
+				}
+			</style>
+			<svg id="d3-timeline"></svg>
 		</div>
+		
+		<ul data-ng-repeat="visit in visits">
+			<li>
+				<p>Visit from {{ visit._id }}</p>
+				<p>Events: {{ visit.events.length }}</p>
+				<ul data-ng-repeat="event in visit.events">
+					<li>timestamp: {{event.timestamp}}</li>
+					<li>type: {{event.event_type}}</li>
+					<li>attributes: {{event.attributes}}</li>
+				</ul>
+			</li>
+		</ul>
+
+		
+
 	</div>
 	
 </div>
