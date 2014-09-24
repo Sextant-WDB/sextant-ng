@@ -5,7 +5,7 @@ var _sa = _sa || {};
 _sa.events = [];
 _sa.requestInterval = 5000;
 
-_sa.postUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
+_sa.dataUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
 _sa.keysUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/provisionKeys';
 
 // For AJAX
@@ -21,7 +21,7 @@ _sa.createXHR = function() {
 _sa.post = function(url, data, callback) {
   var xhr = this.createXHR();
 
-  xhr.open('POST', this.postUrl, true);
+  xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
   xhr.onreadystatechange = function() {
