@@ -24,6 +24,9 @@ module.exports = function(app, cors) {
 
   app.post(api, cors(corsOptions), function(req, res) {
 
+    req.body.host = req.get('Host');
+    console.log(JSON.stringify(req.body));
+
     var newEvent = new Visit(req.body);
     newEvent.save(function(err, dbResponse) {
       if (err) return res.status(500).json(err);
