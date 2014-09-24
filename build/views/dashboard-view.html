@@ -1,6 +1,6 @@
 <div>
 	<h1>Dashboard</h1>
-		
+
 	<div>
 		<h3>Authorized Domains</h3>
 		<ul>
@@ -10,11 +10,17 @@
 		</ul>
 	</div>
 
+	<div>
+		<h3>Add a domain</h3>
+		<input data-ng-model="newDomain" type="text">
+		<button data-ng-click="addDomain()">Add</button>
+	</div>
+
 	<div data-ng-show="selectedDomain">
 		<h3>Visit Data</h3>
 		<div data-ng-repeat="visit in visits">
 			<p>{{ visit }}</p>
 		</div>
 	</div>
-	
+
 </div>
