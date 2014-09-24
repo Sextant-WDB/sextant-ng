@@ -1,37 +1,65 @@
 <div ng-init="newUser = false">
-
   <div data-ng-controller="sessionController" data-ng-show="!newUser">
-    <h1>Login</h1>
-
-    <div>
-      <label>Email</label>
-      <input type="text" data-ng-model="user.email">
-    </div>
-
-    <div>
-      <label>Password</label>
-      <input type="password" data-ng-model="user.password">
-    </div>
-    
-    <button ng-click="logIn()">Log In</button>
-    <button ng-click="logOut()">Log Out</button>
+   <section class="flex-item">
+      <form id="login">
+        <fieldset>
+          <legend>Login</legend>
+          <ol>
+            <li>
+              <label for="email">Email</label>
+              <input id="email" name="Email" type="email" data-ng-model="user.email" placeholder="example@domain.com" required autofocus>
+            </li>
+            <li>
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" data-ng-model="user.password" placeholder="Password" required>
+            </li>
+          </ol>
+        </fieldset>
+        <fieldset>
+          <button ng-click="logIn()">Log In</button>
+        </fieldset>
+        <fieldset><button ng-click="logOut()">Log Out</button>
+        </fieldset>
+        <p>
+          <a href="register.html">Not registered yet? Click here!</a>
+          <a href="passwordreset.html">Forgot password?</a>
+        </p>
+      </form>
+    </section>
   </div>
-
-  <div data-ng-controller="accountController" data-ng-show="newUser">
-    <h3>Create an account</h3>
-
-    <label>Email</label>
-    <input type="text" data-ng-model="user.newEmail">
-
-    <label>Password</label>
-    <input type="password" data-ng-model="user.newPassword">
-
-    <button data-ng-click="createNewUser()">Create account</button>
-  </div>
-
-  <a data-ng-click="newUser = !newUser">{{!newUser ? 'Create new User' : 'Sign in to existing account'}}</a>
-
 </div>
+
+
+<div data-ng-controller="accountController" data-ng-show="newUser">
+  <section class="flex-item">
+    <form id="register">
+      <fieldset>
+        <legend>Create an account</legend>
+        <ol>
+          <li>
+            <label for="email">Email</label>
+            <input id="email" name="Email" type="email" data-ng-model="user.newEmail" placeholder="example@domain.com" required autofocus>
+          </li>
+          <li>
+            <label for="password">Enter password</label>
+            <input id="password" name="password" type="password" data-ng-model="user.newPassword" placeholder="Password" required>
+          </li>
+          <li>
+            <label for="domain">Enter domain</label>
+            <input id="domain" type="url" name="website" placeholder="URL">
+          </li>
+        </ol>
+      </fieldset>
+      <fieldset>
+        <button data-ng-click="createNewUser()">Create account</button>
+      </fieldset>
+      <p>
+        <a href="index.html">Already registered? Click here to log in!</a>
+        <a href="passwordreset.html">Forgot password?</a>
+        <a data-ng-click="newUser = !newUser">{{!newUser ? 'Create new User' : 'Sign in to existing account'}}</a>
+      </p>
+    </form>
+  </section>
 
 <!-- <div class="danger">
   <button data-ng-click="deleteAllUsers()">Delete all users (!)</button>

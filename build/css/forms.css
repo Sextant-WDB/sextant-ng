@@ -1,0 +1,66 @@
+/* Form */
+form {
+  padding: 1.5em;
+  color: #fff;
+  font-family: "Tahoma", sans-serif;
+}
+
+form fieldset {
+  border: none;
+  padding: 2em auto;
+  margin-bottom: 0.25em;
+}
+
+form fieldset: last-of-type {
+  margin-bottom: 0;
+}
+
+form legend {
+  color: #ffffff;
+  font-size: 2.5em;
+  font-family: "Tahoma", sans-serif;
+  padding-bottom: 0.5em;
+}
+
+/*form label {
+  float: left;
+  text-align: right;
+  margin-right: 15px;
+  width: 100px;
+}*/
+
+form ol li {
+  line-height: 1em;
+  list-style: none;
+  padding: 0.5em 0;
+  margin-bottom: 0.25em;
+}
+
+form button {
+  background:  #ffffff;
+  color: #000;
+  display: block;
+  font: 0.955em "Tahoma", sans-serif;
+  letter-spacing: 0.02em;
+  padding: 0.25em 0.25em;
+  text-transform: uppercase;
+}
+
+form button:hover {
+  background:  #697A8C;
+  cursor: pointer;
+}
+
+/*input:not([type=radio]), textarea {
+  width: 80%;
+  line-height: 2em;
+}
+
+label {
+  float: left;
+  text-align: right;
+  margin-right: 15px;
+  width: 100px;
+
+
+
