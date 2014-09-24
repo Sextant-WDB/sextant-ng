@@ -5,8 +5,8 @@ var _sa = _sa || {};
 _sa.events = [];
 _sa.sendInterval = 5000;
 
-_sa.dataUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
-_sa.keysUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/provisionKeys';
+_sa.dataUrl ='http://localhost:3000/api/0_0_1/data';
+_sa.keysUrl ='http://localhost:3000/api/0_0_1/provisionKeys';
 
 // For AJAX
 _sa.createXHR = function() {
@@ -36,7 +36,7 @@ _sa.post = function(url, data, callback) {
 // Stamp the request body with credentials
 _sa.send= function(url, data, callback) {
 
-  if(!_sa.writeKey) {
+  if(!_sa.writeKey && url !== _sa.keysUrl) {
     clearInterval(_sa.sendEvents);
     throw new Error('No write key.');
   }
@@ -92,9 +92,11 @@ _sa.angularListener = function() {
 
   // HTML element where ng-app is defined
   var ngAppNode = document.getElementsByClassName('ng-scope')[0];
+  console.log('ngAppNode: ' + ngAppNode);
 
    // Convert the element into an Angular element to access the $rootScope
   var ngApp = angular.element(ngAppNode);
+  console.log('ngApp: ' + ngApp);
 
   // Listen to route changes on the $routeProvider
   ngApp.scope().$on('$routeChangeSuccess', function(e, current, previous) {
@@ -103,7 +105,7 @@ _sa.angularListener = function() {
       if(previous.originalPath && current.originalPath) {
         var pageChange = {};
 
-        pageChange.timeStamp = new Date().getTime();
+        pageChange.timestamp = new Date().getTime();
         pageChange.from = previous.originalPath;
         pageChange.to = current.originalPath;
 
@@ -121,14 +123,18 @@ window.addEventListener('click', function(e) {
 });
 
 // Handle initial page load
-window.addEventListener('load', function() {
+// window.addEventListener('load', function() {
+
+(function() {
   var pageLoad = {};
 
-  pageLoad.timeStamp = new Date().getTime();
+  pageLoad.time_stamp = new Date().getTime();
   pageLoad.page = window.parent.location.href;
 
   // Get a UUID (if needed), session id, and write key
   _sa.send(_sa.keysUrl, pageLoad, function(responseText) {
+
+    var response = JSON.parse(responseText);
 
     if (response.uniqueID) {
         localStorage.setItem('uuid', response.uniqueID);
@@ -139,7 +145,12 @@ window.addEventListener('load', function() {
     _sa.writeKey = response.writeKey;
   });
 
-  _sa.angularListener();
+  setTimeout(_sa.angularListener, 1000);
 
-  window.removeEventListener('load');
+  // _sa.angularListener();
+}());
+
+window.addEventListener('load', function() {
+  console.log('page load registered!');
+  console.log(document.getElementsByClassName('ng-scope')[0]);
 });
