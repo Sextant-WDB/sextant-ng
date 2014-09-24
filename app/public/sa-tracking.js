@@ -109,7 +109,7 @@ window.addEventListener('load', function() {
     var pageLoad = {};
 
     pageLoad.timeStamp = new Date().getTime();
-    pageLoad.page = window.parent.location;
+    pageLoad.page = window.parent.location.href;
 
     // Set the UUID if one exists
     var uuid = localStorage.getItem('uuid');
