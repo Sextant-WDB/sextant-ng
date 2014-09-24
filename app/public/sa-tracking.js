@@ -37,6 +37,7 @@ var processEvent = function(e) {
 var ajax = {};
 
 ajax.postUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
+ajax.keysUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/provisionKeys';
 
 ajax.createXHR = function() {
   try {
@@ -44,21 +45,27 @@ ajax.createXHR = function() {
   } catch(e) {
     throw new Error('No XHR object.');
   }
-
 };
 
-ajax.post = function(data) {
+ajax.post = function(url, data, callback) {
   var xhr = this.createXHR();
 
   xhr.open('POST', this.postUrl, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(data);
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      callback(xhr.responseText);
+    }
+  };
+
+  xhr.send(JSON.stringify(data));
 };
 
 var sendEvents = setInterval(function() {
   if (!events.length) return;
 
-  ajax.post(JSON.stringify(events));
+  ajax.post(ajax.dataUrl, events);
 
   events = [];
 }, requestInterval);
@@ -81,16 +88,23 @@ window.addEventListener('load', function() {
             if(previous.originalPath && current.originalPath) {
                 var pageChange = {};
 
+                pageChange.timeStamp = new Date().getTime();
                 pageChange.from = previous.originalPath;
                 pageChange.to = current.originalPath;
-                pageChange.timeStamp = new Date().getTime();
 
                 events.push(pageChange);
             }
         }
         // Initial page load
         else {
-          console.log('initial load');
+          var pageLoad = {};
+
+              pageLoad.timeStamp = new Date().getTime();
+              pageLoad.page = window.parent.location;
+              pageLoad.uuid = localStorage.getItem('uuid');
+
+              var uuid = localStorage.getItem('uuid');
+              if (uuid) { pageLoad.uuid = uuid; }
         }
     });
 });
