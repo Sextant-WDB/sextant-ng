@@ -6,7 +6,10 @@ var crypto = require('crypto');
 var uuid = require('node-uuid');
 
 /**
- * API endpoints to create new users and log in existing ones
+ * API to provision credentials to tracked sites:
+ *  - write keys
+ *  - session IDs
+ *  - unique user IDs
  */
 
 module.exports = function(app, cors) {
@@ -23,7 +26,12 @@ module.exports = function(app, cors) {
     app.post(api, cors(corsOptions), function(req, res) {
         var origin = req.get('Origin');
 
-        Domains.find({ host: origin }, function(err, dbResponse) {
+        Domains.findOne({ host: origin }, function(err, dbResponse) {
+
+            // if (dbResponse.length === 0 ) {
+            //     console.log('no reponse!');
+            // }
+
             var attributes = {};
             var visitorInfo = {};
 
@@ -43,7 +51,8 @@ module.exports = function(app, cors) {
             visit.save();
 
             visitorInfo.sessionID = attributes.session_id;
-            visitorInfo.writeKey = dbResponse.writeKey;
+            visitorInfo.writeKey = dbResponse.write_key;
+            console.log(JSON.stringify(dbResponse));
 
             return res.status(200).json(visitorInfo);
         });
