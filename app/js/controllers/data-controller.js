@@ -17,13 +17,13 @@ module.exports = function(app) {
             $scope.domains = domains;
           });
       };
-      
+
       $scope.getDomains(); // run on view load
 
       var visitService = new HttpService('visits');
 
       $scope.getVisits = function(domain_id){
-        
+
         $scope.selectedDomain = domain_id;
 
         visitService.get(domain_id.toString())
@@ -31,6 +31,15 @@ module.exports = function(app) {
             $scope.visits = visits;
           });
       };
-        
+
+      /**
+       * Add domains
+       */
+
+      $scope.addDomain = function() {
+        domainService.post($scope.newDomain, {});
+        $scope.newDomain = '';
+      };
+
 		} ]);
 };
