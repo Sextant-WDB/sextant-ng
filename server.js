@@ -33,7 +33,8 @@ var jwtAuth = require('./lib/auth/jwt-auth')(app);
 
 require('./routes/user-routes')(app, passport);
 require('./routes/data-routes')(app, cors);
-require('./routes/visits-routes')(app, jwtAuth.auth);
+require('./routes/visit-routes')(app, jwtAuth.auth);
+require('./routes/domain-routes')(app, jwtAuth.auth);
 require('./routes/provision-tracker-routes')(app, cors);
 
 // Init
