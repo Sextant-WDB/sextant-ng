@@ -123,8 +123,9 @@ window.addEventListener('load', function() {
             localStorage.setItem('uuid', response.uniqueID);
         }
 
-        sessionStorage.setItem('writeKey', responseText.writeKey);
-        sessionStorage.setItem('sid', response.sessionID);
+        _sa.uuid = pageLoad.uuid || response.uniqueID;
+        _sa.sid = response.sessionID;
+        _sa.writeKey = response.writeKey;
     });
 
     _sa.angularListener();
