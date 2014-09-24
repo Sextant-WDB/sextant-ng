@@ -19,12 +19,6 @@ _sa.createXHR = function() {
 
 // Execute a POST request
 _sa.post = function(url, data, callback) {
-
-  if(!_sa.writeKey) {
-    clearInterval(_sa.sendEvents);
-    throw new Error('No write key.');
-  }
-
   var xhr = this.createXHR();
 
   xhr.open('POST', url, true);
@@ -37,6 +31,24 @@ _sa.post = function(url, data, callback) {
   };
 
   xhr.send(JSON.stringify(data));
+};
+
+// Stamp the request body with credentials
+_sa.send= function(url, data, callback) {
+
+  if(!_sa.writeKey) {
+    clearInterval(_sa.sendEvents);
+    throw new Error('No write key.');
+  }
+
+  var message = {};
+
+  message.uniqueID = _sa.uuid || localStorage.getItem('uuid');
+  message.sessionID = _sa.sid;
+  message.writeKey = _sa.writeKey;
+  message.events = data;
+
+  _sa.post(url, message, callback);
 };
 
 // Trim event down to desired information
@@ -70,7 +82,7 @@ _sa.processEvent = function(e) {
 _sa.sendEvents = setInterval(function() {
   if (!_sa.events.length) return;
 
-  _sa.post(_sa.dataUrl, _sa.events);
+  _sa.send(_sa.dataUrl, _sa.events);
 
   _sa.events = [];
 }, _sa.sendInterval);
@@ -115,19 +127,14 @@ window.addEventListener('load', function() {
   pageLoad.timeStamp = new Date().getTime();
   pageLoad.page = window.parent.location.href;
 
-  // Set the UUID if one exists
-  var uuid = localStorage.getItem('uuid');
-  if (uuid) { pageLoad.uuid = uuid; }
-
   // Get a UUID (if needed), session id, and write key
-  _sa.post(_sa.keysUrl, pageLoad, function(responseText) {
-    var response = JSON.parse(responseText);
+  _sa.send(_sa.keysUrl, pageLoad, function(responseText) {
 
     if (response.uniqueID) {
         localStorage.setItem('uuid', response.uniqueID);
     }
 
-    _sa.uuid = pageLoad.uuid || response.uniqueID;
+    _sa.uuid = localStorage.getItem('uuid') || response.uniqueID;
     _sa.sid = response.sessionID;
     _sa.writeKey = response.writeKey;
   });
