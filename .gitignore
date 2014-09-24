@@ -32,3 +32,6 @@ app/bower_components/
 
 .DS_Store
 bower_components
+
+# Local development database
+db/
