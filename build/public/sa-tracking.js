@@ -1,76 +1,81 @@
 'use strict';
 
-var events = [];
-var requestInterval = 5000;
+var _sa = _sa || {};
 
-window.addEventListener('click', function(e) {
-    e = event || window.event;
+_sa.events = [];
+_sa.requestInterval = 5000;
 
-    events.push(processEvent(e));
-});
+_sa.postUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
+_sa.keysUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/provisionKeys';
 
-var processEvent = function(e) {
-
-  // Event attributes
-  var eventProps = ['type', 'timeStamp'];
-
-  // Event target attributes
-  var targetProps = ['nodeName', 'innerHTML'];
-
-  // Trimmed event
-  var result = {};
-
-  eventProps.forEach(function(prop) {
-    if (e[prop]) { result[prop] = e[prop]; }
-  });
-
-  if(e.target) {
-    targetProps.forEach(function(prop) {
-      if(e.target[prop]) { result[prop] = e.target[prop]; }
-    });
-  }
-
-  console.log('event result: ' + JSON.stringify(result));
-  return result;
-};
-
-var ajax = {};
-
-ajax.postUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
-
-ajax.createXHR = function() {
+// For AJAX
+_sa.createXHR = function() {
   try {
     return new XMLHttpRequest();
   } catch(e) {
     throw new Error('No XHR object.');
   }
-
 };
 
-ajax.post = function(data) {
+// Execute a POST request
+_sa.post = function(url, data, callback) {
   var xhr = this.createXHR();
 
   xhr.open('POST', this.postUrl, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.send(data);
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      callback(xhr.responseText);
+    }
+  };
+
+  xhr.send(JSON.stringify(data));
 };
 
-var sendEvents = setInterval(function() {
-  if (!events.length) return;
+// Trim event down to desired information
+_sa.processEvent = function(e) {
 
-  ajax.post(JSON.stringify(events));
+  // Desired event attributes
+  var eventProps = ['type', 'timeStamp'];
 
-  events = [];
-}, requestInterval);
+  // Desired event target attributes
+  var targetProps = ['nodeName', 'innerHTML'];
 
-window.addEventListener('load', function() {
+  // Trimmed event
+  var trimmed = {};
 
+  // Only save the whitelisted attributes
+  eventProps.forEach(function(prop) {
+    if (e[prop]) { trimmed[prop] = e[prop]; }
+  });
+
+  // If the event had a target save its attributes too
+  if(e.target) {
+    targetProps.forEach(function(prop) {
+      if(e.target[prop]) { trimmed[prop] = e.target[prop]; }
+    });
+  }
+
+  return trimmed;
+};
+
+// Automatically send any collected events
+_sa.sendEvents = setInterval(function() {
+  if (!_sa.events.length) return;
+
+  _sa.post(_sa.dataUrl, _sa.events);
+
+  _sa.events = [];
+}, _sa.requestInterval);
+
+_sa.angularListener = function() {
     if(!window.angular) return;
 
     // HTML element where ng-app is defined
     var ngAppNode = document.getElementsByClassName('ng-scope')[0];
 
-     // Convert element to an Angular element in order to access the $rootScope
+     // Convert the element into an Angular element to access the $rootScope
     var ngApp = angular.element(ngAppNode);
 
     // Listen to route changes on the $routeProvider
@@ -79,12 +84,50 @@ window.addEventListener('load', function() {
         if (previous) {
             // Navigation between two angular routes
             if(previous.originalPath && current.originalPath) {
-                console.log('from %s to %s', previous.originalPath, current.originalPath);
+                var pageChange = {};
+
+                pageChange.timeStamp = new Date().getTime();
+                pageChange.from = previous.originalPath;
+                pageChange.to = current.originalPath;
+
+                _sa.events.push(pageChange);
             }
         }
-        // Initial page load
-        else {
-          console.log('initial load');
-        }
     });
+};
+
+// Capture and process all clicks
+window.addEventListener('click', function(e) {
+    e = event || window.event;
+
+    _sa.events.push(_sa.processEvent(e));
+});
+
+// Handle initial page load
+window.addEventListener('load', function() {
+
+    var pageLoad = {};
+
+    pageLoad.timeStamp = new Date().getTime();
+    pageLoad.page = window.parent.location;
+
+    // Set the UUID if one exists
+    var uuid = localStorage.getItem('uuid');
+    if (uuid) { pageLoad.uuid = uuid; }
+
+    // Get a UUID (if needed), session id, and write key
+    _sa.post(_sa.keysUrl, pageLoad, function(responseText) {
+        var response = JSON.parse(responseText);
+
+        if (response.uniqueID) {
+            localStorage.setItem('uuid', response.uniqueID);
+        }
+
+        sessionStorage.setItem('writeKey', responseText.writeKey);
+        sessionStorage.setItem('sid', response.sessionID);
+    });
+
+    _sa.angularListener();
+
+    window.removeEventListener('load');
 });
