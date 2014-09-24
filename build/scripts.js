@@ -23451,7 +23451,6 @@ module.exports = function(app) {
 
         visitService.get(domain_id.toString())
           .success(function(visits){
-            console.log('visits: ' + visits);
             $scope.visits = visits;
           });
       };

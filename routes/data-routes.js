@@ -27,6 +27,13 @@ module.exports = function(app, cors) {
     req.body.host = req.get('Host');
     console.log(JSON.stringify(req.body));
 
+    Visit.update({ 'sessionID' : req.body.sessionID }, { $pushAll: { events: req.body.events }}, function(err, records) {
+      //if (err) return res.status(500).json(err);
+
+      console.log('Found visit and updated');
+      return res.status(200).end();
+    });
+
     var newEvent = new Visit(req.body);
     newEvent.save(function(err, dbResponse) {
       if (err) return res.status(500).json(err);
