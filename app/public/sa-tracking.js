@@ -3,7 +3,7 @@
 var _sa = _sa || {};
 
 _sa.events = [];
-_sa.requestInterval = 5000;
+_sa.sendInterval = 5000;
 
 _sa.dataUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
 _sa.keysUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/provisionKeys';
@@ -19,6 +19,12 @@ _sa.createXHR = function() {
 
 // Execute a POST request
 _sa.post = function(url, data, callback) {
+
+  if(!_sa.writeKey) {
+    clearInterval(_sa.sendEvents);
+    throw new Error('No write key.');
+  }
+
   var xhr = this.createXHR();
 
   xhr.open('POST', url, true);
@@ -67,68 +73,66 @@ _sa.sendEvents = setInterval(function() {
   _sa.post(_sa.dataUrl, _sa.events);
 
   _sa.events = [];
-}, _sa.requestInterval);
+}, _sa.sendInterval);
 
 _sa.angularListener = function() {
-    if(!window.angular) return;
+  if(!window.angular) return;
 
-    // HTML element where ng-app is defined
-    var ngAppNode = document.getElementsByClassName('ng-scope')[0];
+  // HTML element where ng-app is defined
+  var ngAppNode = document.getElementsByClassName('ng-scope')[0];
 
-     // Convert the element into an Angular element to access the $rootScope
-    var ngApp = angular.element(ngAppNode);
+   // Convert the element into an Angular element to access the $rootScope
+  var ngApp = angular.element(ngAppNode);
 
-    // Listen to route changes on the $routeProvider
-    ngApp.scope().$on('$routeChangeSuccess', function(e, current, previous) {
+  // Listen to route changes on the $routeProvider
+  ngApp.scope().$on('$routeChangeSuccess', function(e, current, previous) {
+    if (previous) {
+      // Navigation between two angular routes
+      if(previous.originalPath && current.originalPath) {
+        var pageChange = {};
 
-        if (previous) {
-            // Navigation between two angular routes
-            if(previous.originalPath && current.originalPath) {
-                var pageChange = {};
+        pageChange.timeStamp = new Date().getTime();
+        pageChange.from = previous.originalPath;
+        pageChange.to = current.originalPath;
 
-                pageChange.timeStamp = new Date().getTime();
-                pageChange.from = previous.originalPath;
-                pageChange.to = current.originalPath;
-
-                _sa.events.push(pageChange);
-            }
-        }
-    });
+        _sa.events.push(pageChange);
+      }
+    }
+  });
 };
 
 // Capture and process all clicks
 window.addEventListener('click', function(e) {
-    e = event || window.event;
+  e = event || window.event;
 
-    _sa.events.push(_sa.processEvent(e));
+  _sa.events.push(_sa.processEvent(e));
 });
 
 // Handle initial page load
 window.addEventListener('load', function() {
+  var pageLoad = {};
 
-    var pageLoad = {};
+  pageLoad.timeStamp = new Date().getTime();
+  pageLoad.page = window.parent.location.href;
 
-    pageLoad.timeStamp = new Date().getTime();
-    pageLoad.page = window.parent.location.href;
+  // Set the UUID if one exists
+  var uuid = localStorage.getItem('uuid');
+  if (uuid) { pageLoad.uuid = uuid; }
 
-    // Set the UUID if one exists
-    var uuid = localStorage.getItem('uuid');
-    if (uuid) { pageLoad.uuid = uuid; }
+  // Get a UUID (if needed), session id, and write key
+  _sa.post(_sa.keysUrl, pageLoad, function(responseText) {
+    var response = JSON.parse(responseText);
 
-    // Get a UUID (if needed), session id, and write key
-    _sa.post(_sa.keysUrl, pageLoad, function(responseText) {
-        var response = JSON.parse(responseText);
+    if (response.uniqueID) {
+        localStorage.setItem('uuid', response.uniqueID);
+    }
 
-        if (response.uniqueID) {
-            localStorage.setItem('uuid', response.uniqueID);
-        }
+    _sa.uuid = pageLoad.uuid || response.uniqueID;
+    _sa.sid = response.sessionID;
+    _sa.writeKey = response.writeKey;
+  });
 
-        _sa.uuid = pageLoad.uuid || response.uniqueID;
-        _sa.sid = response.sessionID;
-        _sa.writeKey = response.writeKey;
-    });
+  _sa.angularListener();
 
-    _sa.angularListener();
-
-    window.removeEventListener('load');
+  window.removeEventListener('load');
 });
