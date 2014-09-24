@@ -79,7 +79,13 @@ window.addEventListener('load', function() {
         if (previous) {
             // Navigation between two angular routes
             if(previous.originalPath && current.originalPath) {
-                console.log('from %s to %s', previous.originalPath, current.originalPath);
+                var pageChange = {};
+
+                pageChange.from = previous.originalPath;
+                pageChange.to = current.originalPath;
+                pageChange.timeStamp = new Date().getTime();
+
+                events.push(pageChange);
             }
         }
         // Initial page load
