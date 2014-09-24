@@ -19,6 +19,7 @@ var VisitSchema = mongoose.Schema({
       {
         timestamp: Date,
         event_type: String,
+        nodeName: String,
         attributes: [{name: String}],
         inner_html: String,
         classes: [{name:String}]

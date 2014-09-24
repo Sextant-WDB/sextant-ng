@@ -24,6 +24,8 @@ require('./js/controllers/account-controller')(sextant);
 
 // Directives
 
+// require('./js/directives/visit-summary-directive')(sextant);
+
 // Routes
 sextant.config([ '$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {

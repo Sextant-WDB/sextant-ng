@@ -25,6 +25,8 @@ require('./js/controllers/account-controller')(sextant);
 
 // Directives
 
+// require('./js/directives/visit-summary-directive')(sextant);
+
 // Routes
 sextant.config([ '$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {
@@ -44,7 +46,7 @@ sextant.config([ '$routeProvider', '$locationProvider',
 
 		// $locationProvider.html5Mode(true);
 } ]);
-},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/services/http-service":9}],2:[function(require,module,exports){
+},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/services/http-service":10}],2:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -23468,7 +23470,12 @@ module.exports = function(app) {
       var d3init = function(){
         console.log('initializing d3');
 
-        // get the maximum number events for a single visit to set the scale
+      };
+
+      var d3update = function(){
+        console.log('updating d3');
+
+         // calc the maximum events
         $scope.maxEvents = 0;
         $scope.visits.forEach(function(el){
           if( el.events.length > $scope.maxEvents){
@@ -23476,34 +23483,31 @@ module.exports = function(app) {
           }
         });
 
-        console.log('$scope.maxEvents: ' + $scope.maxEvents);
-        console.log('$scope.totalVisits: ' + $scope.totalVisits);
-
         var height = 200;
         var barWidth = 20;
         var scale = d3.scale.linear()
-                      .domain([0, $scope.maxEvents])
-                      .range([height,0]);
+          .domain([0, $scope.maxEvents])
+          .range([height,0]);
 
         // initialize timeline
         $scope.timeline = d3.select('#d3-timeline')
-                      .attr('width', barWidth * $scope.visits.length)
-                      .attr('height', height);
+          .attr('width', barWidth * $scope.visits.length)
+          .attr('height', height);
 
         var bars = $scope.timeline.selectAll('g').data($scope.visits)
-                  .enter().append('g')
-                    .attr('transform', function(data, index){
-                      return 'translate(' + index * barWidth +',0)';
-                    });
+          .enter().append('g')
+            .attr('transform', function(data, index){
+              return 'translate(' + index * barWidth +',0)';
+            });
 
         bars.append('rect')
-              .attr('y', function(data){
-                return scale(data.events.length);
-              })
-              .attr('width', barWidth - 1)
-              .attr('height', function(data){
-                return height - scale(data.events.length);
-              });
+          .attr('y', function(data){
+            return scale(data.events.length);
+          })
+          .attr('width', barWidth - 1)
+          .attr('height', function(data){
+            return height - scale(data.events.length);
+          });
 
         bars.append('text')
           .attr('x', barWidth / 2 )
@@ -23514,16 +23518,11 @@ module.exports = function(app) {
           .text(function(data) { 
             return data.events.length; 
           });
-
-      };
-
-      var d3update = function(){
-        console.log('updating d3');
       };
         
 		} ]);
 };
-},{"d3":10}],8:[function(require,module,exports){
+},{"d3":11}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -23577,6 +23576,16 @@ module.exports = function(app) {
 },{}],9:[function(require,module,exports){
 'use strict';
 
+// var d3 = require('d3');
+
+module.exports = function(app) {
+  app.directive('visitSummary', function() {
+      
+  });
+};
+},{}],10:[function(require,module,exports){
+'use strict';
+
 /**
  * DRY out REST requests to the data API
  */
@@ -23621,7 +23630,7 @@ module.exports = function(app) {
 		return HttpService;
 	});
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.4.11"
@@ -32855,4 +32864,4 @@ module.exports = function(app) {
   if (typeof define === "function" && define.amd) define(d3); else if (typeof module === "object" && module.exports) module.exports = d3;
   this.d3 = d3;
 }();
-},{}]},{},[6,7,8,9,1]);
+},{}]},{},[6,7,8,9,10,1]);
