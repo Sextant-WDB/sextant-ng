@@ -2,7 +2,6 @@
 
 var VisitModel = require('../models/visit-model');
 var Domains = require('../models/domain-model');
-var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var uuid = require('node-uuid');
 

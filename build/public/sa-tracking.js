@@ -62,3 +62,29 @@ var sendEvents = setInterval(function() {
 
   events = [];
 }, requestInterval);
+
+window.addEventListener('load', function() {
+
+    if(!window.angular) return;
+
+    // HTML element where ng-app is defined
+    var ngAppNode = document.getElementsByClassName('ng-scope')[0];
+
+     // Convert element to an Angular element in order to access the $rootScope
+    var ngApp = angular.element(ngAppNode);
+
+    // Listen to route changes on the $routeProvider
+    ngApp.scope().$on('$routeChangeSuccess', function(e, current, previous) {
+
+        if (previous) {
+            // Navigation between two angular routes
+            if(previous.originalPath && current.originalPath) {
+                console.log('from %s to %s', previous.originalPath, current.originalPath);
+            }
+        }
+        // Initial page load
+        else {
+          console.log('initial load');
+        }
+    });
+});
