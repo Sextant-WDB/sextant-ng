@@ -23,9 +23,13 @@ require('./js/controllers/session-controller')(sextant);
 require('./js/controllers/data-controller')(sextant);
 require('./js/controllers/account-controller')(sextant);
 
+require('./js/directives/controllers/events-bar-graph-controller')(sextant);
+
 // Directives
 
-// require('./js/directives/visit-summary-directive')(sextant);
+require('./js/directives/visit-summary-directive')(sextant);
+require('./js/directives/visit-details-directive')(sextant);
+require('./js/directives/d3-events-bar-graph-directive')(sextant);
 
 // Routes
 sextant.config([ '$routeProvider', '$locationProvider',
@@ -46,7 +50,7 @@ sextant.config([ '$routeProvider', '$locationProvider',
 
 		// $locationProvider.html5Mode(true);
 } ]);
-},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/services/http-service":10}],2:[function(require,module,exports){
+},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/directives/controllers/events-bar-graph-controller":9,"./js/directives/d3-events-bar-graph-directive":10,"./js/directives/visit-details-directive":11,"./js/directives/visit-summary-directive":12,"./js/services/http-service":13}],2:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -23426,7 +23430,7 @@ module.exports = function(app) {
 },{}],7:[function(require,module,exports){
 'use strict';
 
-var d3 = require('d3');
+ /* jshint ignore:line*/
 
 module.exports = function(app) {
 	app.controller('dataController',
@@ -23434,6 +23438,8 @@ module.exports = function(app) {
 		function($scope, HttpService, $http, $cookies) {
 
 			$http.defaults.headers.common.jwt = $cookies.jwt;
+
+      $scope.d3 = require('d3');
 
       $scope.selectedDomain = false;
 
@@ -23458,71 +23464,13 @@ module.exports = function(app) {
           .success(function(visits){
             $scope.visits = visits;
             $scope.totalVisits = visits.length;
-            d3init();
-          });
-      };
-
-      $scope.$watch('visits', function(){
-        $scope.totalVisits = $scope.visits ? $scope.visits.length : 0;
-        d3update();
-      });
-
-      var d3init = function(){
-        console.log('initializing d3');
-
-      };
-
-      var d3update = function(){
-        console.log('updating d3');
-
-         // calc the maximum events
-        $scope.maxEvents = 0;
-        $scope.visits.forEach(function(el){
-          if( el.events.length > $scope.maxEvents){
-            $scope.maxEvents = el.events.length;
-          }
-        });
-
-        var height = 200;
-        var barWidth = 20;
-        var scale = d3.scale.linear()
-          .domain([0, $scope.maxEvents])
-          .range([height,0]);
-
-        // initialize timeline
-        $scope.timeline = d3.select('#d3-timeline')
-          .attr('width', barWidth * $scope.visits.length)
-          .attr('height', height);
-
-        var bars = $scope.timeline.selectAll('g').data($scope.visits)
-          .enter().append('g')
-            .attr('transform', function(data, index){
-              return 'translate(' + index * barWidth +',0)';
-            });
-
-        bars.append('rect')
-          .attr('y', function(data){
-            return scale(data.events.length);
-          })
-          .attr('width', barWidth - 1)
-          .attr('height', function(data){
-            return height - scale(data.events.length);
-          });
-
-        bars.append('text')
-          .attr('x', barWidth / 2 )
-          .attr('y', function() { 
-            return height - 5; 
-          })
-          .attr('dy', '.35em')
-          .text(function(data) { 
-            return data.events.length; 
+            // d3init();
           });
       };
         
 		} ]);
 };
-},{"d3":11}],8:[function(require,module,exports){
+},{"d3":14}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -23576,14 +23524,96 @@ module.exports = function(app) {
 },{}],9:[function(require,module,exports){
 'use strict';
 
-// var d3 = require('d3');
-
 module.exports = function(app) {
-  app.directive('visitSummary', function() {
-      
+  app.controller('eventsBarGraphController', function($scope){
+
+    $scope.$watch('visits', function(){
+      $scope.totalVisits = $scope.visits ? $scope.visits.length : 0;
+      if( $scope.visits ) graph();
+    });
+
+    var graph = function(){
+       // calc the maximum events
+      $scope.maxEvents = 0;
+      $scope.visits.forEach(function(el){
+        if( el.events.length > $scope.maxEvents){
+          $scope.maxEvents = el.events.length;
+        }
+      });
+
+      var height = 200;
+      var barWidth = 20;
+      var scale = $scope.d3.scale.linear()
+        .domain([0, $scope.maxEvents])
+        .range([height,0]);
+
+      // initialize timeline
+      $scope.timeline = $scope.d3.select('#d3-timeline')
+        .attr('width', barWidth * $scope.visits.length)
+        .attr('height', height);
+
+      var bars = $scope.timeline.selectAll('g').data($scope.visits)
+        .enter().append('g')
+          .attr('transform', function(data, index){
+            return 'translate(' + index * barWidth +',0)';
+          });
+
+      bars.append('rect')
+        .attr('y', function(data){
+          return scale(data.events.length);
+        })
+        .attr('width', barWidth - 1)
+        .attr('height', function(data){
+          return height - scale(data.events.length);
+        });
+
+      bars.append('text')
+        .attr('x', barWidth / 2 )
+        .attr('y', function() { 
+          return height - 5; 
+        })
+        .attr('dy', '.35em')
+        .text(function(data) { 
+          return data.events.length; 
+        });
+    };
   });
 };
 },{}],10:[function(require,module,exports){
+'use strict';
+
+module.exports = function(app) {
+  app.directive('eventBarGraph', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'templates/d3-events-bar-graph-template.html',
+      controller: 'eventsBarGraphController'
+    };
+  });
+};
+},{}],11:[function(require,module,exports){
+'use strict';
+
+module.exports = function(app) {
+  app.directive('visitDetails', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'templates/visit-details-template.html'
+    };
+  });
+};
+},{}],12:[function(require,module,exports){
+'use strict';
+
+module.exports = function(app) {
+  app.directive('visitSummary', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'templates/visit-summary-template.html'
+    };
+  });
+};
+},{}],13:[function(require,module,exports){
 'use strict';
 
 /**
@@ -23630,7 +23660,7 @@ module.exports = function(app) {
 		return HttpService;
 	});
 };
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.4.11"
@@ -32864,4 +32894,4 @@ module.exports = function(app) {
   if (typeof define === "function" && define.amd) define(d3); else if (typeof module === "object" && module.exports) module.exports = d3;
   this.d3 = d3;
 }();
-},{}]},{},[6,7,8,9,10,1]);
+},{}]},{},[6,7,8,9,10,11,12,13,1]);

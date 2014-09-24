@@ -14,36 +14,12 @@
 	<div data-ng-show="selectedDomain" class="section">
 
 		<h3>Visit Data</h3>
-		<h4>Summary</h4>
-		<p>Visits: {{ totalVisits }}</p>
 
-		<div>
-			<style>
-				rect {
-				  fill: steelblue;
-				}
-				text {
-				  fill: black;
-				  font: 10px sans-serif;
-				  text-anchor: end;
-				}
-			</style>
-			<svg id="d3-timeline"></svg>
-		</div>
-		
-		<ul data-ng-repeat="visit in visits">
-			<li>
-				<p>Visit from {{ visit._id }}</p>
-				<p>Events: {{ visit.events.length }}</p>
-				<ul data-ng-repeat="event in visit.events">
-					<li>timestamp: {{event.timestamp}}</li>
-					<li>type: {{event.event_type}}</li>
-					<li>attributes: {{event.attributes}}</li>
-				</ul>
-			</li>
-		</ul>
+		<visit-summary></visit-summary>
 
+		<event-bar-graph></event-bar-graph>
 		
+		<visit-details></visit-details>
 
 	</div>
 	
