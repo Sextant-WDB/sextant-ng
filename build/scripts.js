@@ -46,8 +46,7 @@ sextant.config([ '$routeProvider', '$locationProvider',
 			.otherwise({
 				redirectTo: '/login'
 			});
-
-
+			
 		// $locationProvider.html5Mode(true);
 } ]);
 },{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/directives/controllers/events-bar-graph-controller":9,"./js/directives/d3-events-bar-graph-directive":10,"./js/directives/visit-details-directive":11,"./js/directives/visit-summary-directive":12,"./js/services/http-service":13}],2:[function(require,module,exports){
@@ -23526,38 +23525,75 @@ module.exports = function(app) {
 
 module.exports = function(app) {
   app.controller('eventsBarGraphController', function($scope){
+    var selection = '#d3-timeline';
+    var defaultHeight = 200;
+    var defaultWidth = 400;
+    var maxEvents = 0;
+    $scope.timeline = $scope.d3.select(selection);
+    
+    // handle redrawing the chart
+    var invokeChart = function(){
+      if( $scope.visits ){
+        maxEvents = calcMaxEvents($scope.visits);
+        var width = defaultWidth;
+        var height = defaultHeight;
+        chart(width, height);
+      }
+    };
 
-    $scope.$watch('visits', function(){
-      $scope.totalVisits = $scope.visits ? $scope.visits.length : 0;
-      if( $scope.visits ) graph();
-    });
-
-    var graph = function(){
-       // calc the maximum events
-      $scope.maxEvents = 0;
-      $scope.visits.forEach(function(el){
-        if( el.events.length > $scope.maxEvents){
-          $scope.maxEvents = el.events.length;
+    // calc the maximum events
+    var calcMaxEvents = function(visits){
+      var max = 0;
+      visits.forEach(function(el){
+        if(el.events.length > max){
+          max = el.events.length;
         }
       });
+      return max;
+    };
 
-      var height = 200;
-      var barWidth = 20;
+    // listeners
+    
+    // $scope.$watch(function() {
+    //   return document.getElementById('timeline-wrapper').offsetWidth;
+    // }, function() {
+    //   console.log('resize');
+    //   invokeChart();
+    // });
+    
+    $scope.$watch('visits', function(){
+      $scope.totalVisits = $scope.visits ? $scope.visits.length : 0;
+      if( $scope.visits ) invokeChart();
+    });
+
+  
+    // chart
+    var chart = function(width, height){
+
+      var barWidth = width / $scope.visits.length;
+
       var scale = $scope.d3.scale.linear()
-        .domain([0, $scope.maxEvents])
+        .domain([0, maxEvents])
         .range([height,0]);
 
       // initialize timeline
-      $scope.timeline = $scope.d3.select('#d3-timeline')
-        .attr('width', barWidth * $scope.visits.length)
+      $scope.timeline = $scope.d3.select(selection)
+        .attr('width', width)
         .attr('height', height);
 
-      var bars = $scope.timeline.selectAll('g').data($scope.visits)
+      // create bars with data
+      var bars = $scope.timeline.selectAll('g')
+        .remove()
+        .data($scope.visits)
         .enter().append('g')
           .attr('transform', function(data, index){
             return 'translate(' + index * barWidth +',0)';
+          })
+          .on('click', function(data){
+            console.log(data);
           });
 
+      // 
       bars.append('rect')
         .attr('y', function(data){
           return scale(data.events.length);
@@ -23576,7 +23612,9 @@ module.exports = function(app) {
         .text(function(data) { 
           return data.events.length; 
         });
-    };
+
+    }; // end chart
+
   });
 };
 },{}],10:[function(require,module,exports){
