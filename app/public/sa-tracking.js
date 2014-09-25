@@ -130,6 +130,7 @@ window.addEventListener('click', function(e) {
 (function() {
   var pageLoad = {};
 
+  pageLoad.type = 'pageLoad';
   pageLoad.timeStamp = new Date().getTime();
   pageLoad.page = window.parent.location.href;
 
