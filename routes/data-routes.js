@@ -26,7 +26,7 @@ module.exports = function(app, cors) {
 
     req.body.host = req.get('Origin');
 
-    if (req.body.host.charAt(req.body.host.length - 1) === '/') {
+    if (req.body.host && req.body.host.charAt(req.body.host.length - 1) === '/') {
       console.log('slash in req.body.host!');
       req.body.host = req.body.host.slice(0, -1); // trim the last char
       console.log('new req.body.host: ' + req.body.host);
