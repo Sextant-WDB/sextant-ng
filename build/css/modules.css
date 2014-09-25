@@ -49,30 +49,34 @@ main {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  width: 80%;
-  margin: 1em auto;
+  align-content: center;
 }
 
 .flex-container__content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   align-content: center;
-  align-items: center;
+  align-items: baseline;
   background-color: #778899;
+  width: 80%;
+  margin: 1% 8.5%;
 }
 
 .flex-item {
   margin: 1em auto;
-  width: 45%;
 }
 
 .flex-item__dash {
   margin: 0.5em auto;
-  width: 45%;
+  width: 48%;
 }
 
 .flex-item__figure {
  margin: .5em auto;
  width: 48%;
- height: 5em;
+ height: 10em;
 }
 
 .flex-item__leftcol {

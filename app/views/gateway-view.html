@@ -1,35 +1,32 @@
-<div ng-init="newUser = false">
-  <div data-ng-controller="sessionController" data-ng-show="!newUser">
-   <section class="flex-item">
-      <form id="login">
-        <fieldset>
-          <legend>Login</legend>
-          <ol>
-            <li>
-              <label for="email">Email</label>
-              <input id="email" name="Email" type="email" data-ng-model="user.email" placeholder="example@domain.com" required autofocus>
-            </li>
-            <li>
-              <label for="password">Password</label>
-              <input id="password" name="password" type="password" data-ng-model="user.password" placeholder="Password" required>
-            </li>
-          </ol>
-        </fieldset>
-        <fieldset>
-          <button ng-click="logIn()">Log In</button>
-        </fieldset>
-        <fieldset><button ng-click="logOut()">Log Out</button>
-        </fieldset>
-        <p>
-          <a href="register.html">Not registered yet? Click here!</a>
-          <a href="passwordreset.html">Forgot password?</a>
-        </p>
-      </form>
-    </section>
-  </div>
-</div>
+<!--Login-->
+<article class="flex-container__content">
+  <div data-ng-controller="accountController" data-ng-show="!newUser">
+        <section class="flex-item">
+          <form id="login">
+            <fieldset>
+              <legend>Login</legend>
+              <ol>
+                <li>
+                  <label for="email">Email</label>
+                  <input id="email" name="Email" type="email" placeholder="example@domain.com" required autofocus>
+                </li>
+                <li>
+                  <label for="password">Password</label>
+                  <input id="password" name="password" type="password" placeholder="Password" required>
+                </li>
+              </ol>
+            </fieldset>
+            <fieldset>
+              <button type="submit">Submit</button>
+            </fieldset>
+            <p><a href="register.html">Not registered yet? Click here!</a>
+            <a href="passwordreset.html">Forgot password?</a>
+          </p>
+          </form>
+        </section>
+      </article>
 
-
+<!--Create a new account-->
 <div data-ng-controller="accountController" data-ng-show="newUser">
   <section class="flex-item">
     <form id="register">
@@ -45,8 +42,8 @@
             <input id="password" name="password" type="password" data-ng-model="user.newPassword" placeholder="Password" required>
           </li>
           <li>
-            <label for="domain">Enter domain</label>
-            <input id="domain" type="url" name="website" placeholder="URL">
+            <label for="add-domain">Enter domain</label>
+            <input id="domain" type="url" name="website" placeholder="URL" required>
           </li>
         </ol>
       </fieldset>

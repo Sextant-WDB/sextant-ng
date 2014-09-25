@@ -13,18 +13,21 @@
 <body class="bkgd">
 	<header class="flex-container">
      <p><a href="index.html">
-      	<img alt="Sextant logo" src="images/logotextwhite.png">
+        <img srcset="images/logotextwhite.png,
+      logotextwhite2.png  320w"
+   sizes="(min-width: 40em),
+      100vw"
+   src="images/logotextwhite2.jpg"
+   alt="Sextant logo" />
+
         </a>
   </header>
   <main>
-  	<article class="flex-container flex-container__content">
-
-					<div data-ng-app="sextant">
+  					<div data-ng-app="sextant">
 						<div data-ng-view>
 						<!-- Inject view here -->
 						</div>
 					</div>
-		</article>
    </main>
    <footer>
       <nav class="nav flex-container">

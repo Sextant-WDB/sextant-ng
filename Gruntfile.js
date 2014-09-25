@@ -81,14 +81,14 @@ module.exports = function(grunt) {
 
     watch: {
       angulartest: {
-        files: ['app/js/**/*.js', 'app/index.html', 'app/views/**/*.html'],
+        files: ['app/js/**/*.js', 'app/index.html', 'app/views/**/*.html', 'app/views/*.html', 'app/css/*.css'],
         tasks: ['browserify:angulartest', 'karma:unit'],
         options: {
           spawn: false
         }
       },
       express: {
-        files: ['app/js/**/*.js', 'app/index.html', 'app/views/**/*.html', 'server.js', 'models/*.js', 'routes/*.js', 'images/**.*' ],
+        files: ['app/js/**/*.js', 'app/index.html', 'app/views/**/*.html', 'app/views/**/*.css', 'server.js', 'models/*.js', 'routes/*.js', 'images/**.*' ],
         tasks: [
           'jshint',
           'jscs',

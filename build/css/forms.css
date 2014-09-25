@@ -22,13 +22,6 @@ form legend {
   padding-bottom: 0.5em;
 }
 
-/*form label {
-  float: left;
-  text-align: right;
-  margin-right: 15px;
-  width: 100px;
-}*/
-
 form ol li {
   line-height: 1em;
   list-style: none;
@@ -51,16 +44,8 @@ form button:hover {
   cursor: pointer;
 }
 
-/*input:not([type=radio]), textarea {
-  width: 80%;
-  line-height: 2em;
+input:not([type=radio]), textarea {
+  width: 50%;
+  line-height: 1.5em;
 }
-
-label {
-  float: left;
-  text-align: right;
-  margin-right: 15px;
-  width: 100px;
-
-
 
