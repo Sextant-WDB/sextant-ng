@@ -142,3 +142,17 @@ menu ol li {
 footer {
   margin: 2em;
 }
+
+/* Button */
+
+button {
+  background: #0D85FD;
+  color: white;
+  font: 0.955em "Open Sans", sans-serif;
+  letter-spacing: 0.02em;
+  padding: 0.75em 3em;
+  text-transform: uppercase;
+  border: 0;
+  text-align: center;
+  display: inline-block;
+}
