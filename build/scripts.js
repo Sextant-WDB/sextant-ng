@@ -23425,8 +23425,8 @@ module.exports = function(app) {
 
 module.exports = function(app) {
 	app.controller('dataController',
-		[ '$scope', 'HttpService', '$http', '$cookies',
-		function($scope, HttpService, $http, $cookies) {
+		[ '$scope', 'HttpService', '$http', '$cookies', '$timeout',
+		function($scope, HttpService, $http, $cookies, $timeout) {
 
 			$http.defaults.headers.common.jwt = $cookies.jwt;
 
@@ -23456,10 +23456,31 @@ module.exports = function(app) {
       };
 
       /**
+       * Handle showing and hiding the domain dropdown
+       */
+
+      $scope.hideDropdown = function() {
+          if ($scope.dropdownHover === false) {
+              $scope.dropdown = false;
+          }
+      };
+
+      $scope.closeDropdown = function() {
+          $scope.dropdownHover = false;
+          $timeout($scope.hideDropdown, 1000);
+      };
+
+      $scope.openDropdown = function() {
+          $scope.dropdown = true;
+          $scope.dropdownHover = true;
+      };
+
+      /**
        * Add domains
        */
 
       $scope.addDomain = function() {
+        console.log('trying to post ' + $scope.newDomain);
         domainService.post($scope.newDomain, {});
         $scope.newDomain = '';
       };

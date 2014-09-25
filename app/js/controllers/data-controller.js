@@ -57,7 +57,7 @@ module.exports = function(app) {
        */
 
       $scope.addDomain = function() {
-        console.log('function fired!');
+        console.log('trying to post ' + $scope.newDomain);
         domainService.post($scope.newDomain, {});
         $scope.newDomain = '';
       };
