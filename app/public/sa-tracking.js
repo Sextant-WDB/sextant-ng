@@ -18,10 +18,10 @@ _sa.createXHR = function() {
 };
 
 // Execute a POST request
-_sa.post = function(url, data, callback) {
+_sa.post = function(url, data, callback, async) {
   var xhr = this.createXHR();
 
-  xhr.open('POST', url, true);
+  xhr.open('POST', url, typeof async === 'undefined' ? true : false);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
   xhr.onreadystatechange = function() {
@@ -33,8 +33,8 @@ _sa.post = function(url, data, callback) {
   xhr.send(JSON.stringify(data));
 };
 
-// Stamp the request body with credentials
-_sa.send= function(url, data, callback) {
+// Stamp the request body with credentials before posting
+_sa.send= function(url, data, callback, async) {
 
   if(!_sa.writeKey && url !== _sa.keysUrl) {
     clearInterval(_sa.sendEvents);
@@ -48,7 +48,7 @@ _sa.send= function(url, data, callback) {
   message.writeKey = _sa.writeKey;
   message.events = data;
 
-  _sa.post(url, message, callback);
+  _sa.post(url, message, callback, async);
 };
 
 // Trim event down to desired information
@@ -153,4 +153,14 @@ window.addEventListener('click', function(e) {
 window.addEventListener('load', function() {
   console.log('page load registered!');
   console.log(document.getElementsByClassName('ng-scope')[0]);
+});
+
+// Send beforeunload event along with any prior events before the page closes
+window.addEventListener('beforeunload', function( e ) {
+
+  clearInterval(_sa.sendEvents);
+
+  _sa.events.push(_sa.processEvent(e));
+
+  _sa.send(_sa.dataUrl, _sa.events, null, false);
 });
