@@ -24,7 +24,7 @@ module.exports = function(app) {
           $http.defaults.headers.common.jwt = data.jwt;
           domainService.post($scope.user.newDomain, {});
           $scope.user.newDomain = '';
-          $location.path('/dashboard');
+          $location.path('/init');
         })
         .error(function(error) {
           console.log('error in signInController! ' + JSON.stringify(error));
