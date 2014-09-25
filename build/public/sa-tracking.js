@@ -121,6 +121,7 @@ _sa.angularListener = function() {
       if(previous.originalPath && current.originalPath) {
         var pageChange = {};
 
+        pageChange.eventType = 'pageChange';
         pageChange.timeStamp = new Date().getTime();
         pageChange.from = previous.originalPath;
         pageChange.to = current.originalPath;
@@ -146,7 +147,7 @@ window.addEventListener('click', function(e) {
 
   pageLoad.eventType = 'pageLoad';
   pageLoad.timeStamp = new Date().getTime();
-  pageLoad.page = window.parent.location.href;
+  pageLoad.page = encodeURIComponent(window.parent.location.href);
 
   _sa.events.push(pageLoad);
 
