@@ -1,19 +1,37 @@
-  body {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: .95em;
-    background-color: #FFFFFF;
-  } 
-  a, a:visited{
-    color:#778898;
-    cursor:pointer;
-  }
-  a:hover, a:active{
-    color: #BBCCAA;
-  }
-  div.ng-scope div{
+body {
+  font-family: Oswald, Tahoma, sans-serif;
+  color: #fff;
+}
+
+a {
+  text-decoration:none;
+  color: #fff;
+}
+
+a:hover {
+  color: #697A8C;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 1.546em;
+}
+
+p {
+  font-family: "Tahoma", sans-serif;
+  font-size: 0.95em;
+  padding: 0.5em 0;
+}
+
+/*  div.ng-scope div{
     padding:10px 0;
   }
   div.ng-scope{
     width:900px;
     margin:0 auto;
   }
+*/
