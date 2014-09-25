@@ -3,6 +3,7 @@ form {
   padding: 1.5em;
   color: #fff;
   font-family: "Open Sans", sans-serif;
+  text-align: center;
 }
 
 form#add-domain {
@@ -26,10 +27,6 @@ form legend {
   padding-bottom: 0.5em;
 }
 
-form#login legend, form#register legend {
-  text-align: center;
-}
-
 form ol li {
   line-height: 1em;
   list-style: none;
@@ -38,7 +35,7 @@ form ol li {
   text-align: left;
 }
 
-form#login button, form#register button {
+form button {
   background: #0D85FD;
   color: white;
   font: 0.955em "Open Sans", sans-serif;
@@ -50,19 +47,18 @@ form#login button, form#register button {
   display: inline-block;
 }
 
-form#login input, form#register input {
-  border: 0;
-  width: 12em;
-  padding: .5em
-}
-
 form button:hover {
   background: #0266c8;
   color: white;
   cursor: pointer;
 }
 
-/*input:not([type=radio]), textarea {
-  width: 50%;
-  line-height: 1.5em;
+form input {
+  width: 12em;
+  padding: .5em
 }
+
+form#login input, form#register input {
+  border: 0;
+}
+

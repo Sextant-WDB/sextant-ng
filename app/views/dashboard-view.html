@@ -14,7 +14,7 @@
   </nav>
 </header>
 <main>
-	<article class="flex-container__content">
+	<article class="flex-container flex-container__content">
 	  <section class="flex-item__dash" data-ng-mouseout="hideList()">
 		<div data-ng-mouseover='openDropdown()' data-ng-mouseleave='closeDropdown()'>
 	      Select a domain
@@ -35,10 +35,8 @@
 	        <button data-ng-click="addDomain()">Add</button>
 	      </fieldset>
 	    </form>
-
-	  </section>
-
-	  <figure class="flex-item__figure">
+		</section>
+			<figure class="flex-item__figure">
 	    <div data-ng-show="selectedDomain">
 	      <h3>Visit Data</h3>
 	      <div data-ng-repeat="visit in visits">
@@ -49,14 +47,10 @@
 	  <figure class="flex-item__figure">
 	    <div data-ng-show="selectedDomain">
 	      <h3>Visit Data</h3>
-
-	        <visit-summary></visit-summary>
-
-	        <event-bar-graph></event-bar-graph>
-
-	        <visit-details></visit-details>
-
-	    </div>
+					<visit-summary></visit-summary>
+					<event-bar-graph></event-bar-graph>
+					<visit-details></visit-details>
+			</div>
 	  </figure>
 	</article>
 </main>

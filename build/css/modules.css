@@ -9,16 +9,13 @@
 
 /* Header */
 
-img {
-  max-width: 100%;
-  height: auto;
-}
-
 header {
   text-align: center;
 }
 
-header img {
+img {
+  max-width: 100%;
+  height: auto;
   display: inline-block;
 }
 
@@ -61,11 +58,6 @@ main {
 }
 
 .flex-container__content {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
   align-items: baseline;
   background-color: #ffffff;
   color: #000;
@@ -83,9 +75,20 @@ main {
 }
 
 .flex-item__figure {
- margin: .5em auto;
- width: 48%;
- height: 10em;
+  margin: .5em auto;
+  width: 29em;
+  height: 10em;
+}
+
+@media only screen and (max-width : 40em) {
+  .flex-container__content {
+    flex-direction: column;
+  }
+
+  .flex-item__figure {
+    width: 15em;
+    height: 27em;
+  }
 }
 
 .flex-item__leftcol {
@@ -138,9 +141,4 @@ menu ol li {
 
 footer {
   margin: 2em;
-}
-
-/* Reusable generic classes */
-.center {
-  text-align: center;
 }
