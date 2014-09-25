@@ -1,0 +1,11 @@
+<ul data-ng-repeat="visit in visits">
+  <li>
+    <p>Visit from {{ visit._id }}</p>
+    <p>Events: {{ visit.events.length }}</p>
+    <ul data-ng-repeat="event in visit.events">
+      <li>timestamp: {{event.timestamp}}</li>
+      <li>type: {{event.event_type}}</li>
+      <li>attributes: {{event.attributes}}</li>
+    </ul>
+  </li>
+</ul>
