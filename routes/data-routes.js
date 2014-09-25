@@ -24,8 +24,8 @@ module.exports = function(app, cors) {
 
   app.post(api, cors(corsOptions), function(req, res) {
 
-    req.body.host = req.get('Host');
-    console.log(JSON.stringify(req.body));
+    // Origin header specifies the site where the events originated
+    req.body.host = req.get('Origin');
 
     Visit.update({ 'sessionID' : req.body.sessionID }, { $pushAll: { events: req.body.events }}, function(err, records) {
 
