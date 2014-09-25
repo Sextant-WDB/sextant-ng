@@ -3,8 +3,7 @@
 var mongoose = require('mongoose');
 
 /**
- * Define a visit model:
- *	-
+ * Define a visit model
  */
 
 var VisitSchema = mongoose.Schema({
@@ -15,19 +14,7 @@ var VisitSchema = mongoose.Schema({
     referer: String,
     ip_address: String,
     user_agent: String,
-    events: [
-      {
-        type: String,
-        timeStamp: Date,
-        page: String,
-        nodeName: String,
-        textContent: String,
-        innerHTML: String,
-        from: String,
-        to: String,
-        classes: [{name:String}]
-      }
-    ]
-	});
+    events: Array
+});
 
 module.exports = mongoose.model('Visit', VisitSchema);

@@ -50,7 +50,6 @@ sextant.config([ '$routeProvider', '$locationProvider',
 			.otherwise({
 				redirectTo: '/login'
 			});
-
-
+			
 		// $locationProvider.html5Mode(true);
 } ]);
