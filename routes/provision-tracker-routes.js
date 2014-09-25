@@ -28,9 +28,8 @@ module.exports = function(app, cors) {
 
         Domains.findOne({ host: origin }, function(err, dbResponse) {
 
-            // if (dbResponse.length === 0 ) {
-            //     console.log('no reponse!');
-            // }
+            // Deny access if the domain isn't registered
+            if(!dbResponse) { return res.status(401).end(); }
 
             var attributes = {};
             var visitorInfo = {};
