@@ -27,7 +27,7 @@ module.exports = function(app, cors) {
     // Origin header specifies the site where the events originated
     req.body.host = req.get('Origin');
 
-    Visit.update({ 'sessionID' : req.body.sessionID }, { $pushAll: { events: req.body.events }}, function(err, records) {
+    Visit.update({ 'session_id' : req.body.sessionID }, { $pushAll: { events: req.body.events }}, function(err, records) {
 
       if(!records) {
         console.log('No crecords, creating new event');
