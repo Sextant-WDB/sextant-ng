@@ -1,5 +1,5 @@
 body {
-  font-family: Oswald, Tahoma, sans-serif;
+  font-family: "Open Sans", sans-serif;
   color: #fff;
 }
 
@@ -9,7 +9,7 @@ a {
 }
 
 a:hover {
-  color: #697A8C;
+  color: #ddffdd;
   cursor: pointer;
 }
 
@@ -21,17 +21,12 @@ h2 {
   font-size: 1.546em;
 }
 
+h1, h2, h3 {
+  font-family: "Montserrat";
+}
+
 p {
-  font-family: "Tahoma", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 0.95em;
   padding: 0.5em 0;
 }
-
-/*  div.ng-scope div{
-    padding:10px 0;
-  }
-  div.ng-scope{
-    width:900px;
-    margin:0 auto;
-  }
-*/
