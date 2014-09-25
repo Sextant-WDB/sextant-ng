@@ -32,7 +32,8 @@ module.exports = function(grunt) {
       dev: {
         expand: true,
         cwd: 'app/',
-        src: ['*.html', 'css/*.css', 'views/**/*.html', 'public/**/*.*'],
+        src: ['*.html', 'css/*.css', 'views/**/*.html', 
+          'public/**/*.*', 'templates/**/*.html'],
         dest: 'build/',
         filter: 'isFile'
       }
@@ -87,7 +88,15 @@ module.exports = function(grunt) {
         }
       },
       express: {
-        files: ['app/js/**/*.js', 'app/index.html', 'app/views/**/*.html', 'server.js', 'models/*.js', 'routes/*.js'],
+        files: [
+          'app/js/**/*.js', 
+          'app/css/**/*.css',
+          'app/index.html', 
+          'app/views/**/*.html', 
+          'server.js', 
+          'models/*.js', 
+          'routes/*.js'
+        ],
         tasks: [
           'jshint',
           'jscs',

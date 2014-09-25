@@ -1,11 +1,15 @@
 'use strict';
 
+ /* jshint ignore:line*/
+
 module.exports = function(app) {
 	app.controller('dataController',
 		[ '$scope', 'HttpService', '$http', '$cookies',
 		function($scope, HttpService, $http, $cookies) {
 
 			$http.defaults.headers.common.jwt = $cookies.jwt;
+
+      $scope.d3 = require('d3');
 
       $scope.selectedDomain = false;
 
@@ -29,6 +33,8 @@ module.exports = function(app) {
         visitService.get(domain_id.toString())
           .success(function(visits) {
             $scope.visits = visits;
+            $scope.totalVisits = visits.length;
+            // d3init();
           });
       };
 
