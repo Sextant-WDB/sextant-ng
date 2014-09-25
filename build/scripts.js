@@ -23525,16 +23525,19 @@ module.exports = function(app) {
 
 module.exports = function(app) {
   app.controller('eventsBarGraphController', function($scope){
-
     var selection = '#d3-timeline';
+    var defaultHeight = 200;
+    var defaultWidth = 400;
     var maxEvents = 0;
-
+    $scope.timeline = $scope.d3.select(selection);
+    
+    // handle redrawing the chart
     var invokeChart = function(){
       if( $scope.visits ){
         maxEvents = calcMaxEvents($scope.visits);
-        var width = $scope.d3.select(selection).node().parentNode.offsetWidth;
-        console.log(width);
-        chart(selection, width)();
+        var width = defaultWidth;
+        var height = defaultHeight;
+        chart(width, height);
       }
     };
 
@@ -23549,78 +23552,68 @@ module.exports = function(app) {
       return max;
     };
 
+    // listeners
+    
+    // $scope.$watch(function() {
+    //   return document.getElementById('timeline-wrapper').offsetWidth;
+    // }, function() {
+    //   console.log('resize');
+    //   invokeChart();
+    // });
+    
     $scope.$watch('visits', function(){
       $scope.totalVisits = $scope.visits ? $scope.visits.length : 0;
       if( $scope.visits ) invokeChart();
     });
 
-    window.onresize = function() { /*jshint ignore: line*/
-      $scope.$apply();
-    };
-
-    $scope.$watch(function() {
-      return angular.element(window)[0].innerWidth; /*jshint ignore: line*/
-    }, function() {
-      console.log('resize');
-      invokeChart();
-    });
-
+  
     // chart
-    var chart = function(selection, elWidth){
+    var chart = function(width, height){
 
-      var height = 200;
-      var width = elWidth;
+      var barWidth = width / $scope.visits.length;
 
-      var myChart = function(){
+      var scale = $scope.d3.scale.linear()
+        .domain([0, maxEvents])
+        .range([height,0]);
 
-        var barWidth = width / $scope.visits.length;
+      // initialize timeline
+      $scope.timeline = $scope.d3.select(selection)
+        .attr('width', width)
+        .attr('height', height);
 
-        var scale = $scope.d3.scale.linear()
-          .domain([0, maxEvents])
-          .range([height,0]);
-
-        // initialize timeline
-        $scope.timeline = $scope.d3.select(selection)
-          .attr('width', width)
-          .attr('height', height);
-
-        // create bars with data
-        var bars = $scope.timeline.selectAll('g')
-          .remove()
-          .data($scope.visits)
-          .enter().append('g')
-            .attr('transform', function(data, index){
-              return 'translate(' + index * barWidth +',0)';
-            })
-            .on('click', function(data){
-              console.log(data);
-            });
-
-        // 
-        bars.append('rect')
-          .attr('y', function(data){
-            return scale(data.events.length);
+      // create bars with data
+      var bars = $scope.timeline.selectAll('g')
+        .remove()
+        .data($scope.visits)
+        .enter().append('g')
+          .attr('transform', function(data, index){
+            return 'translate(' + index * barWidth +',0)';
           })
-          .attr('width', barWidth - 1)
-          .attr('height', function(data){
-            return height - scale(data.events.length);
+          .on('click', function(data){
+            console.log(data);
           });
 
-        bars.append('text')
-          .attr('x', barWidth / 2 )
-          .attr('y', function() { 
-            return height - 5; 
-          })
-          .attr('dy', '.35em')
-          .text(function(data) { 
-            return data.events.length; 
-          });
-      };
+      // 
+      bars.append('rect')
+        .attr('y', function(data){
+          return scale(data.events.length);
+        })
+        .attr('width', barWidth - 1)
+        .attr('height', function(data){
+          return height - scale(data.events.length);
+        });
 
-      return myChart;
-    };
+      bars.append('text')
+        .attr('x', barWidth / 2 )
+        .attr('y', function() { 
+          return height - 5; 
+        })
+        .attr('dy', '.35em')
+        .text(function(data) { 
+          return data.events.length; 
+        });
 
-      
+    }; // end chart
 
   });
 };
