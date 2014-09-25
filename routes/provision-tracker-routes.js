@@ -60,7 +60,7 @@ module.exports = function(app, cors) {
 
             // Parse each event and append it to the visit
             req.body.events.forEach(function(event) {
-                visit.events.push(JSON.parse(event));
+                visit.events.push(event);
             });
 
             visit.save();
