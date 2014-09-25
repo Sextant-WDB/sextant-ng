@@ -23,6 +23,7 @@ _sa.post = function(url, data, callback, async) {
 
   xhr.open('POST', url, typeof async === 'undefined' ? true : false);
   xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.timeout = 2000;
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200 && callback) {
