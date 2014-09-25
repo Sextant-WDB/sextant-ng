@@ -88,7 +88,16 @@ module.exports = function(grunt) {
         }
       },
       express: {
-        files: ['app/js/**/*.js', 'app/index.html', 'app/views/**/*.html', 'app/views/**/*.css', 'server.js', 'models/*.js', 'routes/*.js', 'images/**.*' ],
+        files: [
+          'app/js/**/*.js',
+          'app/index.html',
+          'app/views/**/*.html',
+          'app/css/*.css',
+          'server.js',
+          'models/*.js',
+          'routes/*.js',
+          'images/**.*'
+        ],
         tasks: [
           'jshint',
           'jscs',
