@@ -70,7 +70,7 @@ _sa.processEvent = function(e) {
     if(!e[prop]) { return; }
 
     if(prop === 'type') {
-      trimmed.eventType = e.target[prop];
+      trimmed.eventType = e[prop];
     } else {
       trimmed[prop] = e[prop];
     }
