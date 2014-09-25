@@ -28,16 +28,19 @@ module.exports = function(app, cors) {
     console.log(JSON.stringify(req.body));
 
     Visit.update({ 'sessionID' : req.body.sessionID }, { $pushAll: { events: req.body.events }}, function(err, records) {
-      //if (err) return res.status(500).json(err);
 
-      console.log('Found visit and updated');
-      return res.status(200).end();
-    });
+      if(!records) {
+        console.log('No crecords, creating new event');
 
-    var newEvent = new Visit(req.body);
-    newEvent.save(function(err, dbResponse) {
-      if (err) return res.status(500).json(err);
-      return res.status(200).json(dbResponse);
+        var newEvent = new Visit(req.body);
+        newEvent.save(function(err, dbResponse) {
+          if (err) return res.status(500).json(err);
+          return res.status(200).json(dbResponse);
+        });
+      } else {
+        console.log('Found visit and updated');
+        return res.status(200).end();
+      }
     });
   });
 
