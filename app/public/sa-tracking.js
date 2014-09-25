@@ -105,7 +105,7 @@ _sa.angularListener = function() {
       if(previous.originalPath && current.originalPath) {
         var pageChange = {};
 
-        pageChange.timestamp = new Date().getTime();
+        pageChange.timeStamp = new Date().getTime();
         pageChange.from = previous.originalPath;
         pageChange.to = current.originalPath;
 
@@ -128,7 +128,7 @@ window.addEventListener('click', function(e) {
 (function() {
   var pageLoad = {};
 
-  pageLoad.time_stamp = new Date().getTime();
+  pageLoad.timeStamp = new Date().getTime();
   pageLoad.page = window.parent.location.href;
 
   // Get a UUID (if needed), session id, and write key
