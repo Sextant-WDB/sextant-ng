@@ -1,3 +1,8 @@
+<header>
+
+</header>
+
+
 <article class="flex-container__content">
   <section class="flex-item__dash" data-ng-mouseout="hideList()">
 
@@ -13,7 +18,7 @@
     <form>
       <label for="add-domain">Add a domain</label>
       <fieldset>
-        <input data-ng-model="newDomain" type="url" id="domain" placeholder="URL">
+        <input data-ng-model="newDomain" id="domain" placeholder="URL">
       </fieldset>
       <fieldset>
         <button data-ng-click="addDomain()">Add</button>
@@ -21,25 +26,6 @@
     </form>
 
   </section>
-
-<!--   <section class="flex-item__dash">
-    <form id="date-range">
-      <fieldset>
-        <label for="date-selector">Select date range</label>
-        <ol>
-          <li>
-            <input id="start-date" name="start-date" type="date" placeholder="MM/DD/YYYY">
-          </li>
-          <li>
-            <input id="end-date" name="end-date" type="date" placeholder="MM/DD/YYYY">
-          </li>
-        </ol>
-      </fieldset>
-      <fieldset>
-        <button type="submit">Apply</button>
-      </fieldset>
-    </form>
-  </section> -->
 
   <figure class="flex-item__figure">
     <div data-ng-show="selectedDomain">
