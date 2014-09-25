@@ -27,7 +27,7 @@ module.exports = function(app) {
         $scope.selectedDomain = domain_id;
 
         visitService.get(domain_id.toString())
-          .success(function(visits){
+          .success(function(visits) {
             $scope.visits = visits;
           });
       };
