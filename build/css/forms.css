@@ -5,10 +5,14 @@ form {
   font-family: "Open Sans", sans-serif;
 }
 
+form#add-domain {
+  color: #000;
+}
+
 form fieldset {
   border: none;
   padding: 2em auto;
-  margin-bottom: 0.25em;
+  margin-bottom: 0.5em;
 }
 
 form fieldset: last-of-type {
@@ -48,7 +52,7 @@ form#login button, form#register button {
 
 form#login input, form#register input {
   border: 0;
-  width: 10em;
+  width: 12em;
   padding: .5em
 }
 
@@ -58,7 +62,7 @@ form button:hover {
   cursor: pointer;
 }
 
-input:not([type=radio]), textarea {
+/*input:not([type=radio]), textarea {
   width: 50%;
   line-height: 1.5em;
 }

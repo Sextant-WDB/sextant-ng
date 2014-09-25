@@ -6,7 +6,6 @@
     <h1>Microanalytics for a JavaScript world</h1>
   </section>
 </header>
-
 <main>
   <!--Login-->
   <article class="flex-container" data-ng-init="newUser = false" data-ng-show="!newUser">
@@ -44,7 +43,7 @@
         <form id="register" class="center">
           <fieldset>
             <legend>Create an account</legend>
-            <ul>
+            <ol>
               <li>
                 <label for="email">Email</label>
                 <input id="email" name="Email" type="email" data-ng-model="user.newEmail" placeholder="example@domain.com" required autofocus>
@@ -53,7 +52,7 @@
                 <label for="password">Enter password</label>
                 <input id="password" name="password" type="password" data-ng-model="user.newPassword" placeholder="Password" required>
               </li>
-            </ul>
+            </ol>
           </fieldset>
           <fieldset>
             <button data-ng-click="createNewUser()">Create account</button>
@@ -69,3 +68,13 @@
   </article>
 
 </main>
+<footer>
+      <nav class="nav flex-container">
+        <ul>
+          <li class="flex-item__nav"><a href="about.html">About</a></li>
+          <li class="flex-item__nav"><a href="contact.html">Contact</a></li>
+          <li class="flex-item__nav"><a href="help.html">Help</a></li>
+        </ul>
+      </nav>
+   </footer>
+
