@@ -29,7 +29,10 @@ module.exports = function(app, cors) {
         Domains.findOne({ host: origin }, function(err, dbResponse) {
 
             // Deny access if the domain isn't registered
-            if(!dbResponse) { return res.status(401).end(); }
+            if(!dbResponse) {
+                console.log('No dbResponse, returning 401');
+                return res.status(401).end();
+            }
 
             var attributes = {};
             var visitorInfo = {};
@@ -51,7 +54,8 @@ module.exports = function(app, cors) {
 
             visitorInfo.sessionID = attributes.session_id;
             visitorInfo.writeKey = dbResponse.write_key;
-            console.log(JSON.stringify(dbResponse));
+
+            console.log('after provisionKeys');
 
             return res.status(200).json(visitorInfo);
         });
