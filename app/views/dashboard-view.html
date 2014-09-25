@@ -1,8 +1,7 @@
-<div class="viewWrapper">
-
+<div>
 	<h1>Dashboard</h1>
-		
-	<div class="section">
+
+	<div>
 		<h3>Authorized Domains</h3>
 		<ul>
 			<li data-ng-repeat="domain in domains">
@@ -11,16 +10,17 @@
 		</ul>
 	</div>
 
-	<div data-ng-show="selectedDomain" class="section">
-
-		<h3>Visit Data</h3>
-
-		<visit-summary></visit-summary>
-
-		<event-bar-graph></event-bar-graph>
-		
-		<visit-details></visit-details>
-
+	<div>
+		<h3>Add a domain</h3>
+		<input data-ng-model="newDomain" type="text">
+		<button data-ng-click="addDomain()">Add</button>
 	</div>
-	
+
+	<div data-ng-show="selectedDomain">
+		<h3>Visit Data</h3>
+		<div data-ng-repeat="visit in visits">
+			<p>{{ visit }}</p>
+		</div>
+	</div>
+
 </div>

@@ -15,16 +15,7 @@ var VisitSchema = mongoose.Schema({
     referer: String,
     ip_address: String,
     user_agent: String,
-    events: [
-      {
-        timestamp: Date,
-        event_type: String,
-        nodeName: String,
-        attributes: [{name: String}],
-        inner_html: String,
-        classes: [{name:String}]
-      }
-    ]
-	});
+    events: Array
+});
 
 module.exports = mongoose.model('Visit', VisitSchema);

@@ -2,11 +2,14 @@
 
 var VisitModel = require('../models/visit-model');
 var Domains = require('../models/domain-model');
-var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
+var uuid = require('node-uuid');
 
 /**
- * API endpoints to create new users and log in existing ones
+ * API to provision credentials to tracked sites:
+ *  - write keys
+ *  - session IDs
+ *  - unique user IDs
  */
 
 module.exports = function(app, cors) {
@@ -20,32 +23,52 @@ module.exports = function(app, cors) {
         maxAge: 300
     };
 
+    // Request made by tracking script on initial page load
     app.post(api, cors(corsOptions), function(req, res) {
+
+        // Origin header specifies the site where the events originated
         var origin = req.get('Origin');
 
-        Domains.find({ host: origin }, function(err, dbResponse) {
-            var attributes = {};
-            var response = {};
+        // Search the database for the domain making a request
+        Domains.findOne({ host: origin }, function(err, dbResponse) {
 
-            attributes.host = req.get('Host');
-            attributes.referer = req.get('Referer');
-            attributes.session_id = bcrypt.hashSync(crypto.randomBytes(16).toString('base64'));
-            attributes.ip_address = req.ip || req.ips;
-            attributes.user_agent = req.get('User-Agent');
-
-            if(!req.body.uuid) {
-                attributes.uniqueVisitorID = bcrypt.hashSync(crypto.randomBytes(16).toString('base64'));
-                response.uuid = attributes.uniqueVisitorID;
+            // Deny access if the domain isn't registered
+            if(!dbResponse) {
+                console.log('No dbResponse, returning 401');
+                return res.status(401).end();
             }
 
-            var visit = new VisitModel(attributes);
-            visit.events.push(req.body);
+            // Visit information to be saved
+            var visitInfo = {};
+
+            // Visit credentials to be sent back
+            var visitCredentials = {};
+
+            visitInfo.host = origin;
+            visitInfo.referer = req.get('Referer');
+            visitInfo.session_id = crypto.randomBytes(10).toString('hex').toUpperCase();
+            visitInfo.ip_address = req.ip || req.ips;
+            visitInfo.user_agent = req.get('User-Agent');
+
+            if(!req.body.uniqueID) {
+                visitInfo.visitor_id = uuid.v4().toUpperCase();
+                visitCredentials.uniqueID = visitInfo.visitor_id;
+            }
+
+            // Create a new visit to track this visitors session
+            var visit = new VisitModel(visitInfo);
+
+            // Parse each event and append it to the visit
+            req.body.events.forEach(function(event) {
+                visit.events.push(JSON.parse(event));
+            });
+
             visit.save();
 
-            response.usid = attributes.session_id;
-            response.writeKey = dbResponse.writeKey;
+            visitCredentials.sessionID = visitInfo.session_id;
+            visitCredentials.writeKey = dbResponse.write_key;
 
-            return res.status(200).json(response);
+            return res.status(200).json(visitCredentials);
         });
     });
 };

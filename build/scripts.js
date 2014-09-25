@@ -23450,23 +23450,32 @@ module.exports = function(app) {
             $scope.domains = domains;
           });
       };
-      
+
       $scope.getDomains(); // run on view load
 
       var visitService = new HttpService('visits');
 
       $scope.getVisits = function(domain_id){
-        
+
         $scope.selectedDomain = domain_id;
 
         visitService.get(domain_id.toString())
-          .success(function(visits){
+          .success(function(visits) {
             $scope.visits = visits;
             $scope.totalVisits = visits.length;
             // d3init();
           });
       };
-        
+
+      /**
+       * Add domains
+       */
+
+      $scope.addDomain = function() {
+        domainService.post($scope.newDomain, {});
+        $scope.newDomain = '';
+      };
+
 		} ]);
 };
 },{"d3":14}],8:[function(require,module,exports){
