@@ -9,7 +9,7 @@ a {
 }
 
 a:hover {
-  color: #ddffdd;
+  color: #0D85FD;
   cursor: pointer;
 }
 
@@ -31,7 +31,6 @@ h1, h2, h3 {
 }
 
 p {
-  font-family: "Open Sans", sans-serif;
   font-size: 0.95em;
   padding: 0.5em 0;
 }
