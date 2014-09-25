@@ -24,9 +24,6 @@ module.exports = function(app, cors) {
 
   app.post(api, cors(corsOptions), function(req, res) {
 
-    console.log('REQ body (data): ' + JSON.stringify(req.body));
-    console.log('Events array: ' + req.body.events);
-
     req.body.host = req.get('Origin');
 
     if (req.body.host.charAt(req.body.host.length - 1) === '/') {

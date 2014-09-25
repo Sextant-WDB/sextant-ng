@@ -67,13 +67,27 @@ _sa.processEvent = function(e) {
 
   // Only save the whitelisted attributes
   eventProps.forEach(function(prop) {
-    if (e[prop]) { trimmed[prop] = e[prop]; }
+    if(!e[prop]) { return; }
+
+    if(prop === 'type') {
+      trimmed.eventType = e.target[prop];
+    } else {
+      trimmed[prop] = e[prop];
+    }
   });
 
   // If the event had a target save its attributes too
   if(e.target) {
     targetProps.forEach(function(prop) {
-      if(e.target[prop]) { trimmed[prop] = e.target[prop]; }
+      if(e.target[prop]) {
+        // Truncate innerHTML and textContent if they're too long
+        if(prop === 'innerHTML' || prop === 'textContent') {
+          trimmed[prop] = e.target[prop].length > 50 ?
+            e.target[prop].substring(0, 50) : e.target[prop];
+        } else {
+          trimmed[prop] = e.target[prop];
+        }
+      }
     });
   }
 
@@ -130,6 +144,7 @@ window.addEventListener('click', function(e) {
 (function() {
   var pageLoad = {};
 
+  pageLoad.eventType = 'pageLoad';
   pageLoad.timeStamp = new Date().getTime();
   pageLoad.page = window.parent.location.href;
 
@@ -150,8 +165,6 @@ window.addEventListener('click', function(e) {
   });
 
   setTimeout(_sa.angularListener, 1000);
-
-  // _sa.angularListener();
 }());
 
 window.addEventListener('load', function() {
