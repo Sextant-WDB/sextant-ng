@@ -58,7 +58,7 @@ _sa.processEvent = function(e) {
   var eventProps = ['type', 'timeStamp'];
 
   // Desired event target attributes
-  var targetProps = ['nodeName', 'innerHTML'];
+  var targetProps = ['nodeName', 'textContent', 'innerHTML'];
 
   // Trimmed event
   var trimmed = {};
