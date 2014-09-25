@@ -2,10 +2,15 @@
   <li>
     <p>Visit from {{ visit._id }}</p>
     <p>Events: {{ visit.events.length }}</p>
-    <ul data-ng-repeat="event in visit.events">
-      <li>timestamp: {{event.timestamp}}</li>
-      <li>type: {{event.event_type}}</li>
-      <li>attributes: {{event.attributes}}</li>
+    <ul data-ng-repeat="event in visit.events" style="padding:5px 0">
+      <li data-ng-show="{{event.timeStamp}}">timestamp: {{event.timeStamp}}</li>
+      <li data-ng-show="{{event.page}}">page: {{event.page}}</li>
+      <li data-ng-show="{{event.from}}">from: {{event.from}}</li>
+      <li data-ng-show="{{event.to}}">to: {{event.to}}</li>
+      <li>type: {{event.type}}</li>
+      <li data-ng-show="{{event.nodeName}}">nodeName: {{event.nodeName}}</li>
+      <li data-ng-show="{{event.textContext}}">textContext: {{event.textContext}}</li>
+      <li data-ng-show="{{event.innerHTML}}">innerHtml: {{event.innerHTML}}</li>
     </ul>
   </li>
 </ul>

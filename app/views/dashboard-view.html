@@ -18,9 +18,12 @@
 
 	<div data-ng-show="selectedDomain">
 		<h3>Visit Data</h3>
-		<div data-ng-repeat="visit in visits">
-			<p>{{ visit }}</p>
-		</div>
+
+		<visit-summary></visit-summary>
+
+		<event-bar-graph></event-bar-graph>
+		
+		<visit-details></visit-details>
 	</div>
 
 </div>

@@ -31,9 +31,9 @@ module.exports = function(app, jwtAuth) {
   	// Standardize formatting: slash at the end of a URL is ignored
   	var domainName = req.params.domainName;
   	if (domainName.charAt(domainName.length - 1) === '/') {
-  		console.log('slash!');
+  		// console.log('slash!');
   		domainName = domainName.slice(0, -1); // trim the last char
-  		console.log('new domainName: ' + domainName);
+  		// console.log('new domainName: ' + domainName);
   	}
   	// Reject duplicates
   	Domain.find({

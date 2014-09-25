@@ -24,30 +24,30 @@ module.exports = function(app, cors) {
 
   app.post(api, cors(corsOptions), function(req, res) {
 
-    console.log('REQ body (data): ' + JSON.stringify(req.body));
-    console.log('Events array: ' + req.body.events);
+    // console.log('REQ body (data): ' + JSON.stringify(req.body));
+    // console.log('Events array: ' + req.body.events);
 
     req.body.host = req.get('Origin');
 
     if (req.body.host.charAt(req.body.host.length - 1) === '/') {
-      console.log('slash in req.body.host!');
+      // console.log('slash in req.body.host!');
       req.body.host = req.body.host.slice(0, -1); // trim the last char
-      console.log('new req.body.host: ' + req.body.host);
+      // console.log('new req.body.host: ' + req.body.host);
     }
 
     Visit.update({ 'session_id' : req.body.sessionID }, { $pushAll: { events: req.body.events }}, function(err, records) {
 
       if(!records) {
-        console.log('No records, creating new event');
+        // console.log('No records, creating new event');
 
         var newEvent = new Visit(req.body);
         newEvent.save(function(err, dbResponse) {
           if (err) return res.status(500).json(err);
-          console.log('new visit saved');
+          // console.log('new visit saved');
           return res.status(200).json(dbResponse);
         });
       } else {
-        console.log('Found visit and updated');
+        // console.log('Found visit and updated');
         return res.status(200).end();
       }
     });
