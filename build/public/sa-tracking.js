@@ -5,8 +5,8 @@ var _sa = _sa || {};
 _sa.events = [];
 _sa.sendInterval = 5000;
 
-_sa.dataUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
-_sa.keysUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/provisionKeys';
+_sa.dataUrl ='http://sextant-dd.herokuapp.com/api/0_0_1/data';
+_sa.keysUrl ='http://sextant-dd.herokuapp.com/api/0_0_1/provisionKeys';
 
 // For AJAX
 _sa.createXHR = function() {
