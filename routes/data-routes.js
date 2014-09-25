@@ -32,7 +32,7 @@ module.exports = function(app, cors) {
       console.log('new req.body.host: ' + req.body.host);
     }
 
-    Visit.update({ 'sessionID' : req.body.sessionID }, { $pushAll: { events: req.body.events }}, function(err, records) {
+    Visit.update({ 'session_id' : req.body.sessionID }, { $pushAll: { events: req.body.events }}, function(err, records) {
 
       if(!records) {
         console.log('No records, creating new event');

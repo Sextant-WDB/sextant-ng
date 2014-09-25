@@ -24,6 +24,8 @@ module.exports = function(app, cors) {
     };
 
     app.post(api, cors(corsOptions), function(req, res) {
+
+        // Origin header specifies the site where the events originated
         var origin = req.get('Origin');
 
         Domains.findOne({ host: origin }, function(err, dbResponse) {
@@ -37,7 +39,7 @@ module.exports = function(app, cors) {
             var attributes = {};
             var visitorInfo = {};
 
-            attributes.host = req.get('Host');
+            attributes.host = origin;
             attributes.referer = req.get('Referer');
             attributes.session_id = crypto.randomBytes(10).toString('hex').toUpperCase();
             attributes.ip_address = req.ip || req.ips;

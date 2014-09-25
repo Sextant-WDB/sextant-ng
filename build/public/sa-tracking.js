@@ -6,10 +6,8 @@ _sa.events = [];
 _sa.sendInterval = 5000;
 
 // Update these with your app directory:
-_sa.dataUrl ='http://sextant-dd.herokuapp.com/api/0_0_1/data';
-_sa.keysUrl ='http://sextant-dd.herokuapp.com/api/0_0_1/provisionKeys';
-// _sa.dataUrl ='http://localhost:3000/api/0_0_1/data';
-// _sa.keysUrl ='http://localhost:3000/api/0_0_1/provisionKeys';
+_sa.dataUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/data';
+_sa.keysUrl ='http://sextant-ng-b.herokuapp.com/api/0_0_1/provisionKeys';
 
 // For AJAX
 _sa.createXHR = function() {
@@ -21,11 +19,12 @@ _sa.createXHR = function() {
 };
 
 // Execute a POST request
-_sa.post = function(url, data, callback) {
+_sa.post = function(url, data, callback, async) {
   var xhr = this.createXHR();
 
-  xhr.open('POST', url, true);
+  xhr.open('POST', url, typeof async === 'undefined' ? true : false);
   xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.timeout = 2000;
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200 && callback) {
@@ -36,8 +35,8 @@ _sa.post = function(url, data, callback) {
   xhr.send(JSON.stringify(data));
 };
 
-// Stamp the request body with credentials
-_sa.send= function(url, data, callback) {
+// Stamp the request body with credentials before posting
+_sa.send= function(url, data, callback, async) {
 
   if(!_sa.writeKey && url !== _sa.keysUrl) {
     clearInterval(_sa.sendEvents);
@@ -51,7 +50,7 @@ _sa.send= function(url, data, callback) {
   message.writeKey = _sa.writeKey;
   message.events = data;
 
-  _sa.post(url, message, callback);
+  _sa.post(url, message, callback, async);
 };
 
 // Trim event down to desired information
@@ -61,7 +60,7 @@ _sa.processEvent = function(e) {
   var eventProps = ['type', 'timeStamp'];
 
   // Desired event target attributes
-  var targetProps = ['nodeName', 'innerHTML'];
+  var targetProps = ['nodeName', 'textContent', 'innerHTML'];
 
   // Trimmed event
   var trimmed = {};
@@ -156,4 +155,14 @@ window.addEventListener('click', function(e) {
 window.addEventListener('load', function() {
   console.log('page load registered!');
   console.log(document.getElementsByClassName('ng-scope')[0]);
+});
+
+// Send beforeunload event along with any prior events before the page closes
+window.addEventListener('beforeunload', function( e ) {
+
+  clearInterval(_sa.sendEvents);
+
+  _sa.events.push(_sa.processEvent(e));
+
+  _sa.send(_sa.dataUrl, _sa.events, null, false);
 });
