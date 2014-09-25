@@ -6,10 +6,12 @@
 
 module.exports = function(app) {
   app.controller('accountController', [
-    '$scope', '$http', '$base64', '$cookies', '$location',
-    function($scope, $http, $base64, $cookies, $location) {
+    '$scope', '$http', '$base64', '$cookies', '$location', 'HttpService',
+    function($scope, $http, $base64, $cookies, $location, HttpService) {
 
       var api = '/api/0_0_1/users';
+
+      var domainService = new HttpService('domains');
 
       $scope.createNewUser = function() {
         $http.post(api, {
@@ -17,7 +19,11 @@ module.exports = function(app) {
           'password': $scope.user.newPassword
         })
         .success(function(data) {
+          // Set cookies right away!
           $cookies.jwt = data.jwt;
+          $http.defaults.headers.common.jwt = data.jwt;
+          domainService.post($scope.user.newDomain, {});
+          $scope.user.newDomain = '';
           $location.path('/dashboard');
         })
         .error(function(error) {
@@ -43,6 +49,16 @@ module.exports = function(app) {
           console.log('error in delete: ' + JSON.stringify(error));
         });
       };
+
+      /**
+       * Add a new domain
+       */
+
+      // $scope.addDomain = function() {
+      //   console.log('trying to post ' + $scope.newDomain);
+      //   domainService.post($scope.newDomain, {});
+      //   $scope.newDomain = '';
+      // };
 
     }
   ]);
