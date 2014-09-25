@@ -14,9 +14,9 @@ module.exports = function(app, jwtAuth) {
 	    _id: req.params.domainId.toString(),
 	    authorizedUsers: { $all: [ req.user._id ] }
 	  }, function(err, domain) {
-	  	console.log('matching domain: ' + domain);
+	  	console.log('found matching domain: ' + domain);
 	    if (err) return res.status(500).json(err);
-	    console.log('trying to match host: ' + domain.host);
+	    console.log('next, trying to match host: ' + domain.host);
 	    Visit.find({ host: domain.host }, function(err, visits) {
 	      console.log('visits: ' + visits);
 	      if (err) return res.status(500).json(err);
