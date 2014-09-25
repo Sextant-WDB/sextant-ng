@@ -1,26 +1,28 @@
-<!-- To do: port classes, etc. into Angular template-->
-
 <article class="flex-container__content">
-  <section class="flex-item__dash">
-    <form id="domains">
+  <section class="flex-item__dash" data-ng-mouseout="hideList()">
+
+    <div data-ng-mouseover='openDropdown()' data-ng-mouseleave='closeDropdown()'>
+      <h3>Select a domain</h3>
+      <menu data-ng-show="dropdown">
+        <menuitem data-ng-repeat="domain in domains">
+          <a data-ng-click="getVisits(domain._id)">{{domain.host}}</a>
+        </menuitem>
+      </menu>
+    </div>
+
+    <form>
+      <label for="add-domain">Add a domain</label>
       <fieldset>
-        <label for="domains">Select a domain</label>
-          <select id="domains" name="select" autofocus>
-            <option value="1">Domain 1</option>
-            <option value="2">Domain 2</option>
-            <option value="3">Domain 3</option>
-          </select>
+        <input data-ng-model="newDomain" type="url" id="domain" placeholder="URL">
       </fieldset>
       <fieldset>
-        <label for="add-domain">Add a domain</label>
-            <input id="domain" type="url" name="website" placeholder="URL">
-        </label>
-      <fieldset>
-        <button type="submit">Submit</button>
+        <button data-ng-click="addDomain()">Add</button>
       </fieldset>
     </form>
+
   </section>
-  <section class="flex-item__dash">
+
+<!--   <section class="flex-item__dash">
     <form id="date-range">
       <fieldset>
         <label for="date-selector">Select date range</label>
@@ -37,42 +39,14 @@
         <button type="submit">Apply</button>
       </fieldset>
     </form>
-  </section>
+  </section> -->
+
   <figure class="flex-item__figure">
-  </figure>
-  <figure class="flex-item__figure">
+    <div data-ng-show="selectedDomain">
+      <h3>Visit Data</h3>
+      <div data-ng-repeat="visit in visits">
+        <p>{{ visit }}</p>
+      </div>
+    </div>
   </figure>
 </article>
-
-
-
-
-
-
-
-<div>
-  <h1>Dashboard</h1>
-
-  <div>
-    <h3>Authorized Domains</h3>
-    <ul>
-      <li data-ng-repeat="domain in domains">
-        <a data-ng-click="getVisits(domain._id)">{{domain.host}}</a>
-      </li>
-    </ul>
-  </div>
-
-  <div>
-    <h3>Add a domain</h3>
-    <input data-ng-model="newDomain" type="text">
-    <button data-ng-click="addDomain()">Add</button>
-  </div>
-
-  <div data-ng-show="selectedDomain">
-    <h3>Visit Data</h3>
-    <div data-ng-repeat="visit in visits">
-      <p>{{ visit }}</p>
-    </div>
-  </div>
-
-</div>
