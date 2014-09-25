@@ -18,9 +18,10 @@ require('./js/services/http-service')(sextant);
 // Models
 
 // Controllers
-require('./js/controllers/session-controller')(sextant);
-require('./js/controllers/data-controller')(sextant);
 require('./js/controllers/account-controller')(sextant);
+require('./js/controllers/session-controller')(sextant);
+require('./js/controllers/tracking-code-controller')(sextant);
+require('./js/controllers/data-controller')(sextant);
 
 require('./js/directives/controllers/events-bar-graph-controller')(sextant);
 
@@ -41,6 +42,10 @@ sextant.config([ '$routeProvider', '$locationProvider',
 			.when('/dashboard', {
 				templateUrl: 'views/dashboard-view.html',
 				controller: 'dataController'
+			})
+			.when('/init', {
+				templateUrl: 'views/tracking-code-view.html',
+				controller: 'trackingCodeController'
 			})
 			.otherwise({
 				redirectTo: '/login'
