@@ -70,7 +70,16 @@ module.exports = function(grunt) {
           'app/app.js'
         ],
         dest: 'build/scripts.js'
-      }
+      },
+
+      angulartest: {
+        options: {
+          transform: ['debowerify'],
+          debug: true
+        },
+        src: ['tests/angular/**/*test.js'],
+        dest: 'tests/angular-testbundle.js'
+      },
     },
 
     sass: {
@@ -164,5 +173,8 @@ module.exports = function(grunt) {
       'express:dev',
       'watch:express'
     ]);
+
+  grunt.registerTask('testangular',
+    ['browserify:angulartest', 'karma:unit']);
 
 };
