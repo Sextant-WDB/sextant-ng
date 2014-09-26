@@ -36,3 +36,5 @@ bower_components
 # Local development database
 db/
 .sass-cache/
+
+tests/angular-testbundle.js
