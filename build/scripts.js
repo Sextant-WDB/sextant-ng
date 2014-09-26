@@ -28262,9 +28262,6 @@ module.exports = function(app) {
             }
           });
 
-          console.log('durations:');
-          console.log(durations);
-
           if( durations.length > 0){
             avg = _.reduce(durations) / durations.length * 100;
           } else {
