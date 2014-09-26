@@ -108,11 +108,9 @@ _sa.angularListener = function() {
 
   // HTML element where ng-app is defined
   var ngAppNode = document.getElementsByClassName('ng-scope')[0];
-  console.log('ngAppNode: ' + ngAppNode);
 
    // Convert the element into an Angular element to access the $rootScope
   var ngApp = angular.element(ngAppNode);
-  console.log('ngApp: ' + ngApp);
 
   // Listen to route changes on the $routeProvider
   ngApp.scope().$on('$routeChangeSuccess', function(e, current, previous) {
@@ -139,9 +137,6 @@ window.addEventListener('click', function(e) {
   _sa.events.push(_sa.processEvent(e));
 });
 
-// Handle initial page load
-// window.addEventListener('load', function() {
-
 (function() {
   var pageLoad = {};
 
@@ -167,11 +162,6 @@ window.addEventListener('click', function(e) {
 
   setTimeout(_sa.angularListener, 1000);
 }());
-
-window.addEventListener('load', function() {
-  console.log('page load registered!');
-  console.log(document.getElementsByClassName('ng-scope')[0]);
-});
 
 // Send beforeunload event along with any prior events before the page closes
 window.addEventListener('beforeunload', function( e ) {
