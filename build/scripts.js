@@ -23452,8 +23452,6 @@ module.exports = function(app) {
 },{}],7:[function(require,module,exports){
 'use strict';
 
- /* jshint ignore:line*/
-
 module.exports = function(app) {
 	app.controller('dataController',
 		[ '$scope', 'HttpService', '$http', '$cookies', '$timeout',
@@ -23507,16 +23505,6 @@ module.exports = function(app) {
       $scope.openDropdown = function() {
           $scope.dropdown = true;
           $scope.dropdownHover = true;
-      };
-
-      /**
-       * Add domains
-       */
-
-      $scope.addDomain = function() {
-        console.log('trying to post ' + $scope.newDomain);
-        domainService.post($scope.newDomain, {});
-        $scope.newDomain = '';
       };
 
 		} ]);

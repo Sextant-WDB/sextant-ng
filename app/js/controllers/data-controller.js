@@ -1,7 +1,5 @@
 'use strict';
 
- /* jshint ignore:line*/
-
 module.exports = function(app) {
 	app.controller('dataController',
 		[ '$scope', 'HttpService', '$http', '$cookies', '$timeout',
@@ -22,11 +20,11 @@ module.exports = function(app) {
           });
       };
 
-      $scope.getDomains(); // run on view load
+      $scope.getDomains(); // runs on view load
 
       var visitService = new HttpService('visits');
 
-      $scope.getVisits = function(domain_id){
+      $scope.getVisits = function(domain_id) {
 
         $scope.selectedDomain = domain_id;
 
@@ -34,7 +32,6 @@ module.exports = function(app) {
           .success(function(visits) {
             $scope.visits = visits;
             $scope.totalVisits = visits.length;
-            // d3init();
           });
       };
 
@@ -50,22 +47,12 @@ module.exports = function(app) {
 
       $scope.closeDropdown = function() {
           $scope.dropdownHover = false;
-          $timeout($scope.hideDropdown, 1000);
+          $timeout($scope.hideDropdown, 500);
       };
 
       $scope.openDropdown = function() {
           $scope.dropdown = true;
           $scope.dropdownHover = true;
-      };
-
-      /**
-       * Add domains
-       */
-
-      $scope.addDomain = function() {
-        console.log('trying to post ' + $scope.newDomain);
-        domainService.post($scope.newDomain, {});
-        $scope.newDomain = '';
       };
 
 		} ]);
