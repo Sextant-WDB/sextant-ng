@@ -41,11 +41,15 @@ module.exports = function(app) {
             }
           });
 
+          console.log(durations);
+
           if( durations.length > 0){
             avg = _.reduce(durations) / durations.length;
           } else {
             avg = 0;
           }
+
+          console.log(avg);
 
           return moment.duration(avg).humanize();
         };

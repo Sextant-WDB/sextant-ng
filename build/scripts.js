@@ -28263,7 +28263,7 @@ module.exports = function(app) {
           });
 
           if( durations.length > 0){
-            avg = _.reduce(durations) / durations.length * 100;
+            avg = _.reduce(durations) / durations.length;
           } else {
             avg = 0;
           }
