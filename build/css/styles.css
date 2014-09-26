@@ -94,6 +94,9 @@ p {
 .grayBackground {
   background: #161616; }
 
+.bkgd__dash {
+  background-color: #6885A1; }
+
 /* Header */
 header {
   text-align: center; }
