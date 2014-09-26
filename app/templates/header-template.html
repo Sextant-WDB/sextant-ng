@@ -10,9 +10,21 @@
 
 	<nav class="nav flex-item">
     <ul>
-      <li><a href="/about">About</a></li>
-      <li><a href="/contact">Contact</a></li>
-      <li><a href="/help">Help</a></li>
+      <!-- <li><a href="/#/about">About</a></li>
+      <li><a href="/#/contact">Contact</a></li>
+      <li><a href="/#/help">Help</a></li> -->
+      <li  id="nav" data-ng-init="navDropdown = false" data-ng-click="openNavDropdown()" data-ng-mouseleave="closeNavDropdown()">
+        <a data-ng-click="">Add a domain</a>
+        <form id="add-domain-nav" ng-show="navDropdown">
+          <fieldset>
+            <input data-ng-model="newDomain" id="domain" placeholder="URL">
+          </fieldset>
+          <fieldset>
+            <button data-ng-click="addDomain()">Add</button>
+          </fieldset>
+        </form>
+      </li>
+      <li><a data-ng-click="logOut()">Log out</a></li>
     </ul>
   </nav>
 </header>

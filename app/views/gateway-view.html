@@ -29,9 +29,6 @@
           <fieldset>
             <button ng-click="logIn()">Log In</button>
           </fieldset>
-          <fieldset>
-            <span ng-click="logOut()" a href="#">Log Out</span>
-          </fieldset>
         </form>
       </section>
     </div>
@@ -46,16 +43,13 @@
             <legend>Create an account</legend>
             <ol>
               <li>
-                <label for="email">Email</label>
-                <input id="email" name="Email" type="email" data-ng-model="user.newEmail" placeholder="example@domain.com" required autofocus>
+                <input id="email" name="Email" type="email" data-ng-model="user.newEmail" placeholder="Email" required autofocus>
               </li>
               <li>
-                <label for="password">Enter password</label>
                 <input id="password" name="password" type="password" data-ng-model="user.newPassword" placeholder="Password" required>
               </li>
               <li>
-                <label for="domain">Track a domain</label>
-                <input id="url" name="url" data-ng-model="user.newDomain" placeholder="http://example.com" required>
+                <input id="url" name="url" data-ng-model="user.newDomain" placeholder="Domain to track" required>
               </li>
             </ol>
           </fieldset>

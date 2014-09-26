@@ -35,16 +35,6 @@ module.exports = function(app) {
 
       };
 
-      /**
-       * Log out current user
-       *
-       */
-
-      $scope.logOut = function() {
-        $cookies.jwt = null;
-        $location.path('/'); // If redirect to /signin, error!
-      };
-
     }
   ]);
 };
