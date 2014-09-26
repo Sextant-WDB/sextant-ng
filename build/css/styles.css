@@ -100,7 +100,6 @@ p {
 .grayBackground {
   background: #161616; }
 
-/* Header */
 header {
   text-align: center; }
 
@@ -157,6 +156,7 @@ main {
   padding: 1em;
   width: 40em;
   height: 25em;
+  max-width: 100%;
   overflow: hidden; }
 
 .graphs {

@@ -14,12 +14,6 @@
   background: $darkGray;
 }
 
-// .bkgd__dash {
-//   background-color: #6885A1;
-// }
-
-/* Header */
-
 header {
   text-align: center;
 }
@@ -90,6 +84,7 @@ main {
   padding: 1em;
   width: 40em;
   height: 25em;
+  max-width: 100%;
   overflow: hidden;
 }
 
