@@ -70,7 +70,7 @@ _sa.processEvent = function(e) {
     if(!e[prop]) { return; }
 
     if(prop === 'type') {
-      trimmed.eventType = e.target[prop];
+      trimmed.eventType = e[prop];
     } else {
       trimmed[prop] = e[prop];
     }
@@ -121,6 +121,7 @@ _sa.angularListener = function() {
       if(previous.originalPath && current.originalPath) {
         var pageChange = {};
 
+        pageChange.eventType = 'pageChange';
         pageChange.timeStamp = new Date().getTime();
         pageChange.from = previous.originalPath;
         pageChange.to = current.originalPath;
@@ -146,7 +147,7 @@ window.addEventListener('click', function(e) {
 
   pageLoad.eventType = 'pageLoad';
   pageLoad.timeStamp = new Date().getTime();
-  pageLoad.page = window.parent.location.href;
+  pageLoad.page = encodeURIComponent(window.parent.location.href);
 
   _sa.events.push(pageLoad);
 
@@ -181,3 +182,27 @@ window.addEventListener('beforeunload', function( e ) {
 
   _sa.send(_sa.dataUrl, _sa.events, null, false);
 });
+
+_sa.getScrollOffsets = function() {
+    return { x: window.pageXOffset, y: window.pageYOffset };
+};
+
+_sa.scrollChanges = [];
+_sa.lastScrollPos = _sa.getScrollOffsets();
+_sa.scrollDirection = 'down';
+
+window.onscroll = function(e) {
+  var current = _sa.getScrollOffsets();
+
+  if(current.y > _sa.lastScrollPos.y && _sa.scrollDirection  !== 0) {
+    _sa.scrollDirection  = 0;
+
+    _sa.scrollChanges.push({ pos: current.y, timeStamp: e.timeStamp });
+  } else if (current.y < _sa.lastScrollPos.y && _sa.scrollDirection  !== 1) {
+    _sa.scrollDirection  = 1;
+
+    _sa.scrollChanges.push({ pos: current.y, timeStamp: e.timeStamp });
+  }
+
+  _sa.lastScrollPos = current;
+};
