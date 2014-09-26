@@ -34,7 +34,6 @@ module.exports = function(app) {
           .success(function(visits) {
             $scope.visits = visits;
             $scope.totalVisits = visits.length;
-            // d3init();
           });
       };
 

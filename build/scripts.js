@@ -24,12 +24,14 @@ require('./js/controllers/data-controller')(sextant);
 require('./js/controllers/account-controller')(sextant);
 
 require('./js/directives/controllers/events-bar-graph-controller')(sextant);
+require('./js/directives/controllers/page-graph-controller')(sextant);
 
 // Directives
 
 require('./js/directives/visit-summary-directive')(sextant);
 require('./js/directives/visit-details-directive')(sextant);
 require('./js/directives/d3-events-bar-graph-directive')(sextant);
+require('./js/directives/page-graph-directive')(sextant);
 
 // Routes
 sextant.config([ '$routeProvider', '$locationProvider',
@@ -49,7 +51,7 @@ sextant.config([ '$routeProvider', '$locationProvider',
 			
 		// $locationProvider.html5Mode(true);
 } ]);
-},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/directives/controllers/events-bar-graph-controller":9,"./js/directives/d3-events-bar-graph-directive":10,"./js/directives/visit-details-directive":11,"./js/directives/visit-summary-directive":12,"./js/services/http-service":13}],2:[function(require,module,exports){
+},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/directives/controllers/events-bar-graph-controller":9,"./js/directives/controllers/page-graph-controller":10,"./js/directives/d3-events-bar-graph-directive":11,"./js/directives/page-graph-directive":12,"./js/directives/visit-details-directive":13,"./js/directives/visit-summary-directive":14,"./js/services/http-service":15}],2:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -23463,7 +23465,6 @@ module.exports = function(app) {
           .success(function(visits) {
             $scope.visits = visits;
             $scope.totalVisits = visits.length;
-            // d3init();
           });
       };
 
@@ -23478,7 +23479,7 @@ module.exports = function(app) {
 
 		} ]);
 };
-},{"d3":14}],8:[function(require,module,exports){
+},{"d3":16}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -23630,6 +23631,24 @@ module.exports = function(app) {
 'use strict';
 
 module.exports = function(app) {
+  app.controller('pageGraphController', function($scope){
+
+    $scope.$watch('visits', function(){
+      if( $scope.visits ) parseGraphData();
+    });
+
+    var parseGraphData = function(){
+
+    };
+
+
+
+  });
+};
+},{}],11:[function(require,module,exports){
+'use strict';
+
+module.exports = function(app) {
   app.directive('eventBarGraph', function() {
     return {
       restrict: 'E',
@@ -23638,7 +23657,19 @@ module.exports = function(app) {
     };
   });
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
+'use strict';
+
+module.exports = function(app) {
+  app.directive('pageGraph', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'templates/page-graph-template.html',
+      controller: 'pageGraphController'
+    };
+  });
+};
+},{}],13:[function(require,module,exports){
 'use strict';
 
 module.exports = function(app) {
@@ -23649,7 +23680,7 @@ module.exports = function(app) {
     };
   });
 };
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 module.exports = function(app) {
@@ -23671,7 +23702,7 @@ module.exports = function(app) {
     };
   });
 };
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 /**
@@ -23718,7 +23749,7 @@ module.exports = function(app) {
 		return HttpService;
 	});
 };
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.4.11"
@@ -32952,4 +32983,4 @@ module.exports = function(app) {
   if (typeof define === "function" && define.amd) define(d3); else if (typeof module === "object" && module.exports) module.exports = d3;
   this.d3 = d3;
 }();
-},{}]},{},[6,7,8,9,10,11,12,13,1]);
+},{}]},{},[6,7,8,9,10,11,12,13,14,15,1]);
