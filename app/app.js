@@ -23,6 +23,7 @@ require('./js/controllers/session-controller')(sextant);
 require('./js/controllers/tracking-code-controller')(sextant);
 require('./js/controllers/data-controller')(sextant);
 require('./js/directives/controllers/events-bar-graph-controller')(sextant);
+require('./js/directives/controllers/header-controller')(sextant);
 
 // Directives
 
