@@ -49,23 +49,6 @@ describe('The REST API for users', function() {
 
 	});
 
-	it('Can use that JWT to access the authenticated data API', function(done) {
-
-		chai.request('http://localhost:' + port)
-		.get('/api/0_0_1/data')
-		.req(function(req) {
-			var testCredentials = {};
-			testCredentials.jwt = jwt;
-			req.send(testCredentials);
-		})
-		.res(function(res) {
-			expect(res).to.have.status(200);
-			expect(Array.isArray(res.body)).to.eql(true);
-			done();
-		});
-
-	});
-
 	it('Can update a user', function(done) {
 
 		chai.request('http://localhost:' + port)
