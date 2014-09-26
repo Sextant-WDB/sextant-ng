@@ -25232,9 +25232,9 @@ module.exports = function(app) {
     };
 
     var graph = function(data) {
-      console.log('grahping');
-      var width = 960;
-      var height = 500;
+
+      var width = 640;
+      var height = 300;
 
       var force = $scope.d3.layout.force()
         .nodes($scope.d3.values(data.nodes))
@@ -25250,19 +25250,6 @@ module.exports = function(app) {
       var svg = $scope.d3.select('#page-graph-wrapper').append('svg')
         .attr('width', width)
         .attr('height', height);
-
-      // svg.append('svg:defs').selectAll('marker')
-      //     .data(['end'])
-      //   .enter().append('svg:marker')
-      //     .attr('id', String)
-      //     .attr('viewBox', '0 -5 10 10')
-      //     .attr('refX', 15)
-      //     .attr('refY', -1.5)
-      //     .attr('markerWidth', 6)
-      //     .attr('markerHeight', 6)
-      //     .attr('orient', 'auto')
-      //   .append('svg:path')
-      //     .attr('d', 'M0,-5L10,0L0,5');
 
       var link = svg.selectAll('.link')
           .data(force.links())
