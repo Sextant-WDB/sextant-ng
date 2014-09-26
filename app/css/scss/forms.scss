@@ -10,6 +10,18 @@ form#add-domain {
   color: $black;
 }
 
+#nav {
+  position: relative;
+}
+
+#nav form {
+  position: absolute;
+  input {
+    width: 6em;
+  }
+}
+
+
 form fieldset {
   border: none;
   padding: 2em auto;

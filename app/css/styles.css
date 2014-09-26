@@ -37,10 +37,17 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+html {
+  height: 100%; }
+
 body {
   font-family: "Open Sans", sans-serif;
   color: white;
-  background-color: #161616; }
+  background-color: #161616;
+  min-height: 100%; }
+
+main {
+  min-height: 100%; }
 
 a {
   text-decoration: none;
@@ -70,12 +77,19 @@ p {
   font-size: 0.95em;
   padding: 0.5em 0; }
 
+/* Reusable classes */
+.link {
+  color: #0d85fd;
+  cursor: pointer; }
+
 /* Background */
 .starBackground {
   background: url(/images/nightsky2.jpg) no-repeat;
   background-color: black;
   background-size: cover;
-  background-position: center; }
+  background-position: center;
+  height: 100%;
+  height: 100vh; }
 
 .grayBackground {
   background: #161616; }
@@ -104,7 +118,7 @@ main {
 
 .nav ul li a {
   color: white;
-  font-size: 1.546em; }
+  font-size: 1.2em; }
 
 .nav ul li a:hover {
   color: #0d85fd;
@@ -135,7 +149,8 @@ main {
 .flex-item__figure {
   margin: .5em auto;
   width: 29em;
-  height: 10em; }
+  height: 10em;
+  overflow: hidden; }
 
 @media only screen and (max-width: 40em) {
   .flex-container__content {
@@ -179,6 +194,23 @@ menu ol {
 menu ol li {
   padding-bottom: 1em; }
 
+.domains {
+  position: relative; }
+
+.domains ul {
+  position: absolute;
+  margin-top: 1em;
+  width: 100%; }
+  .domains ul li {
+    background: black;
+    color: white;
+    line-height: 1.2em;
+    margin-top: 1px;
+    padding: .5em;
+    width: 100%; }
+    .domains ul li:hover {
+      background: #0d85fd; }
+
 /* Footer */
 footer {
   margin: 2em; }
@@ -204,6 +236,14 @@ form {
 
 form#add-domain {
   color: black; }
+
+#nav {
+  position: relative; }
+
+#nav form {
+  position: absolute; }
+  #nav form input {
+    width: 6em; }
 
 form fieldset {
   border: none;

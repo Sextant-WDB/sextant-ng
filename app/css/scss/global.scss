@@ -5,10 +5,19 @@ $darkGray: #161616;
 $white: #fff;
 $black: #000;
 
+html {
+  height: 100%;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   color: $white;
   background-color: $darkGray;
+  min-height: 100%;
+}
+
+main {
+  min-height: 100%;
 }
 
 a {
@@ -45,4 +54,11 @@ h1, h2, h3 {
 p {
   font-size: 0.95em;
   padding: 0.5em 0;
+}
+
+/* Reusable classes */
+
+.link {
+  color: $blue;
+  cursor: pointer;
 }
