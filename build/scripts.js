@@ -24,6 +24,7 @@ require('./js/controllers/session-controller')(sextant);
 require('./js/controllers/tracking-code-controller')(sextant);
 require('./js/controllers/data-controller')(sextant);
 require('./js/directives/controllers/events-bar-graph-controller')(sextant);
+require('./js/directives/controllers/header-controller')(sextant);
 
 // Directives
 
@@ -55,7 +56,7 @@ sextant.config([ '$routeProvider', '$locationProvider',
 
 		// $locationProvider.html5Mode(true);
 } ]);
-},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/controllers/tracking-code-controller":9,"./js/directives/controllers/events-bar-graph-controller":10,"./js/directives/d3-events-bar-graph-directive":11,"./js/directives/footer-directive":12,"./js/directives/header-directive":13,"./js/directives/visit-details-directive":14,"./js/directives/visit-summary-directive":15,"./js/services/http-service":16}],2:[function(require,module,exports){
+},{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":6,"./js/controllers/data-controller":7,"./js/controllers/session-controller":8,"./js/controllers/tracking-code-controller":9,"./js/directives/controllers/events-bar-graph-controller":10,"./js/directives/controllers/header-controller":11,"./js/directives/d3-events-bar-graph-directive":12,"./js/directives/footer-directive":13,"./js/directives/header-directive":14,"./js/directives/visit-details-directive":15,"./js/directives/visit-summary-directive":16,"./js/services/http-service":17}],2:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -23473,11 +23474,11 @@ module.exports = function(app) {
           });
       };
 
-      $scope.getDomains(); // run on view load
+      $scope.getDomains(); // runs on view load
 
       var visitService = new HttpService('visits');
 
-      $scope.getVisits = function(domain_id){
+      $scope.getVisits = function(domain_id) {
 
         $scope.selectedDomain = domain_id;
 
@@ -23485,7 +23486,6 @@ module.exports = function(app) {
           .success(function(visits) {
             $scope.visits = visits;
             $scope.totalVisits = visits.length;
-            // d3init();
           });
       };
 
@@ -23501,7 +23501,7 @@ module.exports = function(app) {
 
       $scope.closeDropdown = function() {
           $scope.dropdownHover = false;
-          $timeout($scope.hideDropdown, 1000);
+          $timeout($scope.hideDropdown, 500);
       };
 
       $scope.openDropdown = function() {
@@ -23521,7 +23521,7 @@ module.exports = function(app) {
 
 		} ]);
 };
-},{"d3":17}],8:[function(require,module,exports){
+},{"d3":18}],8:[function(require,module,exports){
 'use strict';
 
 /**
@@ -23557,16 +23557,6 @@ module.exports = function(app) {
           console.log('error in session controller! ' + JSON.stringify(error));
         });
 
-      };
-
-      /**
-       * Log out current user
-       *
-       */
-
-      $scope.logOut = function() {
-        $cookies.jwt = null;
-        $location.path('/'); // If redirect to /signin, error!
       };
 
     }
@@ -23694,6 +23684,58 @@ module.exports = function(app) {
 'use strict';
 
 module.exports = function(app) {
+	app.controller('headerController',
+		[ '$scope', '$timeout', 'HttpService', '$cookies', '$location',
+		function($scope, $timeout, HttpService, $cookies, $location) {
+
+			/**
+       * Show and hide the dropdown
+       */
+
+      $scope.hideNavDropdown = function() {
+          if ($scope.dropdownHover === false) {
+              $scope.navDropdown = false;
+          }
+      };
+
+      $scope.closeNavDropdown = function() {
+          $scope.dropdownHover = false;
+          $timeout($scope.hideNavDropdown, 500);
+      };
+
+      $scope.openNavDropdown = function() {
+          $scope.navDropdown = true;
+          $scope.dropdownHover = true;
+      };
+
+      /**
+       * Add the domain!
+       */
+
+      var domainService = new HttpService('domains');
+
+      $scope.addDomain = function() {
+        console.log('trying to post ' + $scope.newDomain);
+        domainService.post($scope.newDomain, {});
+        $scope.newDomain = '';
+      };
+
+      /**
+       * Log out right from the nav
+       */
+
+      $scope.logOut = function() {
+      	$cookies.jwt = null;
+      	$location.path('/');
+      };
+
+		}
+	]);
+};
+},{}],12:[function(require,module,exports){
+'use strict';
+
+module.exports = function(app) {
   app.directive('eventBarGraph', function() {
     return {
       restrict: 'E',
@@ -23702,7 +23744,7 @@ module.exports = function(app) {
     };
   });
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 module.exports = function(app) {
@@ -23713,18 +23755,19 @@ module.exports = function(app) {
 		};
 	});
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 module.exports = function(app) {
 	app.directive('sextantHeader', function() {
 		return {
 			restrict: 'E',
-			templateUrl: 'templates/header-template.html'
+			templateUrl: 'templates/header-template.html',
+			controller: 'headerController'
 		};
 	});
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 module.exports = function(app) {
@@ -23735,7 +23778,7 @@ module.exports = function(app) {
     };
   });
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 module.exports = function(app) {
@@ -23757,7 +23800,7 @@ module.exports = function(app) {
     };
   });
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 /**
@@ -23804,7 +23847,7 @@ module.exports = function(app) {
 		return HttpService;
 	});
 };
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.4.11"
@@ -33038,4 +33081,4 @@ module.exports = function(app) {
   if (typeof define === "function" && define.amd) define(d3); else if (typeof module === "object" && module.exports) module.exports = d3;
   this.d3 = d3;
 }();
-},{}]},{},[6,7,8,9,10,11,12,13,14,15,16,1]);
+},{}]},{},[6,7,8,9,10,11,12,13,14,15,16,17,1]);
