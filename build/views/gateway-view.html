@@ -1,13 +1,16 @@
-<header class="flex-container">
-  <section class="flex-item">
-    <a href="index.html">
-      <img src="images/logotextwhite.png">
-    </a>
-    <h1>Microanalytics for a JavaScript world</h1>
-  </section>
-</header>
-<main>
-  <!--Login-->
+<main class="starBackground">
+
+  <!-- Intentionally NOT the header directive -->
+  <header class="flex-container">
+    <section class="flex-item">
+      <a href="index.html">
+        <img src="images/logotextwhite.png">
+      </a>
+      <h1>Microanalytics for a JavaScript world</h1>
+    </section>
+  </header>
+
+  <!--Log in-->
   <article class="flex-container" data-ng-init="newUser = false" data-ng-show="!newUser">
     <div data-ng-controller="sessionController">
       <section class="flex-item">
@@ -16,11 +19,9 @@
             <legend>Log in</legend>
             <ol>
               <li>
-                <label for="email">Email</label>
-                <input data-ng-model="user.email" id="email" name="Email" type="email" placeholder="example@domain.com" required autofocus>
+                <input data-ng-model="user.email" id="email" name="Email" type="email" placeholder="Email" required autofocus>
               </li>
               <li>
-                <label for="password">Password</label>
                 <input data-ng-model="user.password" id="password" name="password" type="password" placeholder="Password" required>
               </li>
             </ol>
@@ -35,7 +36,8 @@
       </section>
     </div>
   </article>
-<!--Create a new account-->
+
+  <!--Create a new account-->
   <article class="flex-container" data-ng-show="newUser">
     <div data-ng-controller="accountController">
       <section class="flex-item">
@@ -64,18 +66,13 @@
       </section>
     </div>
   </article>
-<!-- Toggle new user / existing user -->
+
+  <!-- Toggle new user / existing user -->
   <article class="flex-container">
     <a data-ng-click="newUser = !newUser">{{!newUser ? 'Or create a new account' : 'Have an existing account? Sign in here'}}</a>
   </article>
-</main>
-<footer>
-  <nav class="nav flex-container">
-    <ul>
-      <li class="flex-item__nav"><a href="about.html">About</a></li>
-      <li class="flex-item__nav"><a href="contact.html">Contact</a></li>
-      <li class="flex-item__nav"><a href="help.html">Help</a></li>
-    </ul>
-  </nav>
-</footer>
 
+  <!-- Intentionally omit footer, to keep first impression clean :) -->
+  <!-- <sextant-footer></sextant-footer> -->
+
+</main>
