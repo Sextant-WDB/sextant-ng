@@ -16,6 +16,7 @@ form#add-domain {
 
 #nav form {
   position: absolute;
+  padding: 1em 0 0 0;
   input {
     width: 6em;
   }
@@ -44,7 +45,7 @@ form ol li {
   list-style: none;
   padding: 0.5em 0;
   margin-bottom: 0.25em;
-  text-align: left;
+  // text-align: left;
 }
 
 button {

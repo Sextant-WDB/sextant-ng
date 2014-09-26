@@ -114,7 +114,7 @@ main {
 
 .nav ul li {
   display: inline;
-  margin-right: 2em; }
+  margin-right: 1.5em; }
 
 .nav ul li a {
   color: white;
@@ -241,7 +241,8 @@ form#add-domain {
   position: relative; }
 
 #nav form {
-  position: absolute; }
+  position: absolute;
+  padding: 1em 0 0 0; }
   #nav form input {
     width: 6em; }
 
@@ -263,8 +264,7 @@ form ol li {
   line-height: 1em;
   list-style: none;
   padding: 0.5em 0;
-  margin-bottom: 0.25em;
-  text-align: left; }
+  margin-bottom: 0.25em; }
 
 button {
   background: #0d85fd;
