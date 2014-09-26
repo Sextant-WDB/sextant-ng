@@ -3,43 +3,54 @@
   <sextant-header></sextant-header>
 
 	<article class="flex-container flex-container__content">
-
     <section class="flex-item__dash" data-ng-mouseout="hideList()">
 			<div data-ng-mouseover='openDropdown()' data-ng-mouseleave='closeDropdown()' class="domains">
-	      Select a domain
-	      <menu data-ng-show="dropdown">
-	        <menuitem data-ng-repeat="domain in domains">
-	          <a data-ng-click="getVisits(domain._id)">{{domain.host}}</a>
-	        </menuitem>
-	      </menu>
+				<h2 class="link">
+		      Select a domain
+				</h2>
+	      <ul data-ng-show="dropdown">
+	        <li data-ng-repeat="domain in domains" data-ng-click="getVisits(domain._id)" class="link">
+	          {{domain.host}}
+	        </li>
+	      </ul>
 	    </div>
 	  </section>
-<!--   	  <section class="flex-item__dash">
-			<form id="add-domain">
-	      <label for="add-domain">Add a domain</label>
-	      <fieldset>
-	        <input data-ng-model="newDomain" id="domain" placeholder="URL">
-	      </fieldset>
-	      <fieldset>
-	        <button data-ng-click="addDomain()">Add</button>
-	      </fieldset>
-	    </form>
-		</section> -->
-			<figure class="flex-item__figure">
+  </article>
+
+	<article class="flex-container flex-container__content">
+
+		<figure class="flex-item__figure">
 	    <div data-ng-show="selectedDomain">
 	      <h3>Visit Data</h3>
 	      <div data-ng-repeat="visit in visits">
-	        <p>{{ visit }}</p>
+	        <p>{{visit}}</p>
 	      </div>
 	    </div>
 	  </figure>
+
+		<figure class="flex-item__figure">
+	    <div data-ng-show="selectedDomain">
+	      <h3>Visit Data</h3>
+	      <visit-summary></visit-summary>
+	    </div>
+	  </figure>
+
 	  <figure class="flex-item__figure">
 	    <div data-ng-show="selectedDomain">
 	      <h3>Visit Data</h3>
-					<visit-summary></visit-summary>
-					<event-bar-graph></event-bar-graph>
-					<visit-details></visit-details>
+	      <event-bar-graph></event-bar-graph>
+	    </div>
+	  </figure>
+
+	  <figure class="flex-item__figure">
+	    <div data-ng-show="selectedDomain">
+	      <h3>Visit Data</h3>
+				<visit-details></visit-details>
 			</div>
 	  </figure>
+
 	</article>
+
+	<sextant-footer></sextant-footer>
+
 </main>
