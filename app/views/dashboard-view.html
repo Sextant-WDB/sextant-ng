@@ -1,22 +1,11 @@
-<header class="flex-container">
-	<section class="flex-item">
-    <a href="index.html">
-      <img src="images/logotextwhite.png" width="320px" height="134px">
-    </a>
-    <h2>Microanalytics for a JavaScript world</h2>
-  </section>
-	<nav class="nav flex-item">
-    <ul>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="help.html">Help</a></li>
-    </ul>
-  </nav>
-</header>
-<main>
+<main class="grayBackground">
+
+  <sextant-header></sextant-header>
+
 	<article class="flex-container flex-container__content">
-	  <section class="flex-item__dash" data-ng-mouseout="hideList()">
-			<div data-ng-mouseover='openDropdown()' data-ng-mouseleave='closeDropdown()'>
+
+    <section class="flex-item__dash" data-ng-mouseout="hideList()">
+			<div data-ng-mouseover='openDropdown()' data-ng-mouseleave='closeDropdown()' class="domains">
 	      Select a domain
 	      <menu data-ng-show="dropdown">
 	        <menuitem data-ng-repeat="domain in domains">
@@ -25,7 +14,7 @@
 	      </menu>
 	    </div>
 	  </section>
-	  <section class="flex-item__dash">
+<!--   	  <section class="flex-item__dash">
 			<form id="add-domain">
 	      <label for="add-domain">Add a domain</label>
 	      <fieldset>
@@ -35,7 +24,7 @@
 	        <button data-ng-click="addDomain()">Add</button>
 	      </fieldset>
 	    </form>
-		</section>
+		</section> -->
 			<figure class="flex-item__figure">
 	    <div data-ng-show="selectedDomain">
 	      <h3>Visit Data</h3>
