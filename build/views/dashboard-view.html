@@ -1,56 +1,64 @@
-<header class="flex-container">
-	<section class="flex-item">
-    <a href="index.html">
-      <img src="images/logotextwhite.png" width="320px" height="134px">
-    </a>
-    <h2>Microanalytics for a JavaScript world</h2>
-  </section>
-	<nav class="nav flex-item">
-    <ul>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="help.html">Help</a></li>
-    </ul>
-  </nav>
-</header>
-<main>
-	<article class="flex-container flex-container__content">
-	  <section class="flex-item__dash" data-ng-mouseout="hideList()">
-			<div data-ng-mouseover='openDropdown()' data-ng-mouseleave='closeDropdown()'>
-	      Select a domain
-	      <menu data-ng-show="dropdown">
-	        <menuitem data-ng-repeat="domain in domains">
-	          <a data-ng-click="getVisits(domain._id)">{{domain.host}}</a>
-	        </menuitem>
-	      </menu>
-	    </div>
+<body id="1" class="bkgd__dash">
+	<header id="2" class="flex-container">
+		<section class="flex-item">
+			<h1 class="hidden">Sextant</h1>
+	    <a href="index.html">
+	      <img src="images/logotextwhite.png" width="320px" height="134px">
+	    </a>
+	    <h2>Microanalytics for a JavaScript world</h2>
 	  </section>
-	  <section class="flex-item__dash">
-			<form id="add-domain">
-	      <label for="add-domain">Add a domain</label>
-	      <fieldset>
-	        <input data-ng-model="newDomain" id="domain" placeholder="URL">
-	      </fieldset>
-	      <fieldset>
-	        <button data-ng-click="addDomain()">Add</button>
-	      </fieldset>
-	    </form>
-		</section>
-			<figure class="flex-item__figure">
-	    <div data-ng-show="selectedDomain">
-	      <h3>Visit Data</h3>
-	      <div data-ng-repeat="visit in visits">
-	        <p>{{ visit }}</p>
-	      </div>
-	    </div>
-	  </figure>
-	  <figure class="flex-item__figure">
-	    <div data-ng-show="selectedDomain">
-	      <h3>Visit Data</h3>
-					<visit-summary></visit-summary>
-					<event-bar-graph></event-bar-graph>
-					<visit-details></visit-details>
-			</div>
-	  </figure>
-	</article>
-</main>
+		<nav class="nav flex-item">
+			<h1 class="hidden">Navbar</h1>
+	    <ul>
+	      <li><a href="about.html">About</a></li>
+	      <li><a href="contact.html">Contact</a></li>
+	      <li><a href="help.html">Help</a></li>
+	    </ul>
+	  </nav>
+	</header>
+	<main>
+		<article class="flex-container flex-container__content">
+		  <section class="flex-item__dash" data-ng-mouseout="hideList()">
+				<div data-ng-mouseover='openDropdown()' data-ng-mouseleave='closeDropdown()'>
+					<h1 class="hidden">Select a domain</h1>
+		      Select a domain
+		      <menu data-ng-show="dropdown">
+		        <menuitem data-ng-repeat="domain in domains">
+		          <a data-ng-click="getVisits(domain._id)">{{domain.host}}</a>
+		        </menuitem>
+		      </menu>
+		    </div>
+		  </section>
+		  <section class="flex-item__dash">
+				<form id="add-domain">
+					<h1 class="hidden">Add-domain form</h1>
+		      <label for="add-domain">Add a domain</label>
+		      <fieldset>
+		        <input data-ng-model="newDomain" id="domain" placeholder="URL">
+		      </fieldset>
+		      <fieldset>
+		        <button data-ng-click="addDomain()">Add</button>
+		      </fieldset>
+		    </form>
+			</section>
+				<figure class="flex-item__figure">
+		    <div data-ng-show="selectedDomain">
+		    	<h1 class="hidden">Visit data</h1>
+		      <h3>Visit Data</h3>
+		      <div data-ng-repeat="visit in visits">
+		        <p>{{ visit }}</p>
+		      </div>
+		    </div>
+		  </figure>
+		  <figure class="flex-item__figure">
+		    <div data-ng-show="selectedDomain">
+		    	<h1 class="hidden">More data</h1>
+		      <h3>Visit Data</h3>
+						<visit-summary></visit-summary>
+						<event-bar-graph></event-bar-graph>
+						<visit-details></visit-details>
+				</div>
+		  </figure>
+		</article>
+	</main>
+</body>

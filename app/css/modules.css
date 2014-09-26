@@ -7,6 +7,10 @@
   background-position: center;
 }
 
+.bkgd__dash {
+  background-color: #6885A1;
+}
+
 /* Header */
 
 header {

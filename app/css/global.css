@@ -29,3 +29,7 @@ p {
   font-size: 0.95em;
   padding: 0.5em 0;
 }
+
+.hidden {
+  display: none;
+}
