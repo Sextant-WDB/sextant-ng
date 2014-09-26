@@ -1,7 +1,8 @@
 // Define global colors:
-$blue: #0D85FD;
+$blue: steelBlue;
 $darkBlue: #0266c8;
 $darkGray: #161616;
+$lightGray: rgb(225,225,225);
 $white: #fff;
 $black: #000;
 
@@ -47,8 +48,15 @@ h2 {
   font-size: 1.546em;
 }
 
+h3 {
+  font-size: 1.3em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
 h1, h2, h3 {
   font-family: "Montserrat";
+  text-align: center;
 }
 
 p {

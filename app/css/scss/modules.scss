@@ -14,9 +14,9 @@
   background: $darkGray;
 }
 
-.bkgd__dash {
-  background-color: #6885A1;
-}
+// .bkgd__dash {
+//   background-color: #6885A1;
+// }
 
 /* Header */
 
@@ -87,19 +87,19 @@ main {
 
 .flex-item__figure {
   margin: .5em auto;
-  width: 29em;
-  height: 10em;
+  padding: 1em;
+  width: 40em;
+  height: 25em;
   overflow: hidden;
+}
+
+.graphs {
+  background-color: $lightGray;
 }
 
 @media only screen and (max-width : 40em) {
   .flex-container__content {
     flex-direction: column;
-  }
-
-  .flex-item__figure {
-    width: 15em;
-    height: 27em;
   }
 }
 
@@ -133,10 +133,7 @@ article {
 }
 
 figure {
-  background: #ffffff;
-  -moz-box-shadow:    0 0 0.05em 0.05em #ccc;
-  -webkit-box-shadow: 0 0 0.05em 0.05em #ccc;
-  box-shadow:         0 0 0.05em 0.05em #ccc;
+  background: $white;
 }
 
 /* Menu */
@@ -155,11 +152,11 @@ menu ol li {
 
 .domains ul {
   position: absolute;
-  margin-top: 1em;
+  padding-top: 24px;
   width: 100%;
   li {
-    background: $black;
-    color: white;
+    background: $white;
+    color: $black;
     line-height: 1.2em;
     margin-top: 1px;
     padding: .5em;

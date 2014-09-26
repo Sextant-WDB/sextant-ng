@@ -54,10 +54,10 @@ a {
   color: white; }
 
 .domains a {
-  color: #0d85fd; }
+  color: steelblue; }
 
 a:hover {
-  color: #0d85fd;
+  color: steelblue;
   cursor: pointer; }
 
 div.viewWrapper {
@@ -70,8 +70,14 @@ h1 {
 h2 {
   font-size: 1.546em; }
 
+h3 {
+  font-size: 1.3em;
+  margin-top: 2em;
+  margin-bottom: 2em; }
+
 h1, h2, h3 {
-  font-family: "Montserrat"; }
+  font-family: "Montserrat";
+  text-align: center; }
 
 p {
   font-size: 0.95em;
@@ -79,7 +85,7 @@ p {
 
 /* Reusable classes */
 .link {
-  color: #0d85fd;
+  color: steelblue;
   cursor: pointer; }
 
 /* Background */
@@ -93,9 +99,6 @@ p {
 
 .grayBackground {
   background: #161616; }
-
-.bkgd__dash {
-  background-color: #6885A1; }
 
 /* Header */
 header {
@@ -124,7 +127,7 @@ main {
   font-size: 1.2em; }
 
 .nav ul li a:hover {
-  color: #0d85fd;
+  color: steelblue;
   cursor: pointer; }
 
 /* Flexbox */
@@ -151,17 +154,17 @@ main {
 
 .flex-item__figure {
   margin: .5em auto;
-  width: 29em;
-  height: 10em;
+  padding: 1em;
+  width: 40em;
+  height: 25em;
   overflow: hidden; }
+
+.graphs {
+  background-color: #e1e1e1; }
 
 @media only screen and (max-width: 40em) {
   .flex-container__content {
-    flex-direction: column; }
-
-  .flex-item__figure {
-    width: 15em;
-    height: 27em; } }
+    flex-direction: column; } }
 .flex-item__leftcol {
   margin: .5em auto;
   width: 20%; }
@@ -185,10 +188,7 @@ article {
   padding: 1em; }
 
 figure {
-  background: #ffffff;
-  -moz-box-shadow: 0 0 0.05em 0.05em #ccc;
-  -webkit-box-shadow: 0 0 0.05em 0.05em #ccc;
-  box-shadow: 0 0 0.05em 0.05em #ccc; }
+  background: white; }
 
 /* Menu */
 menu ol {
@@ -202,17 +202,17 @@ menu ol li {
 
 .domains ul {
   position: absolute;
-  margin-top: 1em;
+  padding-top: 24px;
   width: 100%; }
   .domains ul li {
-    background: black;
-    color: white;
+    background: white;
+    color: black;
     line-height: 1.2em;
     margin-top: 1px;
     padding: .5em;
     width: 100%; }
     .domains ul li:hover {
-      background: #0d85fd; }
+      background: steelblue; }
 
 /* Footer */
 footer {
@@ -220,7 +220,7 @@ footer {
 
 /* Button */
 button {
-  background: #0d85fd;
+  background: steelblue;
   color: white;
   font: 0.955em "Open Sans", sans-serif;
   letter-spacing: 0.02em;
@@ -259,7 +259,7 @@ form fieldset:last-of-type {
 
 form legend {
   color: white;
-  font-size: 2.5em;
+  font-size: 1.546em;
   font-family: "Open Sans", sans-serif;
   padding-bottom: 0.5em; }
 
@@ -270,7 +270,7 @@ form ol li {
   margin-bottom: 0.25em; }
 
 button {
-  background: #0d85fd;
+  background: steelblue;
   color: white;
   font: 0.955em "Open Sans", sans-serif;
   letter-spacing: 0.02em;
@@ -291,3 +291,9 @@ form input {
 
 form#login input, form#register input {
   border: 0; }
+
+.emphasis {
+  font-size: 5em;
+  font-family: 'Montserrat';
+  color: steelblue;
+  line-height: 1em; }
