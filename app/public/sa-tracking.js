@@ -93,7 +93,7 @@ _sa.processEvent = function(e) {
 
   return trimmed;
 };
-var window;
+
 // Automatically send any collected events
 _sa.sendEvents = setInterval(function() {
   if (!_sa.events.length) return;
