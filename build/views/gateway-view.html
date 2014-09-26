@@ -15,6 +15,7 @@
     <div data-ng-controller="sessionController">
       <section class="flex-item">
         <form id="login">
+          <h1 class="hidden">Login</h1>
           <fieldset>
             <legend>Log in</legend>
             <ol>
@@ -39,6 +40,7 @@
     <div data-ng-controller="accountController">
       <section class="flex-item">
         <form id="register">
+          <h1 class="hidden">Create account</h1>
           <fieldset>
             <legend>Create an account</legend>
             <ol>
@@ -63,6 +65,7 @@
 
   <!-- Toggle new user / existing user -->
   <article class="flex-container">
+    <h1 class="hidden">Toggle</h1>
     <a data-ng-click="newUser = !newUser">{{!newUser ? 'Or create a new account' : 'Have an existing account? Sign in here'}}</a>
   </article>
 
