@@ -25374,6 +25374,9 @@ module.exports = function(app) {
               if( el.events.length === 1 ) bounces ++;
             });
             $scope.bounceRate = (bounces / $scope.visits.length * 100).toFixed(1);
+            if ($scope.bounceRate === 'NaN') {
+              $scope.bounceRate = 0;
+            }
           }
         });
       }
