@@ -1,15 +1,27 @@
+// Define global colors:
+$blue: #0D85FD;
+$darkBlue: #0266c8;
+$darkGray: #161616;
+$white: #fff;
+$black: #000;
+
 body {
   font-family: "Open Sans", sans-serif;
-  color: #fff;
+  color: $white;
+  background-color: $darkGray;
 }
 
 a {
   text-decoration:none;
-  color: #fff;
+  color: $white;
+}
+
+.domains a {
+  color: $blue;
 }
 
 a:hover {
-  color: #0D85FD;
+  color: $blue;
   cursor: pointer;
 }
 

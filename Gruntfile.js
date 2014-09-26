@@ -8,6 +8,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-browserify');
 
@@ -32,8 +33,13 @@ module.exports = function(grunt) {
       dev: {
         expand: true,
         cwd: 'app/',
-        src: ['*.html', 'css/*.css', 'views/**/*.html',
-          'public/**/*.*', 'templates/**/*.html', 'images/**/*.*'],
+        src: [
+          '*.html',
+          'css/*.css',
+          'views/**/*.html',
+          'public/**/*.*',
+          'templates/**/*.html',
+          'images/**/*.*'],
         dest: 'build/',
         filter: 'isFile'
       }
@@ -59,8 +65,19 @@ module.exports = function(grunt) {
           transform: ['debowerify'],
           debug: true
         },
-        src: ['app/js/**/*.js', 'app/app.js'],
+        src: [
+          'app/js/**/*.js',
+          'app/app.js'
+        ],
         dest: 'build/scripts.js'
+      }
+    },
+
+    sass: {
+      build: {
+        files: {
+          'app/css/styles.css': 'app/css/scss/styles.scss'
+        }
       }
     },
 
@@ -81,8 +98,17 @@ module.exports = function(grunt) {
 
     watch: {
       angulartest: {
-        files: ['app/js/**/*.js', 'app/index.html', 'app/views/**/*.html', 'app/views/*.html', 'app/css/*.css'],
-        tasks: ['browserify:angulartest', 'karma:unit'],
+        files: [
+          'app/js/**/*.js',
+          'app/index.html',
+          'app/views/**/*.html',
+          'app/views/*.html',
+          'app/css/scss/*'
+        ],
+        tasks: [
+          'browserify:angulartest',
+          'karma:unit'
+        ],
         options: {
           spawn: false
         }
@@ -92,7 +118,7 @@ module.exports = function(grunt) {
           'app/js/**/*.js',
           'app/index.html',
           'app/views/**/*.html',
-          'app/css/*.css',
+          'app/css/scss/*.scss',
           'server.js',
           'models/*.js',
           'routes/*.js',
@@ -101,6 +127,7 @@ module.exports = function(grunt) {
         tasks: [
           'jshint',
           'jscs',
+          'sass',
           'clean:dev',
           'browserify:dev',
           'copy:dev',
@@ -118,6 +145,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
       'jshint',
       'jscs',
+      'sass',
       'clean:dev',
       'browserify:dev',
       'copy:dev',

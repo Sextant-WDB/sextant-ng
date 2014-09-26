@@ -1,0 +1,250 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object,
+h1, h2, h3, h4, h5, h6, p, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+body {
+  font-family: "Open Sans", sans-serif;
+  color: white;
+  background-color: #161616; }
+
+a {
+  text-decoration: none;
+  color: white; }
+
+.domains a {
+  color: #0d85fd; }
+
+a:hover {
+  color: #0d85fd;
+  cursor: pointer; }
+
+div.viewWrapper {
+  margin: 50px auto;
+  min-height: 400px; }
+
+h1 {
+  font-size: 2.5em; }
+
+h2 {
+  font-size: 1.546em; }
+
+h1, h2, h3 {
+  font-family: "Montserrat"; }
+
+p {
+  font-size: 0.95em;
+  padding: 0.5em 0; }
+
+/* Background */
+.starBackground {
+  background: url(/images/nightsky2.jpg) no-repeat;
+  background-color: black;
+  background-size: cover;
+  background-position: center; }
+
+.grayBackground {
+  background: #161616; }
+
+/* Header */
+header {
+  text-align: center; }
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block; }
+
+/* Main */
+main {
+  margin: 1em; }
+
+/* Nav */
+.nav ul {
+  text-align: center;
+  margin-bottom: 2em; }
+
+.nav ul li {
+  display: inline;
+  margin-right: 2em; }
+
+.nav ul li a {
+  color: white;
+  font-size: 1.546em; }
+
+.nav ul li a:hover {
+  color: #0d85fd;
+  cursor: pointer; }
+
+/* Flexbox */
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center; }
+
+.flex-container__content {
+  align-items: baseline;
+  background-color: #ffffff;
+  color: black;
+  width: 80%;
+  margin: 1% 8.5%; }
+
+.flex-item {
+  margin: 1em auto; }
+
+.flex-item__dash {
+  margin: 0.5em auto;
+  width: 16.875em; }
+
+.flex-item__figure {
+  margin: .5em auto;
+  width: 29em;
+  height: 10em; }
+
+@media only screen and (max-width: 40em) {
+  .flex-container__content {
+    flex-direction: column; }
+
+  .flex-item__figure {
+    width: 15em;
+    height: 27em; } }
+.flex-item__leftcol {
+  margin: .5em auto;
+  width: 20%; }
+
+.flex-item__rightcol {
+  margin: .5em auto;
+  width: 65%; }
+
+.flex-item__nav {
+  margin: 1em auto;
+  padding: .5em .5em; }
+
+/* Article */
+article {
+  padding: 1em;
+  line-height: 1em; }
+
+/* Dashboard */
+.info {
+  color: black;
+  padding: 1em; }
+
+figure {
+  background: #ffffff;
+  -moz-box-shadow: 0 0 0.05em 0.05em #ccc;
+  -webkit-box-shadow: 0 0 0.05em 0.05em #ccc;
+  box-shadow: 0 0 0.05em 0.05em #ccc; }
+
+/* Menu */
+menu ol {
+  margin: 1em auto; }
+
+menu ol li {
+  padding-bottom: 1em; }
+
+/* Footer */
+footer {
+  margin: 2em; }
+
+/* Button */
+button {
+  background: #0d85fd;
+  color: white;
+  font: 0.955em "Open Sans", sans-serif;
+  letter-spacing: 0.02em;
+  padding: 0.75em 3em;
+  text-transform: uppercase;
+  border: 0;
+  text-align: center;
+  display: inline-block; }
+
+/* Form */
+form {
+  padding: 1.5em;
+  color: white;
+  font-family: "Open Sans", sans-serif;
+  text-align: center; }
+
+form#add-domain {
+  color: black; }
+
+form fieldset {
+  border: none;
+  padding: 2em auto;
+  margin-bottom: 0.5em; }
+
+form fieldset:last-of-type {
+  margin-bottom: 0; }
+
+form legend {
+  color: white;
+  font-size: 2.5em;
+  font-family: "Open Sans", sans-serif;
+  padding-bottom: 0.5em; }
+
+form ol li {
+  line-height: 1em;
+  list-style: none;
+  padding: 0.5em 0;
+  margin-bottom: 0.25em;
+  text-align: left; }
+
+button {
+  background: #0d85fd;
+  color: white;
+  font: 0.955em "Open Sans", sans-serif;
+  letter-spacing: 0.02em;
+  padding: 0.75em 3em;
+  text-transform: uppercase;
+  border: 0;
+  text-align: center;
+  display: inline-block; }
+
+button:hover {
+  background: #0266c8;
+  color: white;
+  cursor: pointer; }
+
+form input {
+  width: 15em;
+  padding: 0.75em; }
+
+form#login input, form#register input {
+  border: 0; }

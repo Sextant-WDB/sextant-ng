@@ -1,10 +1,14 @@
 /* Background */
 
-.bkgd {
-  background: url(/images/nightsky3.jpg) no-repeat;
-  background-color: #000;
+.starBackground {
+  background: url(/images/nightsky2.jpg) no-repeat;
+  background-color: $black;
   background-size: cover;
   background-position: center;
+}
+
+.grayBackground {
+  background: $darkGray;
 }
 
 /* Header */
@@ -38,12 +42,12 @@ main {
 }
 
 .nav ul li a {
-  color: #ffffff;
+  color: $white;
   font-size: 1.546em;
 }
 
 .nav ul li a:hover {
-  color: #0D85FD;
+  color: $blue;
   cursor: pointer;
 }
 
@@ -60,7 +64,7 @@ main {
 .flex-container__content {
   align-items: baseline;
   background-color: #ffffff;
-  color: #000;
+  color: $black;
   width: 80%;
   margin: 1% 8.5%;
 }
@@ -116,7 +120,7 @@ article {
 /* Dashboard */
 
 .info {
-  color: #000000;
+  color: $black;
   padding: 1em;
 }
 
@@ -146,8 +150,8 @@ footer {
 /* Button */
 
 button {
-  background: #0D85FD;
-  color: white;
+  background: $blue;
+  color: $white;
   font: 0.955em "Open Sans", sans-serif;
   letter-spacing: 0.02em;
   padding: 0.75em 3em;

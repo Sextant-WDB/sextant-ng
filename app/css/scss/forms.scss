@@ -1,13 +1,13 @@
 /* Form */
 form {
   padding: 1.5em;
-  color: #fff;
+  color: $white;
   font-family: "Open Sans", sans-serif;
   text-align: center;
 }
 
 form#add-domain {
-  color: #000;
+  color: $black;
 }
 
 form fieldset {
@@ -16,12 +16,12 @@ form fieldset {
   margin-bottom: 0.5em;
 }
 
-form fieldset: last-of-type {
+form fieldset:last-of-type {
   margin-bottom: 0;
 }
 
 form legend {
-  color: #ffffff;
+  color: $white;
   font-size: 2.5em;
   font-family: "Open Sans", sans-serif;
   padding-bottom: 0.5em;
@@ -35,9 +35,9 @@ form ol li {
   text-align: left;
 }
 
-form button {
-  background: #0D85FD;
-  color: white;
+button {
+  background: $blue;
+  color: $white;
   font: 0.955em "Open Sans", sans-serif;
   letter-spacing: 0.02em;
   padding: 0.75em 3em;
@@ -47,18 +47,17 @@ form button {
   display: inline-block;
 }
 
-form button:hover {
+button:hover {
   background: #0266c8;
   color: white;
   cursor: pointer;
 }
 
 form input {
-  width: 12em;
-  padding: .5em
+  width: 15em;
+  padding: .75em
 }
 
 form#login input, form#register input {
   border: 0;
 }
-
