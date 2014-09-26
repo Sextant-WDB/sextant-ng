@@ -3,6 +3,7 @@
   <sextant-header></sextant-header>
 
 	<article class="flex-container flex-container__content">
+		<h1 class="hidden">Select a domain</h1>
     <section class="flex-item__dash" data-ng-mouseout="hideList()">
 			<div data-ng-mouseover='openDropdown()' data-ng-mouseleave='closeDropdown()' class="domains">
 				<h2 class="link">
@@ -18,7 +19,7 @@
   </article>
 
 	<article class="flex-container flex-container__content graphs" data-ng-show="selectedDomain">
-
+		<h1 class="hidden">Graphical data</h1>
 		<figure class="flex-item__figure">
 	    <div>
 	      <visit-summary></visit-summary>
