@@ -91,6 +91,7 @@ module.exports = function(grunt) {
         files: [
           'app/js/**/*.js', 
           'app/css/**/*.css',
+          'app/templates/**/*.css',
           'app/index.html', 
           'app/views/**/*.html', 
           'server.js', 
