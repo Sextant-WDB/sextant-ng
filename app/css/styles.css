@@ -42,7 +42,7 @@ html {
 
 body {
   font-family: "Open Sans", sans-serif;
-  color: white;
+  color: #fff;
   background-color: #161616;
   min-height: 100%; }
 
@@ -51,13 +51,13 @@ main {
 
 a {
   text-decoration: none;
-  color: white; }
+  color: #fff; }
 
 .domains a {
-  color: steelblue; }
+  color: steelBlue; }
 
 a:hover {
-  color: steelblue;
+  color: steelBlue;
   cursor: pointer; }
 
 div.viewWrapper {
@@ -85,13 +85,13 @@ p {
 
 /* Reusable classes */
 .link {
-  color: steelblue;
+  color: steelBlue;
   cursor: pointer; }
 
 /* Background */
 .starBackground {
   background: url(/images/nightsky3.jpg) no-repeat;
-  background-color: black;
+  background-color: #000;
   background-size: cover;
   background-position: center;
   height: 100%;
@@ -122,11 +122,11 @@ main {
   margin-right: 1.5em; }
 
 .nav ul li a {
-  color: white;
+  color: #fff;
   font-size: 1.2em; }
 
 .nav ul li a:hover {
-  color: steelblue;
+  color: steelBlue;
   cursor: pointer; }
 
 /* Flexbox */
@@ -140,7 +140,7 @@ main {
 .flex-container__content {
   align-items: baseline;
   background-color: #ffffff;
-  color: black;
+  color: #000;
   width: 80%;
   margin: 1% 8.5%; }
 
@@ -184,11 +184,11 @@ article {
 
 /* Dashboard */
 .info {
-  color: black;
+  color: #000;
   padding: 1em; }
 
 figure {
-  background: white; }
+  background: #fff; }
 
 /* Menu */
 menu ol {
@@ -205,14 +205,14 @@ menu ol li {
   padding-top: 24px;
   width: 100%; }
   .domains ul li {
-    background: white;
-    color: black;
+    background: #fff;
+    color: #000;
     line-height: 1.2em;
     margin-top: 1px;
     padding: .5em;
     width: 100%; }
     .domains ul li:hover {
-      background: steelblue; }
+      background: steelBlue; }
 
 /* Footer */
 footer {
@@ -220,8 +220,8 @@ footer {
 
 /* Button */
 button {
-  background: steelblue;
-  color: white;
+  background: steelBlue;
+  color: #fff;
   font: 0.955em "Open Sans", sans-serif;
   letter-spacing: 0.02em;
   padding: 0.75em 3em;
@@ -233,12 +233,12 @@ button {
 /* Form */
 form {
   padding: 1.5em;
-  color: white;
+  color: #fff;
   font-family: "Open Sans", sans-serif;
   text-align: center; }
 
 form#add-domain {
-  color: black; }
+  color: #000; }
 
 #nav {
   position: relative; }
@@ -258,7 +258,7 @@ form fieldset:last-of-type {
   margin-bottom: 0; }
 
 form legend {
-  color: white;
+  color: #fff;
   font-size: 1.546em;
   font-family: "Open Sans", sans-serif;
   padding-bottom: 0.5em; }
@@ -270,8 +270,8 @@ form ol li {
   margin-bottom: 0.25em; }
 
 button {
-  background: steelblue;
-  color: white;
+  background: steelBlue;
+  color: #fff;
   font: 0.955em "Open Sans", sans-serif;
   letter-spacing: 0.02em;
   padding: 0.75em 3em;
@@ -295,5 +295,7 @@ form#login input, form#register input {
 .emphasis {
   font-size: 5em;
   font-family: 'Montserrat';
-  color: steelblue;
+  color: steelBlue;
   line-height: 1em; }
+
+/*# sourceMappingURL=styles.css.map */
