@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <main class="grayBackground">
 
   <sextant-header></sextant-header>
@@ -21,32 +22,30 @@
 
 		<figure class="flex-item__figure">
 	    <div data-ng-show="selectedDomain">
-	      <h3>Visit Data</h3>
-	      <div data-ng-repeat="visit in visits">
-	        <p>{{visit}}</p>
-	      </div>
-	    </div>
-	  </figure>
-
-		<figure class="flex-item__figure">
-	    <div data-ng-show="selectedDomain">
-	      <h3>Visit Data</h3>
+	      <h3>Visit summary</h3>
 	      <visit-summary></visit-summary>
 	    </div>
 	  </figure>
 
 	  <figure class="flex-item__figure">
 	    <div data-ng-show="selectedDomain">
-	      <h3>Visit Data</h3>
+	      <h3>Bar graph</h3>
 	      <event-bar-graph></event-bar-graph>
 	    </div>
 	  </figure>
 
 	  <figure class="flex-item__figure">
 	    <div data-ng-show="selectedDomain">
-	      <h3>Visit Data</h3>
+	      <h3>Visit details</h3>
 				<visit-details></visit-details>
 			</div>
+	  </figure>
+
+	  <figure class="flex-item__figure">
+	    <div data-ng-show="selectedDomain">
+	      <h3>Page graph</h3>
+	      <page-graph></page-graph>
+	    </div>
 	  </figure>
 
 	</article>

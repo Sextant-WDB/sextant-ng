@@ -147,12 +147,12 @@ window.addEventListener('click', function(e) {
 
   pageLoad.eventType = 'pageLoad';
   pageLoad.timeStamp = new Date().getTime();
-  pageLoad.page = encodeURIComponent(window.parent.location.href);
+  pageLoad.page = window.parent.location.hash.substring(1);
 
-  _sa.events.push(pageLoad);
+  var array = [pageLoad];
 
   // Get a UUID (if needed), session id, and write key
-  _sa.send(_sa.keysUrl, _sa.events, function(responseText) {
+  _sa.send(_sa.keysUrl, array, function(responseText) {
 
     var response = JSON.parse(responseText);
 

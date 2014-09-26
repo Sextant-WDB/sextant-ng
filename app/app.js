@@ -24,6 +24,7 @@ require('./js/controllers/tracking-code-controller')(sextant);
 require('./js/controllers/data-controller')(sextant);
 require('./js/directives/controllers/events-bar-graph-controller')(sextant);
 require('./js/directives/controllers/header-controller')(sextant);
+require('./js/directives/controllers/page-graph-controller')(sextant);
 
 // Directives
 
@@ -32,6 +33,7 @@ require('./js/directives/visit-details-directive')(sextant);
 require('./js/directives/d3-events-bar-graph-directive')(sextant);
 require('./js/directives/header-directive')(sextant);
 require('./js/directives/footer-directive')(sextant);
+require('./js/directives/page-graph-directive')(sextant);
 
 // Routes
 sextant.config([ '$routeProvider', '$locationProvider',
@@ -53,5 +55,4 @@ sextant.config([ '$routeProvider', '$locationProvider',
 				redirectTo: '/login'
 			});
 
-		// $locationProvider.html5Mode(true);
 } ]);
