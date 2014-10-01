@@ -3,8 +3,8 @@
 module.exports = function(app) {
   app.controller('eventsBarGraphController', function($scope){
     var selection = '#d3-timeline';
-    var defaultHeight = 200;
-    var defaultWidth = 400;
+    var defaultHeight = 300;
+    var defaultWidth = 640;
     var maxEvents = 0;
     $scope.timeline = $scope.d3.select(selection);
     
@@ -48,6 +48,8 @@ module.exports = function(app) {
     var chart = function(width, height){
 
       var barWidth = width / $scope.visits.length;
+      if(barWidth < 4) barWidth = 4; // constrain bar size
+      if(barWidth > 40) barWidth = 40;
 
       var scale = $scope.d3.scale.linear()
         .domain([0, maxEvents])
@@ -78,16 +80,6 @@ module.exports = function(app) {
         .attr('width', barWidth - 1)
         .attr('height', function(data){
           return height - scale(data.events.length);
-        });
-
-      bars.append('text')
-        .attr('x', barWidth / 2 )
-        .attr('y', function() { 
-          return height - 5; 
-        })
-        .attr('dy', '.35em')
-        .text(function(data) { 
-          return data.events.length; 
         });
 
     }; // end chart
