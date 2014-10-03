@@ -20,11 +20,26 @@ module.exports = function(app) {
           });
       };
 
+      $scope.domainSocket = io(); /* jshint ignore:line */
+
+      $scope.domainSocket.on('newVisit', function() {
+          console.log('newVisit event');
+          //$scope.visits.push(visit);
+          $scope.getVisits($scope.selectedDomain);
+        });
+
+      $scope.domainSocket.on('message', function(message) {
+          console.log('Incoming message: %s', message);
+        });
+
       $scope.getDomains(); // runs on view load
 
       var visitService = new HttpService('visits');
 
       $scope.getVisits = function(domain_id) {
+
+        // Make a request to join the selected domains room
+        $scope.domainSocket.emit('join', { jwt: $cookies.jwt, domainID: domain_id });
 
         $scope.selectedDomain = domain_id;
 
