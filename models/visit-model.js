@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 var VisitSchema = mongoose.Schema({
     visitor_id: String,
     session_id: String,
-	domain_id: String,
+		domain_id: String,
     host: String,
     referer: String,
     ip_address: String,

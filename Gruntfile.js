@@ -128,6 +128,7 @@ module.exports = function(grunt) {
           'app/index.html',
           'app/views/**/*.html',
           'app/css/scss/*.scss',
+          'lib/**/*.js',
           'server.js',
           'models/*.js',
           'routes/*.js',

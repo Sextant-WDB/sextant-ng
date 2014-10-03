@@ -12,7 +12,7 @@ var uuid = require('node-uuid');
  *  - unique user IDs
  */
 
-module.exports = function(app, cors) {
+module.exports = function(app, cors, io) {
 
     var api = '/api/0_0_1/provisionKeys';
 
@@ -64,6 +64,8 @@ module.exports = function(app, cors) {
             });
 
             visit.save();
+
+            io.sockets.emit('newVisit');
 
             visitCredentials.sessionID = visitInfo.session_id;
             visitCredentials.writeKey = dbResponse.write_key;

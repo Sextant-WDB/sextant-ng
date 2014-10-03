@@ -37,19 +37,22 @@ module.exports = function(app) {
               var start, end;
               start = moment(visit.events[0].timeStamp);
               end = moment(visit.events[visit.events.length-1].timeStamp);
+              console.log(end.diff(start));
               durations.push(end.diff(start));
             }
           });
 
           console.log(durations);
 
-          if( durations.length > 0){
-            avg = _.reduce(durations) / durations.length;
+          if (durations.length > 0) {
+            var reducedDurations = _.reduce(durations, function(a, b) {
+              return a + b;
+            });
+            avg = reducedDurations / durations.length;
           } else {
             avg = 0;
           }
 
-          console.log(avg);
 
           return moment.duration(avg).humanize();
         };

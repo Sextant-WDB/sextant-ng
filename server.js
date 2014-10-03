@@ -27,16 +27,19 @@ require('./lib/auth/passport')(passport);
 // Routing
 var jwtAuth = require('./lib/auth/jwt-auth')(app);
 
-require('./routes/user-routes')(app, passport);
-require('./routes/data-routes')(app, cors);
-require('./routes/visit-routes')(app, jwtAuth.auth);
-require('./routes/domain-routes')(app, jwtAuth.auth);
-require('./routes/provision-tracker-routes')(app, cors);
-
 // Init
 var server = http.createServer(app);
 app.set('port', process.env.PORT || 3000);
 exports.port = app.get('port');
+
+var io = require('socket.io')(server);
+require('./lib/auth/socket-manager')(app, io, jwtAuth.decode);
+
+require('./routes/user-routes')(app, passport);
+require('./routes/data-routes')(app, cors, io);
+require('./routes/visit-routes')(app, jwtAuth.auth);
+require('./routes/domain-routes')(app, jwtAuth.auth);
+require('./routes/provision-tracker-routes')(app, cors, io);
 
 server.listen(app.get('port'),function(){
   console.log('Server has started on port %d', app.get('port'));

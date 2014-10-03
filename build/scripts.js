@@ -6,7 +6,6 @@ require("./bower_components/angular-route/angular-route.js");
 require("./bower_components/angular-cookies/angular-cookies.js");
 require("./bower_components/angular-base64/angular-base64.js");
 
-
 var sextant = angular.module('sextant', [
 	'ngRoute',
 	'base64',
@@ -38,7 +37,7 @@ require('./js/directives/page-graph-directive')(sextant);
 
 // Routes
 sextant.config([ '$routeProvider', '$locationProvider',
-	function($routeProvider, $locationProvider) {
+	function($routeProvider) {
 		$routeProvider
 			.when('/login', {
 				templateUrl: 'views/gateway-view.html',
@@ -55,7 +54,6 @@ sextant.config([ '$routeProvider', '$locationProvider',
 			.otherwise({
 				redirectTo: '/login'
 			});
-
 } ]);
 },{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":7,"./js/controllers/data-controller":8,"./js/controllers/session-controller":9,"./js/controllers/tracking-code-controller":10,"./js/directives/controllers/events-bar-graph-controller":11,"./js/directives/controllers/header-controller":12,"./js/directives/controllers/page-graph-controller":13,"./js/directives/d3-events-bar-graph-directive":14,"./js/directives/footer-directive":15,"./js/directives/header-directive":16,"./js/directives/page-graph-directive":17,"./js/directives/visit-details-directive":18,"./js/directives/visit-summary-directive":19,"./js/services/http-service":20}],2:[function(require,module,exports){
 (function() {
@@ -24883,6 +24881,10 @@ module.exports = function(app) {
 
       var domainService = new HttpService('domains');
 
+      /**
+       * Load all domains matching the current user
+       */
+
       $scope.getDomains = function(){
         domainService.get()
           .success(function(domains){
@@ -24890,11 +24892,30 @@ module.exports = function(app) {
           });
       };
 
+      $scope.domainSocket = io(); /* jshint ignore:line */
+
+      $scope.domainSocket.on('newVisit', function() {
+          console.log('newVisit event');
+          //$scope.visits.push(visit);
+          $scope.getVisits($scope.selectedDomain);
+        });
+
+      $scope.domainSocket.on('message', function(message) {
+          console.log('Incoming message: %s', message);
+        });
+
       $scope.getDomains(); // runs on view load
+
+      /**
+       * Load all visits matching a given domain
+       */
 
       var visitService = new HttpService('visits');
 
       $scope.getVisits = function(domain_id) {
+
+        // Make a request to join the selected domains room
+        $scope.domainSocket.emit('join', { jwt: $cookies.jwt, domainID: domain_id });
 
         $scope.selectedDomain = domain_id;
 
@@ -24903,6 +24924,17 @@ module.exports = function(app) {
             $scope.visits = visits;
             $scope.totalVisits = visits.length;
           });
+      };
+
+      /**
+       * Delete visits corresponding to a given domain
+       */
+
+      $scope.deleteVisits = function() {
+        visitService.delete($scope.selectedDomain)
+        .success(function() {
+          $scope.getVisits($scope.selectedDomain);
+        });
       };
 
       /**
@@ -24995,18 +25027,16 @@ module.exports = function(app) {
 module.exports = function(app) {
   app.controller('eventsBarGraphController', function($scope){
     var selection = '#d3-timeline';
-    var defaultHeight = 200;
-    var defaultWidth = 400;
+    var chartWidth = 640;
+    var chartHeight = 300;
     var maxEvents = 0;
     $scope.timeline = $scope.d3.select(selection);
-    
+
     // handle redrawing the chart
-    var invokeChart = function(){
-      if( $scope.visits ){
+    var invokeChart = function(pageEvents){
+      if( pageEvents ){
         maxEvents = calcMaxEvents($scope.visits);
-        var width = defaultWidth;
-        var height = defaultHeight;
-        chart(width, height);
+        chart(pageEvents, chartWidth, chartHeight);
       }
     };
 
@@ -25021,25 +25051,39 @@ module.exports = function(app) {
       return max;
     };
 
-    // listeners
-    
-    // $scope.$watch(function() {
-    //   return document.getElementById('timeline-wrapper').offsetWidth;
-    // }, function() {
-    //   console.log('resize');
-    //   invokeChart();
-    // });
-    
-    $scope.$watch('visits', function(){
+    $scope.$watch('visits', function() {
+      console.log('change noticed from bar graph');
       $scope.totalVisits = $scope.visits ? $scope.visits.length : 0;
-      if( $scope.visits ) invokeChart();
+
+      if( $scope.visits ) {
+
+        // $scope.totalVisits gives us too many visits, because it includes not only
+        // page changes but also clicks, scrolls, etc. We need to filter down to only
+        // loads and route changes.
+
+        var pageEvents = []; // The parent array, which holds sessions
+        $scope.visits.forEach(function(visit) {
+
+          // Filter out irrelevant visit data
+          var sessionEvents = visit.events.filter(function(event) {
+            return event.eventType === 'pageLoad' || event.eventType === 'pageChange';
+          });
+          pageEvents.push(sessionEvents);
+
+        });
+
+        invokeChart(pageEvents);
+      }
     });
 
-  
     // chart
-    var chart = function(width, height){
+    var chart = function(pageEvents, width, height){
 
-      var barWidth = width / $scope.visits.length;
+      console.log('page events: ' + pageEvents);
+
+      var barWidth = width / pageEvents.length;
+      // if(barWidth < 4) barWidth = 4; // constrain bar size
+      if (barWidth > 40) barWidth = 40;
 
       var scale = $scope.d3.scale.linear()
         .domain([0, maxEvents])
@@ -25051,35 +25095,38 @@ module.exports = function(app) {
         .attr('height', height);
 
       // create bars with data
-      var bars = $scope.timeline.selectAll('g')
-        .remove()
-        .data($scope.visits)
+      $scope.timeline.selectAll('g').remove(); // Note: needs to be outside `var bars...`
+      console.log('remove fired');
+
+      var bars = $scope.timeline.selectAll('g') // Selects columns
+        .data(pageEvents)
         .enter().append('g')
-          .attr('transform', function(data, index){
+          .attr('transform', function(data, index) {
+            console.log('enter fired');
             return 'translate(' + index * barWidth +',0)';
           })
           .on('click', function(data){
             console.log(data);
           });
 
-      // 
       bars.append('rect')
         .attr('y', function(data){
-          return scale(data.events.length);
+          return scale(data.length);
         })
         .attr('width', barWidth - 1)
         .attr('height', function(data){
-          return height - scale(data.events.length);
+          return height - scale(data.length);
         });
 
+      // Optional text on bars
       bars.append('text')
         .attr('x', barWidth / 2 )
-        .attr('y', function() { 
-          return height - 5; 
+        .attr('y', function() {
+          return height - 5;
         })
         .attr('dy', '.35em')
-        .text(function(data) { 
-          return data.events.length; 
+        .text(function(data) {
+          return data.length;
         });
 
     }; // end chart
@@ -25214,9 +25261,6 @@ module.exports = function(app) {
 
       $scope.landingMax = 1;
 
-      console.log(landings);
-      console.log(nodes);
-
       landings.forEach(function(landing) {
         if(nodes[landing.page]) {
           nodes[landing.page].count = landing.count;
@@ -25226,8 +25270,6 @@ module.exports = function(app) {
         }
       });
 
-      console.log(nodes);
-      console.log(links);
       return { links: links, nodes: nodes };
     };
 
@@ -25398,19 +25440,22 @@ module.exports = function(app) {
               var start, end;
               start = moment(visit.events[0].timeStamp);
               end = moment(visit.events[visit.events.length-1].timeStamp);
+              console.log(end.diff(start));
               durations.push(end.diff(start));
             }
           });
 
           console.log(durations);
 
-          if( durations.length > 0){
-            avg = _.reduce(durations) / durations.length;
+          if (durations.length > 0) {
+            var reducedDurations = _.reduce(durations, function(a, b) {
+              return a + b;
+            });
+            avg = reducedDurations / durations.length;
           } else {
             avg = 0;
           }
 
-          console.log(avg);
 
           return moment.duration(avg).humanize();
         };
