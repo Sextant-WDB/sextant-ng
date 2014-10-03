@@ -3,8 +3,8 @@
 module.exports = function(app) {
   app.controller('eventsBarGraphController', function($scope){
     var selection = '#d3-timeline';
-    var chartWidth = 300;
-    var chartHeight = 640;
+    var chartWidth = 640;
+    var chartHeight = 300;
     var maxEvents = 0;
     $scope.timeline = $scope.d3.select(selection);
 
@@ -55,9 +55,11 @@ module.exports = function(app) {
     // chart
     var chart = function(pageEvents, width, height){
 
-      var barWidth = width / $scope.visits.length;
-      if(barWidth < 4) barWidth = 4; // constrain bar size
-      if(barWidth > 40) barWidth = 40;
+      console.log('page events: ' + pageEvents);
+
+      var barWidth = width / pageEvents.length;
+      // if(barWidth < 4) barWidth = 4; // constrain bar size
+      if (barWidth > 40) barWidth = 40;
 
       var scale = $scope.d3.scale.linear()
         .domain([0, maxEvents])
@@ -70,11 +72,13 @@ module.exports = function(app) {
 
       // create bars with data
       $scope.timeline.selectAll('g').remove(); // Note: needs to be outside `var bars...`
+      console.log('remove fired');
 
       var bars = $scope.timeline.selectAll('g') // Selects columns
         .data(pageEvents)
         .enter().append('g')
           .attr('transform', function(data, index) {
+            console.log('enter fired');
             return 'translate(' + index * barWidth +',0)';
           })
           .on('click', function(data){

@@ -13,6 +13,10 @@ module.exports = function(app) {
 
       var domainService = new HttpService('domains');
 
+      /**
+       * Load all domains matching the current user
+       */
+
       $scope.getDomains = function(){
         domainService.get()
           .success(function(domains){
@@ -34,6 +38,10 @@ module.exports = function(app) {
 
       $scope.getDomains(); // runs on view load
 
+      /**
+       * Load all visits matching a given domain
+       */
+
       var visitService = new HttpService('visits');
 
       $scope.getVisits = function(domain_id) {
@@ -48,6 +56,17 @@ module.exports = function(app) {
             $scope.visits = visits;
             $scope.totalVisits = visits.length;
           });
+      };
+
+      /**
+       * Delete visits corresponding to a given domain
+       */
+
+      $scope.deleteVisits = function() {
+        visitService.delete($scope.selectedDomain)
+        .success(function() {
+          $scope.getVisits($scope.selectedDomain);
+        });
       };
 
       /**
