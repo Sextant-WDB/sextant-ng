@@ -5,7 +5,6 @@ require('angular-route');
 require('angular-cookies');
 require('angular-base64');
 
-
 var sextant = angular.module('sextant', [
 	'ngRoute',
 	'base64',
@@ -37,7 +36,7 @@ require('./js/directives/page-graph-directive')(sextant);
 
 // Routes
 sextant.config([ '$routeProvider', '$locationProvider',
-	function($routeProvider, $locationProvider) {
+	function($routeProvider) {
 		$routeProvider
 			.when('/login', {
 				templateUrl: 'views/gateway-view.html',
@@ -54,5 +53,4 @@ sextant.config([ '$routeProvider', '$locationProvider',
 			.otherwise({
 				redirectTo: '/login'
 			});
-
 } ]);
