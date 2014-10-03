@@ -73,9 +73,6 @@ module.exports = function(app) {
 
       $scope.landingMax = 1;
 
-      console.log(landings);
-      console.log(nodes);
-
       landings.forEach(function(landing) {
         if(nodes[landing.page]) {
           nodes[landing.page].count = landing.count;
@@ -85,8 +82,6 @@ module.exports = function(app) {
         }
       });
 
-      console.log(nodes);
-      console.log(links);
       return { links: links, nodes: nodes };
     };
 
