@@ -9,7 +9,7 @@ module.exports = function(app) {
 			var host = $location.host();
 			var port = (host === 'localhost' ? ':' + $location.port() : '');
 			var scriptUrl = protocol + host + port + '/public/sa-tracking.js';
-			$scope.scriptPath = '<script src="' + scriptUrl + '"></script>';
+			$scope.scriptPath = '<script src="' + scriptUrl + '" async></script>';
 
 			$scope.continue = function() {
 				$location.path('/dashboard');
