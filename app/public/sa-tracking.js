@@ -6,8 +6,8 @@ _sa.events = [];
 _sa.sendInterval = 5000;
 
 // Update these with your app directory:
-_sa.dataUrl = 'http://sextant.io/api/0_0_1/data';
-_sa.keysUrl = 'http://sextant.io/api/0_0_1/provisionKeys';
+_sa.dataUrl = 'http://localhost:3000/api/0_0_1/data';
+_sa.keysUrl = 'http://localhost:3000/api/0_0_1/provisionKeys';
 
 // For AJAX
 _sa.createXHR = function() {

@@ -6,7 +6,6 @@ require("./bower_components/angular-route/angular-route.js");
 require("./bower_components/angular-cookies/angular-cookies.js");
 require("./bower_components/angular-base64/angular-base64.js");
 
-
 var sextant = angular.module('sextant', [
 	'ngRoute',
 	'base64',
@@ -38,7 +37,7 @@ require('./js/directives/page-graph-directive')(sextant);
 
 // Routes
 sextant.config([ '$routeProvider', '$locationProvider',
-	function($routeProvider, $locationProvider) {
+	function($routeProvider) {
 		$routeProvider
 			.when('/login', {
 				templateUrl: 'views/gateway-view.html',
@@ -55,7 +54,6 @@ sextant.config([ '$routeProvider', '$locationProvider',
 			.otherwise({
 				redirectTo: '/login'
 			});
-
 } ]);
 },{"./bower_components/angular-base64/angular-base64.js":2,"./bower_components/angular-cookies/angular-cookies.js":3,"./bower_components/angular-route/angular-route.js":4,"./bower_components/angular/angular":5,"./js/controllers/account-controller":7,"./js/controllers/data-controller":8,"./js/controllers/session-controller":9,"./js/controllers/tracking-code-controller":10,"./js/directives/controllers/events-bar-graph-controller":11,"./js/directives/controllers/header-controller":12,"./js/directives/controllers/page-graph-controller":13,"./js/directives/d3-events-bar-graph-directive":14,"./js/directives/footer-directive":15,"./js/directives/header-directive":16,"./js/directives/page-graph-directive":17,"./js/directives/visit-details-directive":18,"./js/directives/visit-summary-directive":19,"./js/services/http-service":20}],2:[function(require,module,exports){
 (function() {
@@ -24890,11 +24888,30 @@ module.exports = function(app) {
           });
       };
 
+      $scope.domainSocket = io(); /* jshint ignore:line */
+
+      $scope.domainSocket.on('testEvent', function() {
+          console.log('client received testEvent');
+        });
+
+      $scope.domainSocket.on('newVisit', function() {
+          console.log('newVisit event');
+          //$scope.visits.push(visit);
+          $scope.getVisits($scope.selectedDomain);
+        });
+
+      $scope.domainSocket.on('message', function(message) {
+          console.log('Incoming message: %s', message);
+        });
+
       $scope.getDomains(); // runs on view load
 
       var visitService = new HttpService('visits');
 
       $scope.getVisits = function(domain_id) {
+
+        // Make a request to join the selected domains room
+        $scope.domainSocket.emit('join', { jwt: $cookies.jwt, domainID: domain_id });
 
         $scope.selectedDomain = domain_id;
 
@@ -24957,6 +24974,7 @@ module.exports = function(app) {
         $http.get(api)
         .success(function(data) {
           $cookies.jwt = data.jwt;
+          $cookies.socketID = data.socketID;
           $location.path('/dashboard');
         })
         .error(function(error) {
@@ -25148,6 +25166,7 @@ module.exports = function(app) {
 
     $scope.$watch('visits', function(){
       if( $scope.visits ) {
+        console.log('update page graph data');
         var data = parseGraphData();
         graph(data);
       }
@@ -25232,6 +25251,7 @@ module.exports = function(app) {
     };
 
     var graph = function(data) {
+      console.log('graph');
 
       var width = 640;
       var height = 300;
@@ -25405,7 +25425,8 @@ module.exports = function(app) {
           console.log(durations);
 
           if( durations.length > 0){
-            avg = _.reduce(durations) / durations.length;
+            var duration = _.reduce(durations, function(a, b) { return a + b; });
+            avg = duration / durations.length;
           } else {
             avg = 0;
           }
