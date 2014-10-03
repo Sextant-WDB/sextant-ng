@@ -44,7 +44,8 @@ module.exports = function(app) {
           console.log(durations);
 
           if( durations.length > 0){
-            avg = _.reduce(durations) / durations.length;
+            var duration = _.reduce(durations, function(a, b) { return a + b; });
+            avg = duration / durations.length;
           } else {
             avg = 0;
           }
