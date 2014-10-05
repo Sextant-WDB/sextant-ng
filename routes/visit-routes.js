@@ -29,16 +29,22 @@ module.exports = function(app, jwtAuth) {
    * Delete all visits corresponding to a given domain (authenticated)
    */
 
-  // app.delete(api + '/:domainID', jwtAuth, function(req, res) {
-  //   console.log('delete fired with domain ' + req.params.domainName);
-  //   Visit.remove({ host: req.params.domainName.toString() }, function(err) {
-  //     if (err) {
-  //       return res.status(500).json(err);
-  //     }
-  //     return res.status(200).json({
-  //       'message': 'deleted'
-  //     });
-  //   });
-  // });
+  app.delete(api + '/:domainId', jwtAuth, function(req, res) {
+
+    console.log('delete fired with domain ' + req.params.domainId);
+
+		Domain.findOne({
+	    _id: req.params.domainId.toString(),
+	    authorizedUsers: { $all: [ req.user._id ] }
+	  }, function(err, domain) {
+	    if (err) return res.status(500).json(err);
+	    Visit.remove({ host: domain.host }, function(err) {
+	      if (err) return res.status(500).json(err);
+	      else return res.status(200).json({
+	        'message': 'deleted'
+		    });
+	    });
+	  });
+  });
 
 };
